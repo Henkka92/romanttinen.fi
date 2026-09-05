@@ -826,6 +826,32 @@ img.romant-logo,
   color: var(--romant-ink);
 }
 
+.romant-home-step {
+  align-items: flex-start;
+  max-width: 14rem;
+  text-align: left;
+}
+
+.romant-home-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.romant-home-step-title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.romant-home-step-desc {
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--romant-ink-muted, #5c4a45);
+  opacity: 0.9;
+}
+
 .romant-home-step-num {
   display: inline-grid;
   place-items: center;

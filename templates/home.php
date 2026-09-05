@@ -28,11 +28,11 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         style="--romant-hero-fabric: url('<?php echo esc_url($fabric_url); ?>');"
     >
         <div class="romant-home-copy">
-            <h1 id="romant-home-headline">Kutsu mielitiettysi treffeille — unohtumattomalla tavalla.</h1>
-            <p class="romant-home-sub">Luonnos ilmaiseksi. 4,90 € vasta kun jaat linkin.</p>
+            <h1 id="romant-home-headline">Kutsu mielitiettysi treffeille tavalla, joka jää mieleen.</h1>
+            <p class="romant-home-sub">Luo henkilökohtainen treffikutsu, joka paljastuu vaiheittain. Luo ilmaiseksi. Maksat 4,90 € vasta, kun lähetät kutsun.</p>
             <div class="romant-home-ctas">
                 <a class="romant-btn romant-btn-primary" href="<?php echo esc_url($create_url); ?>">
-                    Luo luonnos ilmaiseksi
+                    Luo oma kutsu
                 </a>
             </div>
         </div>
@@ -53,11 +53,29 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
     <section class="romant-home-steps" id="nain-se-toimii" aria-labelledby="romant-home-steps-heading">
         <h2 id="romant-home-steps-heading" class="romant-home-steps-heading">Näin se toimii</h2>
         <ol class="romant-home-steps-list">
-            <li><span class="romant-home-step-num">1</span> Luo kutsu</li>
+            <li class="romant-home-step">
+                <span class="romant-home-step-num">1</span>
+                <span class="romant-home-step-body">
+                    <strong class="romant-home-step-title">Luo kutsu</strong>
+                    <span class="romant-home-step-desc">Valitse aika ja kirjoita omat vihjeesi.</span>
+                </span>
+            </li>
             <li class="romant-home-step-arrow" aria-hidden="true">→</li>
-            <li><span class="romant-home-step-num">2</span> Jaa linkki</li>
+            <li class="romant-home-step">
+                <span class="romant-home-step-num">2</span>
+                <span class="romant-home-step-body">
+                    <strong class="romant-home-step-title">Jaa linkki</strong>
+                    <span class="romant-home-step-desc">Maksat vasta, kun kutsu on valmis.</span>
+                </span>
+            </li>
             <li class="romant-home-step-arrow" aria-hidden="true">→</li>
-            <li><span class="romant-home-step-num">3</span> Saaja avaa vihjeet</li>
+            <li class="romant-home-step">
+                <span class="romant-home-step-num">3</span>
+                <span class="romant-home-step-body">
+                    <strong class="romant-home-step-title">Saaja avaa vihjeet</strong>
+                    <span class="romant-home-step-desc">Jännitys kasvaa saajan tahtiin.</span>
+                </span>
+            </li>
         </ol>
     </section>
 
