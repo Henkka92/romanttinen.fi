@@ -1,0 +1,10 @@
+.DS_Store
+*.zip
+*.log
+node_modules/
+.idea/
+.vscode/
+*.swp
+.env
+.env.*
+!.env.example

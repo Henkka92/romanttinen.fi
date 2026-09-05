@@ -1,0 +1,1064 @@
+/* Romanttinen Kutsu — brand tokens */
+:root {
+  --romant-wine: #4A1F2C;
+  --romant-cream: #F3E6D8;
+  --romant-rose: #C9A090;
+  --romant-blush: #EBD9CE;
+  --romant-ink: #2A2422;
+  --romant-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --romant-sans: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --romant-radius: 16px;
+  --romant-shadow: 0 12px 40px rgba(42, 36, 34, 0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.romant-kutsu-body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, var(--romant-blush) 0%, transparent 55%),
+    var(--romant-cream);
+  color: var(--romant-ink);
+  font-family: var(--romant-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.romant-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+/* Recipient: center invite card horizontally (desktop + mobile) */
+.romant-recipient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.romant-recipient .romant-invite-card {
+  width: 100%;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 0 0 auto;
+}
+
+.romant-serif {
+  font-family: var(--romant-serif);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--romant-wine);
+  margin: 0 0 0.5rem;
+}
+
+.romant-hero .romant-serif,
+.romant-invite-card .romant-serif {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.romant-eyebrow {
+  text-transform: lowercase; /* force brand wordmark — never uppercase */
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--romant-rose);
+  margin: 0 0 0.75rem;
+}
+
+
+.romant-inviter {
+  margin: 0 0 0.35rem;
+  font-family: var(--romant-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--romant-wine);
+  opacity: 0.88;
+}
+
+.romant-story-inner .romant-inviter {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.romant-lead {
+  color: rgba(42, 36, 34, 0.75);
+  max-width: 36rem;
+  margin: 0 0 1.5rem;
+}
+
+.romant-hint {
+  font-size: 0.875rem;
+  color: rgba(42, 36, 34, 0.65);
+  margin: 0.25rem 0 0.75rem;
+}
+
+/* Checklist */
+.romant-checklist {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+
+.romant-checklist li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--romant-blush);
+  font-size: 0.8125rem;
+  color: rgba(42, 36, 34, 0.7);
+}
+
+.romant-checklist li.is-current {
+  border-color: var(--romant-wine);
+  color: var(--romant-wine);
+  font-weight: 600;
+}
+
+.romant-checklist li.is-done {
+  background: var(--romant-blush);
+  border-color: transparent;
+  color: var(--romant-wine);
+}
+
+.romant-check-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--romant-wine);
+  color: var(--romant-cream);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* Forms */
+.romant-form fieldset {
+  border: 1px solid var(--romant-blush);
+  border-radius: var(--romant-radius);
+  background: rgba(255, 255, 255, 0.65);
+  padding: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.romant-form legend {
+  font-family: var(--romant-serif);
+  font-size: 1.25rem;
+  color: var(--romant-wine);
+  padding: 0 0.35rem;
+}
+
+.romant-form label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0.75rem 0 0.35rem;
+}
+
+.romant-form label:first-of-type { margin-top: 0; }
+
+.romant-form input[type="datetime-local"],
+.romant-form textarea,
+.romant-form input[type="text"],
+.romant-form input[type="email"] {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--romant-rose);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--romant-ink);
+  font: inherit;
+}
+
+.romant-form textarea { resize: vertical; }
+
+.romant-form input:focus,
+.romant-form textarea:focus {
+  outline: 2px solid var(--romant-wine);
+  outline-offset: 1px;
+}
+
+.romant-radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.romant-radio-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.req { color: var(--romant-wine); }
+
+/* Buttons */
+.romant-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.romant-btn:hover { transform: translateY(-1px); }
+.romant-btn:active { transform: translateY(0); }
+
+.romant-btn-primary {
+  background: var(--romant-wine);
+  color: var(--romant-cream);
+}
+
+.romant-btn-primary:hover { background: #3A1823; color: var(--romant-cream); }
+
+.romant-btn-secondary {
+  background: #fff;
+  color: var(--romant-wine);
+  border-color: var(--romant-rose);
+}
+
+.romant-btn-ghost {
+  background: transparent;
+  color: var(--romant-ink);
+  border-color: var(--romant-blush);
+}
+
+.romant-btn-lg {
+  padding: 0.9rem 1.6rem;
+  font-size: 1.05rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.romant-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* Manage layout
+ * DOM order (mobile-first): hero → flashes → checklist → CTA (pay/share/send) → Muokkaa → preview.
+ * Flex order reinforces CTA before edit/preview under 720px if markup drifts.
+ */
+.romant-manage {
+  display: flex;
+  flex-direction: column;
+}
+
+.romant-manage > .romant-hero { order: 0; }
+.romant-manage > .romant-alert { order: 1; }
+.romant-manage > .romant-checklist { order: 2; }
+.romant-manage > .romant-manage-cta { order: 3; }
+.romant-manage > .romant-manage-grid { order: 4; }
+
+@media (min-width: 720px) {
+  .romant-manage > .romant-hero,
+  .romant-manage > .romant-alert,
+  .romant-manage > .romant-checklist,
+  .romant-manage > .romant-manage-cta,
+  .romant-manage > .romant-manage-grid {
+    order: 0; /* natural DOM order on desktop; CTA already above Muokkaa in PHP */
+  }
+}
+
+.romant-manage-cta {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.romant-manage-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 860px) {
+  .romant-manage-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.romant-panel {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--romant-blush);
+  border-radius: calc(var(--romant-radius) + 4px);
+  padding: 1.25rem;
+  box-shadow: var(--romant-shadow);
+}
+
+.romant-panel > .romant-serif { margin-bottom: 1rem; }
+
+.romant-pay-form { margin-top: 0.75rem; }
+
+.romant-pay-box {
+  background: var(--romant-blush);
+  border-radius: var(--romant-radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--romant-shadow);
+}
+
+.romant-pay-box > .romant-serif { margin-bottom: 0.35rem; }
+
+.romant-share-box {
+  background: var(--romant-blush);
+  border-radius: var(--romant-radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.romant-email-box {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--romant-blush);
+  border-radius: var(--romant-radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--romant-shadow);
+}
+
+.romant-email-box .romant-serif { margin-bottom: 0.35rem; }
+
+.romant-email-form {
+  margin-top: 0.75rem;
+  max-width: 28rem;
+}
+
+.romant-email-form .romant-btn {
+  margin-top: 0.85rem;
+}
+
+.romant-pay-form input[type="email"] {
+  margin-bottom: 0.25rem;
+}
+
+.romant-pay-form .romant-btn-lg {
+  margin-top: 0.85rem;
+}
+
+.romant-share-url code {
+  display: block;
+  word-break: break-all;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin: 0.5rem 0 0;
+}
+
+/* Preview / recipient card */
+.romant-preview-card,
+.romant-invite-card {
+  background: linear-gradient(165deg, #fff 0%, var(--romant-blush) 100%);
+  border-radius: calc(var(--romant-radius) + 8px);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--romant-shadow);
+  text-align: center;
+  border: 1px solid rgba(107, 45, 60, 0.08);
+}
+
+.romant-invite-card {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 2.5rem 1.75rem;
+}
+
+.romant-countdown {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 1.5rem 0;
+  font-family: var(--romant-sans);
+}
+
+.romant-cd-unit {
+  min-width: 3.5rem;
+  padding: 0.65rem 0.4rem;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 12px;
+  border: 1px solid var(--romant-blush);
+}
+
+.romant-cd-unit span {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--romant-wine);
+  font-variant-numeric: tabular-nums;
+}
+
+.romant-cd-unit small {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--romant-rose);
+}
+
+.romant-countdown-done {
+  font-family: var(--romant-serif);
+  font-size: 1.25rem;
+  color: var(--romant-wine);
+}
+
+.romant-spoiler,
+.romant-dress {
+  text-align: left;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin: 0.75rem 0;
+  border: 1px solid rgba(196, 164, 168, 0.4);
+}
+
+.romant-spoiler-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--romant-rose);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.romant-spoiler p,
+.romant-dress p {
+  margin: 0;
+  font-family: var(--romant-serif);
+  font-size: 1.15rem;
+  color: var(--romant-ink);
+}
+
+.romant-preview-note {
+  font-size: 0.75rem;
+  color: rgba(42, 36, 34, 0.5);
+  margin: 1rem 0 0;
+}
+
+.romant-reveal { margin-top: 0.5rem; }
+
+/* Progressive reveal: keep spoilers/dress/share hidden until Avaa kutsu */
+.romant-reveal[hidden],
+.romant-btn[hidden] {
+  display: none !important;
+}
+
+/* Alerts */
+.romant-alert {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+.romant-alert-ok {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #a5d6a7;
+}
+
+.romant-alert-err {
+  background: #fce8ea;
+  color: var(--romant-wine);
+  border: 1px solid var(--romant-rose);
+}
+
+/* Story page */
+.romant-story-page { max-width: 420px; text-align: center; }
+
+.romant-story-help { margin-left: auto; margin-right: auto; }
+
+.romant-story-frame {
+  aspect-ratio: 9 / 16;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 1.5rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--romant-shadow);
+  background: linear-gradient(180deg, var(--romant-cream) 0%, var(--romant-blush) 55%, #d9b8bc 100%);
+  border: 1px solid var(--romant-rose);
+}
+
+.romant-story-inner {
+  height: 100%;
+  padding: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.romant-story-inner .romant-serif {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.romant-story-when {
+  font-size: 0.9rem;
+  color: var(--romant-wine);
+  font-weight: 500;
+  margin: 0 0 1rem;
+}
+
+.romant-story-brand {
+  margin-top: auto;
+  padding-top: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  color: var(--romant-rose);
+}
+
+.romant-story-page .romant-actions {
+  justify-content: center;
+}
+
+/* Shortcode embed in theme */
+.romant-create { max-width: 640px; }
+
+/* Spoiler writing friction: hide unused levels */
+.romant-spoiler-field[hidden] {
+  display: none !important;
+}
+
+.romant-story-inner .romant-countdown {
+  margin: 1rem auto 1.5rem;
+  justify-content: center;
+}
+
+/* —— Marketing homepage —— */
+.romant-home-body {
+  background:
+    radial-gradient(ellipse 120% 80% at 10% -10%, rgba(201, 160, 144, 0.45) 0%, transparent 50%),
+    radial-gradient(ellipse 90% 70% at 95% 20%, rgba(235, 217, 206, 0.9) 0%, transparent 45%),
+    linear-gradient(165deg, var(--romant-cream) 0%, #f8efe6 40%, var(--romant-blush) 100%);
+}
+
+.romant-home {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.15rem 1.15rem 2.25rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.romant-home-header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* mobile: center site logo / wordmark */
+  margin-bottom: 0.85rem;
+}
+
+img.romant-logo,
+.romant-logo {
+  display: block;
+  max-height: 36px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 0.75rem;
+}
+
+.romant-home-header .romant-logo-wrap {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.romant-home-header .romant-logo {
+  max-height: 40px;
+  width: auto;
+  height: auto;
+  margin: 0;
+  object-fit: contain;
+  aspect-ratio: 1048 / 169;
+}
+
+@media (min-width: 720px) {
+  .romant-home-header {
+    justify-content: flex-start; /* desktop: left-aligned chrome */
+  }
+
+  .romant-home-header .romant-logo {
+    max-height: 56px;
+  }
+}
+
+.romant-home-mock .romant-logo {
+  max-height: 28px;
+  margin: 0 auto 0.5rem;
+}
+
+.romant-invite-card .romant-logo,
+.romant-preview-card .romant-logo,
+.romant-story-inner .romant-logo,
+.romant-hero .romant-logo {
+  margin-inline: auto;
+  margin-bottom: 0.75rem;
+}
+
+.romant-home-hero {
+  display: grid;
+  gap: 1.1rem;
+  align-items: center;
+  flex: 0 0 auto;
+  position: relative;
+  isolation: isolate;
+  padding: 1.05rem 1rem;
+  border-radius: calc(var(--romant-radius) + 10px);
+  overflow: hidden;
+  background-color: var(--romant-blush);
+  background-image: var(--romant-hero-fabric);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.romant-home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 246, 0.88) 0%, rgba(248, 239, 230, 0.78) 45%, rgba(235, 217, 206, 0.72) 100%),
+    radial-gradient(ellipse at 20% 10%, rgba(255, 255, 255, 0.45), transparent 55%);
+  pointer-events: none;
+}
+
+.romant-home-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 720px) {
+  .romant-home-hero {
+    /* Copy left, teaser right (~55–60% width) */
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 1.4fr);
+    gap: 1.25rem;
+    padding: 1.2rem 1.25rem;
+  }
+
+  .romant-home-copy {
+    margin-inline: 0;
+    text-align: left;
+    justify-self: stretch;
+  }
+
+  .romant-home-lead,
+  .romant-home-sub {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .romant-home-ctas {
+    justify-content: flex-start;
+  }
+}
+
+.romant-home-copy {
+  max-width: 22rem;
+  margin-inline: auto;
+  text-align: center;
+  justify-self: center;
+}
+
+.romant-home-copy h1 {
+  font-family: var(--romant-serif);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 4.2vw, 2.35rem);
+  line-height: 1.2;
+  color: var(--romant-wine);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.romant-home-lead {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--romant-ink);
+  margin: 0 auto 0.75rem;
+  max-width: 26rem;
+  line-height: 1.45;
+}
+
+.romant-home-sub {
+  font-size: 1.02rem;
+  color: rgba(42, 36, 34, 0.72);
+  margin: 0 auto 1rem;
+  max-width: 18rem;
+  line-height: 1.45;
+}
+
+.romant-home-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.romant-home-ctas .romant-btn-primary {
+  padding: 0.85rem 1.4rem;
+}
+
+.romant-home-ctas .romant-btn-ghost {
+  padding: 0.7rem 1rem;
+  font-weight: 500;
+}
+
+.romant-home-teaser-card {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 480px;
+  margin-inline: auto;
+  border-radius: calc(var(--romant-radius) + 6px);
+  overflow: hidden;
+  box-shadow: 0 16px 44px rgba(74, 31, 44, 0.16);
+  border: 1px solid rgba(74, 31, 44, 0.08);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+}
+
+@media (min-width: 720px) {
+  .romant-home-teaser-card {
+    max-width: min(480px, 100%);
+    min-width: min(320px, 100%);
+    margin-inline: 0;
+    justify-self: stretch;
+  }
+}
+
+.romant-home-teaser-card:hover,
+.romant-home-teaser-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(74, 31, 44, 0.18);
+  outline: none;
+}
+
+.romant-home-teaser-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  object-fit: cover;
+  aspect-ratio: 3 / 2;
+}
+
+/* Legacy HTML mock (unused on homepage; kept for safety) */
+.romant-home-mock {
+  background: linear-gradient(165deg, #fff 0%, var(--romant-blush) 100%);
+  border-radius: calc(var(--romant-radius) + 6px);
+  padding: 1.35rem 1.1rem 1.5rem;
+  box-shadow: var(--romant-shadow);
+  border: 1px solid rgba(74, 31, 44, 0.08);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.romant-home-mock-logo {
+  margin-bottom: 0.35rem;
+}
+
+.romant-home-steps {
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(201, 160, 144, 0.35);
+  scroll-margin-top: 1.5rem;
+  text-align: center;
+}
+
+.romant-home-steps-heading {
+  font-family: var(--romant-serif);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+  line-height: 1.25;
+  color: var(--romant-wine);
+  margin: 0 0 0.85rem;
+  letter-spacing: 0.01em;
+}
+
+.romant-home-steps-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0;
+  margin: 0;
+}
+
+.romant-home-steps-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--romant-ink);
+}
+
+.romant-home-step-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--romant-wine);
+  color: var(--romant-cream);
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.romant-home-step-arrow {
+  color: var(--romant-rose);
+  font-size: 0.85rem;
+  opacity: 0.7;
+  user-select: none;
+}
+
+.romant-home-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--romant-rose);
+}
+
+/* Hero fabric is applied via --romant-hero-fabric on .romant-home-hero */
+.romant-home-fabric {
+  display: none;
+}
+
+/* —— V1.1 progressive peli —— */
+.romant-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.romant-logo-text {
+  font-family: var(--romant-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--romant-rose);
+}
+
+.romant-logo-wrap .screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+.romant-logo-wrap .romant-logo-text[hidden] {
+  display: none !important;
+}
+
+.romant-eyebrow-logo {
+  max-height: 32px;
+}
+
+.romant-saate {
+  margin: 0.35rem auto 0.75rem;
+  max-width: 22rem;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: rgba(42, 36, 34, 0.65);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.romant-teaser-share {
+  justify-content: center;
+  margin-top: 0.85rem;
+}
+
+.romant-teaser-actions[hidden] {
+  display: none !important;
+}
+
+.romant-peli-sections {
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.romant-osio {
+  margin: 1rem 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(201, 160, 144, 0.35);
+}
+
+.romant-osio:last-child {
+  border-bottom: none;
+}
+
+.romant-osio-title {
+  font-size: 1.35rem !important;
+  text-align: left;
+  margin: 0 0 0.65rem;
+}
+
+.romant-osio-level {
+  margin: 0.5rem 0;
+}
+
+.romant-more-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.romant-more-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--romant-rose);
+  font-weight: 500;
+}
+
+.romant-btn-sm {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+}
+
+/* Sections editor (organizer) */
+.romant-section-card {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--romant-blush);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 0 0 0.85rem;
+}
+
+.romant-section-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.romant-section-title-label {
+  flex: 1 1 12rem;
+  margin: 0 !important;
+}
+
+.romant-section-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.romant-level-row label {
+  margin-top: 0 !important;
+}
+
+.romant-soft-cap-warn {
+  font-size: 0.8125rem;
+  color: var(--romant-wine);
+  background: #fce8ea;
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem;
+  margin: 0.5rem 0;
+}
+
+.romant-soft-cap-warn[hidden] {
+  display: none !important;
+}
+
+.romant-sections-fieldset > .romant-btn {
+  margin-top: 0.35rem;
+}
+
+/* Confirm modal */
+.romant-modal {
+  border: none;
+  border-radius: calc(var(--romant-radius) + 4px);
+  padding: 0;
+  max-width: min(92vw, 400px);
+  background: linear-gradient(165deg, #fff 0%, var(--romant-blush) 100%);
+  box-shadow: var(--romant-shadow);
+  color: var(--romant-ink);
+}
+
+.romant-modal::backdrop {
+  background: rgba(42, 36, 34, 0.45);
+}
+
+.romant-modal-inner {
+  padding: 1.5rem 1.35rem 1.35rem;
+  text-align: center;
+}
+
+.romant-modal-body {
+  margin: 0 0 1.25rem;
+  font-size: 0.975rem;
+  line-height: 1.45;
+  color: rgba(42, 36, 34, 0.72);
+}
+
+.romant-modal-inner .romant-serif {
+  font-size: 1.45rem;
+  margin-bottom: 1.15rem;
+}
+
+.romant-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.romant-modal-actions .romant-btn {
+  width: 100%;
+}
+
+.romant-osio-preview {
+  text-align: left;
+}
+
+.req[hidden] { display: none !important; }
+
+
+

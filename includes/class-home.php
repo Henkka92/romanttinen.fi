@@ -1,0 +1,107 @@
+<?php
+/**
+ * Marketing homepage: front-page override + [romant_etusivu] shortcode.
+ *
+ * @package Romanttinen_Kutsu
+ */
+
+declare(strict_types=1);
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+final class Romant_Kutsu_Home {
+
+    public const OPTION_USE_HOME = 'romant_kutsu_use_homepage';
+
+    public function register(): void {
+        add_shortcode('romant_etusivu', [$this, 'shortcode_home']);
+        add_action('template_redirect', [$this, 'maybe_render_front'], 5);
+    }
+
+    /**
+     * Setting ON (default) → replace front page with standalone marketing layout.
+     * Kutsu routes still win (romant_route query var set earlier in rewrite).
+     */
+    public function maybe_render_front(): void {
+        if (!self::is_enabled()) {
+            return;
+        }
+        if (get_query_var('romant_route')) {
+            return;
+        }
+        if (!is_front_page()) {
+            return;
+        }
+        // Avoid hijacking admin / feeds / REST.
+        if (is_admin() || wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST)) {
+            return;
+        }
+
+        status_header(200);
+        nocache_headers();
+        Romant_Kutsu_Templates::render('home');
+        exit;
+    }
+
+    public function shortcode_home(): string {
+        // Embeddable fragment (theme chrome). Prefer full override for brand.
+        Romant_Kutsu_Templates::enqueue_assets('home');
+        $create_url = Romant_Kutsu_Rewrite::create_url();
+        $teaser_url = ROMANT_KUTSU_URL . 'assets/img/hero-teaser.jpg';
+        $fabric_url = ROMANT_KUTSU_URL . 'assets/img/hero-fabric.jpg';
+
+        ob_start();
+        ?>
+        <div class="romant-kutsu-body romant-home-body" style="min-height:auto;background:transparent;">
+            <div class="romant-home" style="min-height:auto;padding-top:1rem;padding-bottom:2rem;">
+                <header class="romant-home-header">
+                    <?php echo Romant_Kutsu_Templates::logo_markup('romant-home-brand'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                </header>
+                <section
+                    class="romant-home-hero"
+                    aria-labelledby="romant-sc-headline"
+                    style="--romant-hero-fabric: url('<?php echo esc_url($fabric_url); ?>');"
+                >
+                    <div class="romant-home-copy">
+                        <h1 id="romant-sc-headline">Kutsu mielitiettysi treffeille — unohtumattomalla tavalla.</h1>
+                        <p class="romant-home-sub">Luonnos ilmaiseksi. 4,90 € vasta kun jaat linkin.</p>
+                        <div class="romant-home-ctas">
+                            <a class="romant-btn romant-btn-primary" href="<?php echo esc_url($create_url); ?>">
+                                Luo luonnos ilmaiseksi
+                            </a>
+                        </div>
+                    </div>
+                    <a class="romant-home-teaser-card" href="<?php echo esc_url($create_url); ?>">
+                        <img
+                            class="romant-home-teaser-img"
+                            src="<?php echo esc_url($teaser_url); ?>"
+                            alt="Esimerkki treffikutsun teaserista"
+                            width="1536"
+                            height="1024"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </a>
+                </section>
+                <section class="romant-home-steps" id="nain-se-toimii" aria-labelledby="romant-sc-steps-heading">
+                    <h2 id="romant-sc-steps-heading" class="romant-home-steps-heading">Näin se toimii</h2>
+                    <ol class="romant-home-steps-list">
+                        <li><span class="romant-home-step-num">1</span> Luo kutsu</li>
+                        <li class="romant-home-step-arrow" aria-hidden="true">→</li>
+                        <li><span class="romant-home-step-num">2</span> Jaa linkki</li>
+                        <li class="romant-home-step-arrow" aria-hidden="true">→</li>
+                        <li><span class="romant-home-step-num">3</span> Saaja avaa vihjeet</li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+        <?php
+        return (string) ob_get_clean();
+    }
+
+    public static function is_enabled(): bool {
+        return get_option(self::OPTION_USE_HOME, '1') === '1';
+    }
+}
