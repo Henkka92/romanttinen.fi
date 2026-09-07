@@ -19,7 +19,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
 <div class="romant-home">
     <header class="romant-home-header">
-        <?php echo Romant_Kutsu_Templates::logo_markup('romant-home-brand'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <p class="romant-wordmark romant-home-wordmark">romanttinen.fi</p>
     </header>
 
     <section

@@ -12,7 +12,7 @@ $sections  = Romant_Kutsu_CPT::sample_sections();
 ?>
 <div class="romant-wrap romant-create">
     <header class="romant-hero">
-        <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <p class="romant-wordmark">romanttinen.fi</p>
         <h1 class="romant-serif">Luo kutsu</h1>
         <p class="romant-lead">Luo luonnos ilmaiseksi. Jakolinkki avautuu maksun jälkeen.</p>
     </header>
@@ -47,9 +47,13 @@ $sections  = Romant_Kutsu_CPT::sample_sections();
         </fieldset>
 
         <fieldset>
-            <legend>Valitse aika</legend>
-            <label for="romant_datetime">Päivä ja aika (Suomi)</label>
+            <legend>Tapaaminen</legend>
+            <label for="romant_datetime">Päivä ja aika (Suomi) <span class="req">*</span></label>
             <input type="datetime-local" id="romant_datetime" name="romant_datetime" required />
+            <label for="romant_location">Paikka (valinnainen)</label>
+            <input type="text" id="romant_location" name="romant_location" maxlength="120"
+                   autocomplete="off" placeholder="Esim. Keskusta" />
+            <p class="romant-hint">Näkyy saajalle Tapaaminen-kortissa vasta avauksen jälkeen — ei teaserissa.</p>
         </fieldset>
 
         <?php

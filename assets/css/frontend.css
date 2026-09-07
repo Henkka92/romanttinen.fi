@@ -7,8 +7,10 @@
   --romant-ink: #2A2422;
   --romant-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --romant-sans: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --romant-radius: 16px;
-  --romant-shadow: 0 12px 40px rgba(42, 36, 34, 0.08);
+  --romant-radius: 22px;
+  --romant-shadow: 0 18px 48px rgba(74, 31, 44, 0.14);
+  --romant-card-border: 1px solid rgba(74, 31, 44, 0.12);
+  --romant-page-fabric: url("../img/hero-fabric.jpg");
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -16,9 +18,13 @@
 .romant-kutsu-body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(ellipse at top, var(--romant-blush) 0%, transparent 55%),
-    var(--romant-cream);
+  background-color: #e8d4c4;
+  background-image:
+    linear-gradient(180deg, rgba(243, 230, 216, 0.32) 0%, rgba(243, 230, 216, 0.14) 42%, rgba(243, 230, 216, 0.38) 100%),
+    var(--romant-page-fabric);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
   color: var(--romant-ink);
   font-family: var(--romant-sans);
   font-size: 16px;
@@ -64,6 +70,19 @@
   font-size: clamp(2rem, 5vw, 3rem);
 }
 
+.romant-hero .romant-wordmark {
+  margin: 0 0 0.85rem;
+}
+
+.romant-craft-page .romant-wrap {
+  max-width: 720px;
+}
+
+.romant-craft-page .romant-manage {
+  max-width: 960px;
+  margin-inline: auto;
+}
+
 .romant-eyebrow {
   text-transform: lowercase; /* force brand wordmark — never uppercase */
   letter-spacing: 0.18em;
@@ -94,10 +113,14 @@
   margin: 0 0 1.5rem;
 }
 
-.romant-hint {
+.romant-form .romant-hint,
+.romant-lead + .romant-hint,
+p.romant-hint {
   font-size: 0.875rem;
-  color: rgba(42, 36, 34, 0.65);
+  color: rgba(74, 31, 44, 0.62);
   margin: 0.25rem 0 0.75rem;
+  opacity: 1;
+  transform: none;
 }
 
 /* Checklist */
@@ -114,12 +137,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.4rem 0.75rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--romant-blush);
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
   font-size: 0.8125rem;
-  color: rgba(42, 36, 34, 0.7);
+  color: rgba(74, 31, 44, 0.72);
 }
 
 .romant-checklist li.is-current {
@@ -148,18 +171,20 @@
 
 /* Forms */
 .romant-form fieldset {
-  border: 1px solid var(--romant-blush);
+  border: var(--romant-card-border);
   border-radius: var(--romant-radius);
-  background: rgba(255, 255, 255, 0.65);
-  padding: 1.25rem;
+  background: var(--romant-cream);
+  padding: 1.35rem 1.25rem 1.25rem;
   margin: 0 0 1rem;
+  box-shadow: 0 10px 28px rgba(74, 31, 44, 0.06);
 }
 
 .romant-form legend {
   font-family: var(--romant-serif);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 600;
   color: var(--romant-wine);
-  padding: 0 0.35rem;
+  padding: 0 0.4rem;
 }
 
 .romant-form label {
@@ -176,10 +201,10 @@
 .romant-form input[type="text"],
 .romant-form input[type="email"] {
   width: 100%;
-  padding: 0.65rem 0.75rem;
-  border: 1px solid var(--romant-rose);
-  border-radius: 10px;
-  background: #fff;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(74, 31, 44, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
   color: var(--romant-ink);
   font: inherit;
 }
@@ -230,15 +255,19 @@
 
 .romant-btn-primary {
   background: var(--romant-wine);
-  color: var(--romant-cream);
+  color: #fff;
+  font-family: var(--romant-serif);
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .romant-btn-primary:hover { background: #3A1823; color: var(--romant-cream); }
 
 .romant-btn-secondary {
-  background: #fff;
+  background: var(--romant-cream);
   color: var(--romant-wine);
-  border-color: var(--romant-rose);
+  border-color: var(--romant-wine);
+  font-family: var(--romant-serif);
 }
 
 .romant-btn-ghost {
@@ -304,10 +333,10 @@
 }
 
 .romant-panel {
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--romant-blush);
-  border-radius: calc(var(--romant-radius) + 4px);
-  padding: 1.25rem;
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
+  border-radius: var(--romant-radius);
+  padding: 1.35rem 1.25rem;
   box-shadow: var(--romant-shadow);
 }
 
@@ -316,9 +345,10 @@
 .romant-pay-form { margin-top: 0.75rem; }
 
 .romant-pay-box {
-  background: var(--romant-blush);
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
   border-radius: var(--romant-radius);
-  padding: 1.25rem 1.5rem;
+  padding: 1.35rem 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: var(--romant-shadow);
 }
@@ -326,17 +356,19 @@
 .romant-pay-box > .romant-serif { margin-bottom: 0.35rem; }
 
 .romant-share-box {
-  background: var(--romant-blush);
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
   border-radius: var(--romant-radius);
-  padding: 1.25rem 1.5rem;
+  padding: 1.35rem 1.5rem;
   margin-bottom: 1.5rem;
+  box-shadow: var(--romant-shadow);
 }
 
 .romant-email-box {
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid var(--romant-blush);
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
   border-radius: var(--romant-radius);
-  padding: 1.25rem 1.5rem;
+  padding: 1.35rem 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: var(--romant-shadow);
 }
@@ -373,12 +405,12 @@
 /* Preview / recipient card */
 .romant-preview-card,
 .romant-invite-card {
-  background: linear-gradient(165deg, #fff 0%, var(--romant-blush) 100%);
-  border-radius: calc(var(--romant-radius) + 8px);
+  background: var(--romant-cream);
+  border-radius: var(--romant-radius);
   padding: 2rem 1.5rem;
   box-shadow: var(--romant-shadow);
   text-align: center;
-  border: 1px solid rgba(107, 45, 60, 0.08);
+  border: var(--romant-card-border);
 }
 
 .romant-invite-card {
@@ -552,10 +584,13 @@
 
 /* —— Marketing homepage —— */
 .romant-home-body {
-  background:
-    radial-gradient(ellipse 120% 80% at 10% -10%, rgba(201, 160, 144, 0.45) 0%, transparent 50%),
-    radial-gradient(ellipse 90% 70% at 95% 20%, rgba(235, 217, 206, 0.9) 0%, transparent 45%),
-    linear-gradient(165deg, var(--romant-cream) 0%, #f8efe6 40%, var(--romant-blush) 100%);
+  background-color: #e8d4c4;
+  background-image:
+    linear-gradient(180deg, rgba(243, 230, 216, 0.32) 0%, rgba(243, 230, 216, 0.14) 42%, rgba(243, 230, 216, 0.38) 100%),
+    var(--romant-page-fabric);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 .romant-home {
@@ -623,32 +658,28 @@ img.romant-logo,
   margin-bottom: 0.75rem;
 }
 
+.romant-home-wordmark {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
 .romant-home-hero {
   display: grid;
-  gap: 1.1rem;
+  gap: 1.15rem;
   align-items: center;
   flex: 0 0 auto;
   position: relative;
   isolation: isolate;
-  padding: 1.05rem 1rem;
-  border-radius: calc(var(--romant-radius) + 10px);
+  padding: 1.35rem 1.15rem 1.4rem;
+  border-radius: var(--romant-radius);
   overflow: hidden;
-  background-color: var(--romant-blush);
-  background-image: var(--romant-hero-fabric);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
+  box-shadow: var(--romant-shadow);
 }
 
 .romant-home-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    linear-gradient(135deg, rgba(255, 250, 246, 0.88) 0%, rgba(248, 239, 230, 0.78) 45%, rgba(235, 217, 206, 0.72) 100%),
-    radial-gradient(ellipse at 20% 10%, rgba(255, 255, 255, 0.45), transparent 55%);
-  pointer-events: none;
+  display: none;
 }
 
 .romant-home-hero > * {
@@ -691,10 +722,10 @@ img.romant-logo,
 .romant-home-copy h1 {
   font-family: var(--romant-serif);
   font-weight: 600;
-  font-size: clamp(1.7rem, 4.2vw, 2.35rem);
-  line-height: 1.2;
+  font-size: clamp(1.85rem, 4.6vw, 2.55rem);
+  line-height: 1.15;
   color: var(--romant-wine);
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.65rem;
   letter-spacing: 0.01em;
 }
 
@@ -709,9 +740,9 @@ img.romant-logo,
 
 .romant-home-sub {
   font-size: 1.02rem;
-  color: rgba(42, 36, 34, 0.72);
-  margin: 0 auto 1rem;
-  max-width: 18rem;
+  color: rgba(74, 31, 44, 0.72);
+  margin: 0 auto 1.15rem;
+  max-width: 20rem;
   line-height: 1.45;
 }
 
@@ -725,7 +756,8 @@ img.romant-logo,
 }
 
 .romant-home-ctas .romant-btn-primary {
-  padding: 0.85rem 1.4rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1.15rem;
 }
 
 .romant-home-ctas .romant-btn-ghost {
@@ -739,13 +771,13 @@ img.romant-logo,
   min-width: 0;
   max-width: 480px;
   margin-inline: auto;
-  border-radius: calc(var(--romant-radius) + 6px);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 16px 44px rgba(74, 31, 44, 0.16);
-  border: 1px solid rgba(74, 31, 44, 0.08);
+  box-shadow: 0 14px 36px rgba(74, 31, 44, 0.12);
+  border: 1px solid rgba(74, 31, 44, 0.1);
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background: #fff;
+  background: var(--romant-cream);
 }
 
 @media (min-width: 720px) {
@@ -790,9 +822,9 @@ img.romant-logo,
 }
 
 .romant-home-steps {
-  margin-top: 1.25rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid rgba(201, 160, 144, 0.35);
+  margin-top: 1.35rem;
+  padding-top: 0.25rem;
+  border-top: none;
   scroll-margin-top: 1.5rem;
   text-align: center;
 }
@@ -828,8 +860,13 @@ img.romant-logo,
 
 .romant-home-step {
   align-items: flex-start;
-  max-width: 14rem;
+  max-width: 15rem;
   text-align: left;
+  background: var(--romant-cream);
+  border: var(--romant-card-border);
+  border-radius: 18px;
+  padding: 0.95rem 1rem;
+  box-shadow: 0 10px 28px rgba(74, 31, 44, 0.06);
 }
 
 .romant-home-step-body {
@@ -840,8 +877,10 @@ img.romant-logo,
 }
 
 .romant-home-step-title {
+  font-family: var(--romant-serif);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1.05rem;
+  color: var(--romant-wine);
 }
 
 .romant-home-step-desc {
@@ -991,9 +1030,9 @@ img.romant-logo,
 
 /* Sections editor (organizer) */
 .romant-section-card {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid var(--romant-blush);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(74, 31, 44, 0.1);
+  border-radius: 16px;
   padding: 1rem;
   margin: 0 0 0.85rem;
 }
@@ -1301,23 +1340,27 @@ img.romant-logo,
   color: #fff;
 }
 
-/* Demo motion: giftIn on hint + modal. */
+/* Demo motion: giftIn on hint + modal. Scoped — form .romant-hint stays visible. */
 .romant-gift-moment.is-unwrapping,
 .romant-teaser-actions.is-unwrapping {
   animation: romant-peel-out 0.32s ease forwards;
   pointer-events: none;
 }
 
-.romant-hint {
+.romant-recipient .romant-hint,
+.romant-recipient .romant-tapaaminen {
   opacity: 0;
   transform: translateY(14px) scale(0.98);
 }
 
-.romant-hint.show {
+.romant-recipient .romant-hint.show,
+.romant-recipient .romant-tapaaminen.show {
   animation: giftIn 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-.romant-hint.is-restored {
+.romant-recipient .romant-hint.is-restored,
+.romant-recipient .romant-tapaaminen.is-restored,
+.romant-preview-card .romant-tapaaminen.is-restored {
   opacity: 1;
   transform: none;
 }
@@ -1368,20 +1411,42 @@ img.romant-logo,
   color: #4A1F2C;
 }
 
+.romant-hint-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
 .romant-recipient .romant-hint,
-.romant-recipient .romant-osio-level {
+.romant-recipient .romant-osio-level,
+.romant-tapaaminen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 16.5rem;
   margin: 0 auto;
-  padding: 2.4rem 1.6rem;
+  padding: 1.85rem 1.45rem;
   text-align: center;
   background: #F3E6D8;
   border: 1px solid #4A1F2C;
   border-radius: 22px;
   box-shadow: 0 14px 36px rgba(74, 31, 44, 0.08);
+}
+
+.romant-recipient .romant-osio:not(.is-stacked) .romant-osio-level {
+  min-height: 13.5rem;
+  padding: 2.2rem 1.55rem;
+}
+
+.romant-recipient .romant-osio.is-stacked .romant-osio-level {
+  min-height: 0;
+}
+
+.romant-hint-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  color: #4A1F2C;
 }
 
 .romant-recipient .romant-osio-level .romant-spoiler-label {
@@ -1391,7 +1456,40 @@ img.romant-logo,
   font-weight: 500;
   color: #4A1F2C;
   opacity: 0.45;
-  margin-bottom: 1.15rem;
+  margin-bottom: 0.85rem;
+}
+
+.romant-tapaaminen {
+  width: 100%;
+  margin: 0 auto 1.15rem;
+  min-height: 0;
+  padding: 1.45rem 1.35rem 1.35rem;
+}
+
+.romant-tapaaminen-title {
+  margin: 0 0 0.45rem;
+  font-size: 1.45rem;
+  color: #4A1F2C;
+}
+
+.romant-tapaaminen-when {
+  margin: 0;
+  font-family: var(--romant-serif);
+  font-size: 1.2rem;
+  line-height: 1.35;
+  color: #4A1F2C;
+}
+
+.romant-tapaaminen-place {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  color: rgba(74, 31, 44, 0.72);
+}
+
+.romant-preview-card .romant-tapaaminen {
+  margin: 1rem auto 0.85rem;
+  opacity: 1;
+  transform: none;
 }
 
 .romant-recipient .romant-osio-level p {
@@ -1522,13 +1620,15 @@ img.romant-logo,
 @media (prefers-reduced-motion: reduce) {
   .romant-gift-moment.is-unwrapping,
   .romant-teaser-actions.is-unwrapping,
-  .romant-hint.show,
+  .romant-recipient .romant-hint.show,
+  .romant-recipient .romant-tapaaminen.show,
   .romant-modal[open],
   .romant-modal.is-present {
     animation: none !important;
   }
 
-  .romant-hint.show {
+  .romant-recipient .romant-hint.show,
+  .romant-recipient .romant-tapaaminen.show {
     opacity: 1;
     transform: none;
   }

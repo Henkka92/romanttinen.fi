@@ -297,8 +297,9 @@ final class Romant_Kutsu_Settings {
             <h2>Peel-testikutsu (Portti 1 QA)</h2>
             <p class="description">
                 Luo valmis, maksettu kutsu jossa jokaisessa osiossa on <strong>3 tasoa</strong>.
-                Avaa vastaanottajalinkki → <em>Avaa kutsu</em> → näet L1 + <em>Haluatko kuulla lisää?</em>
-                → modal (<em>Kerro lisää</em> / <em>Pidän jännityksen</em>).
+                Avaa vastaanottajalinkki → <em>Avaa kutsu</em> → <em>Tapaaminen</em> + L1
+                (osion otsikko kortissa) + <em>Haluatko kuulla lisää?</em>
+                → modal (<em>Kerro lisää</em> / <em>Pidän jännityksen</em>) → L2 jää L1:n alle.
             </p>
             <?php
             $peel_qa = isset($_GET['peel_qa']);

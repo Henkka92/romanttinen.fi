@@ -1,10 +1,11 @@
 <?php
 /**
- * Recipient view: /kutsu/{token}/ — teaser + peel (one hint at a time).
+ * Recipient view: /kutsu/{token}/ — teaser + peel history.
  *
  * Server prints teaser only. Level texts are JSON for JS. After "Avaa kutsu"
- * only the current depth's hint is shown (not a stack). Next hint requires
- * the confirm modal. Depth stays in sessionStorage.
+ * Tapaaminen (date + optional place) is always visible; hints stack as the
+ * recipient peels (previous levels stay). Next hint requires the confirm
+ * modal (+1). Depth stays in sessionStorage. Place is never on the teaser.
  *
  * @var WP_Post $post
  * @var array   $data
@@ -23,7 +24,9 @@ $sections   = $data['sections'] ?? [];
 if (!is_array($sections)) {
     $sections = [];
 }
-$saate = (string) ($data['saate'] ?? '');
+$saate      = (string) ($data['saate'] ?? '');
+$location   = (string) ($data['location'] ?? '');
+$tapaaminen = Romant_Kutsu_CPT::format_tapaaminen((string) ($data['datetime'] ?? ''));
 
 // Prepare JSON for progressive UI (all levels in data attr; JS reveals by depth).
 $sections_payload = [];
@@ -99,9 +102,18 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
             </button>
         </div>
 
-        <?php // Game: hidden until Avaa kutsu. JS shows the current hint only (not a stack). ?>
+        <?php // Game: hidden until Avaa kutsu. Tapaaminen first; hints stack as depth grows. ?>
         <div class="romant-reveal" id="romant-reveal" hidden>
             <p class="romant-reveal-cue" id="romant-reveal-cue" hidden>Nyt saat tietää…</p>
+            <?php if ($tapaaminen['line'] !== '') : ?>
+                <section class="romant-tapaaminen" id="romant-tapaaminen" aria-label="Tapaaminen">
+                    <h2 class="romant-serif romant-tapaaminen-title">Tapaaminen</h2>
+                    <p class="romant-tapaaminen-when"><?php echo esc_html($tapaaminen['line']); ?></p>
+                    <?php if ($location !== '') : ?>
+                        <p class="romant-tapaaminen-place"><?php echo esc_html($location); ?></p>
+                    <?php endif; ?>
+                </section>
+            <?php endif; ?>
             <div id="romant-peli-sections" class="romant-peli-sections"></div>
 
             <?php if ($data['dress'] !== '') : ?>

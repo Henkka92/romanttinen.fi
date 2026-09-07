@@ -21,6 +21,7 @@ final class Romant_Kutsu_CPT {
     public const META_SPOILER_KOKO    = 'spoiler_koko';
     public const META_SPOILERITASO    = 'spoileritaso';
     public const META_DRESS           = 'romant_dress';
+    public const META_LOCATION        = 'romant_location';
     public const META_INVITER_NAME    = 'romant_inviter_name';
     public const META_RECEIPT_NAME    = 'romant_receipt_name';
     public const META_SAATE           = 'romant_saate';
@@ -79,6 +80,7 @@ final class Romant_Kutsu_CPT {
             self::META_VISMA_TOKEN,
             self::META_PAY_EMAIL_PENDING,
             self::META_OPENED_AT,
+            self::META_LOCATION,
         ];
         $textarea_keys = [
             self::META_SPOILER_PIENI,
@@ -279,6 +281,7 @@ final class Romant_Kutsu_CPT {
         update_post_meta($post_id, self::META_RECEIPT_NAME, 'Alex');
         update_post_meta($post_id, self::META_SAATE, 'Pieni kutsu — avaa kun olet valmis.');
         update_post_meta($post_id, self::META_DRESS, 'Jotain pehmeää ja kaunista.');
+        update_post_meta($post_id, self::META_LOCATION, 'Keskusta');
         update_post_meta($post_id, self::META_SECTIONS, wp_json_encode($sections, JSON_UNESCAPED_UNICODE));
         update_post_meta($post_id, self::META_PAID, true);
         update_post_meta($post_id, self::META_PAID_AT, gmdate('c'));
@@ -461,6 +464,7 @@ final class Romant_Kutsu_CPT {
             'spoiler_koko'    => (string) get_post_meta($post_id, self::META_SPOILER_KOKO, true),
             'spoileritaso'    => $level,
             'dress'           => (string) get_post_meta($post_id, self::META_DRESS, true),
+            'location'        => (string) get_post_meta($post_id, self::META_LOCATION, true),
             'inviter_name'    => (string) get_post_meta($post_id, self::META_INVITER_NAME, true),
             'receipt_name'    => (string) get_post_meta($post_id, self::META_RECEIPT_NAME, true),
             'saate'           => (string) get_post_meta($post_id, self::META_SAATE, true),
@@ -558,6 +562,31 @@ final class Romant_Kutsu_CPT {
             return $dt->format('j.n.Y H:i');
         } catch (Exception $e) {
             return $iso;
+        }
+    }
+
+    /**
+     * Tapaaminen card parts (Europe/Helsinki). Date is required on create; time uses Finnish "klo".
+     *
+     * @return array{date: string, time: string, line: string}
+     */
+    public static function format_tapaaminen(string $iso): array {
+        $empty = ['date' => '', 'time' => '', 'line' => ''];
+        if ($iso === '') {
+            return $empty;
+        }
+        try {
+            $dt   = new DateTimeImmutable($iso);
+            $dt   = $dt->setTimezone(new DateTimeZone('Europe/Helsinki'));
+            $date = $dt->format('j.n.Y');
+            $time = 'klo ' . $dt->format('H.i');
+            return [
+                'date' => $date,
+                'time' => $time,
+                'line' => $date . ' · ' . $time,
+            ];
+        } catch (Exception $e) {
+            return $empty;
         }
     }
 }

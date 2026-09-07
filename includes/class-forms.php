@@ -61,7 +61,7 @@ final class Romant_Kutsu_Forms {
     }
 
     /**
-     * @return array{datetime: string, inviter_name: string, saate: string, dress: string, sections: list<array{id: string, title: string, levels: list<string>}>}
+     * @return array{datetime: string, location: string, inviter_name: string, saate: string, dress: string, sections: list<array{id: string, title: string, levels: list<string>}>}
      */
     private function sanitize_invite_fields(array $src): array {
         $datetime = isset($src['romant_datetime'])
@@ -96,8 +96,18 @@ final class Romant_Kutsu_Forms {
             $saate = substr($saate, 0, 400);
         }
 
+        $location = isset($src['romant_location'])
+            ? sanitize_text_field(wp_unslash((string) $src['romant_location']))
+            : '';
+        if (function_exists('mb_substr')) {
+            $location = mb_substr($location, 0, 120);
+        } else {
+            $location = substr($location, 0, 120);
+        }
+
         return [
             'datetime'     => $datetime,
+            'location'     => $location,
             'inviter_name' => $inviter,
             'saate'        => $saate,
             'dress'        => isset($src['romant_dress'])
@@ -128,6 +138,7 @@ final class Romant_Kutsu_Forms {
 
     private function save_invite_meta(int $post_id, array $fields): void {
         update_post_meta($post_id, Romant_Kutsu_CPT::META_DATETIME, $fields['datetime']);
+        update_post_meta($post_id, Romant_Kutsu_CPT::META_LOCATION, $fields['location'] ?? '');
         update_post_meta($post_id, Romant_Kutsu_CPT::META_INVITER_NAME, $fields['inviter_name']);
         update_post_meta($post_id, Romant_Kutsu_CPT::META_SAATE, $fields['saate']);
         update_post_meta($post_id, Romant_Kutsu_CPT::META_DRESS, $fields['dress']);

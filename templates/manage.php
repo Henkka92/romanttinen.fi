@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 $page_title = 'Hallitse kutsua · romanttinen';
+$body_class = 'romant-craft-page';
 $manage_key = $data['manage_key'];
 $paid       = !empty($data['paid']) && $data['token'] !== '';
 $price_disp = Romant_Kutsu_Settings::get_price_display();
@@ -29,12 +30,14 @@ $email_sent  = isset($_GET['email_sent']);
 $email_error = isset($_GET['email_error']) ? sanitize_text_field(wp_unslash((string) $_GET['email_error'])) : '';
 $stored_email = isset($data['email']) ? (string) $data['email'] : '';
 $saate        = (string) ($data['saate'] ?? '');
+$location     = (string) ($data['location'] ?? '');
+$tapaaminen   = Romant_Kutsu_CPT::format_tapaaminen((string) ($data['datetime'] ?? ''));
 
 include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
 <div class="romant-wrap romant-manage">
     <header class="romant-hero">
-        <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <p class="romant-wordmark">romanttinen.fi</p>
         <h1 class="romant-serif">Hallitse kutsua</h1>
         <p class="romant-lead">
             Tallenna tämä linkki — se on ainoa tapa muokata kutsua.
@@ -226,10 +229,15 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                 </fieldset>
 
                 <fieldset>
-                    <legend>Valitse aika</legend>
-                    <label for="romant_datetime">Päivä ja aika (Suomi)</label>
+                    <legend>Tapaaminen</legend>
+                    <label for="romant_datetime">Päivä ja aika (Suomi) <span class="req">*</span></label>
                     <input type="datetime-local" id="romant_datetime" name="romant_datetime"
                            value="<?php echo esc_attr($dt_local); ?>" required />
+                    <label for="romant_location">Paikka (valinnainen)</label>
+                    <input type="text" id="romant_location" name="romant_location" maxlength="120"
+                           autocomplete="off" placeholder="Esim. Keskusta"
+                           value="<?php echo esc_attr($location); ?>" />
+                    <p class="romant-hint">Näkyy saajalle Tapaaminen-kortissa vasta avauksen jälkeen — ei teaserissa.</p>
                 </fieldset>
 
                 <?php include ROMANT_KUTSU_PATH . 'templates/partials-sections-editor.php'; ?>
@@ -247,7 +255,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <section class="romant-panel romant-preview" aria-label="Esikatselu">
             <h2 class="romant-serif">Näin kutsu näyttää</h2>
             <div class="romant-preview-card" data-romant-countdown="<?php echo esc_attr($data['datetime']); ?>">
-                <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <p class="romant-wordmark">romanttinen.fi</p>
                 <?php if (!empty($data['inviter_name'])) : ?>
                     <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut</p>
                 <?php endif; ?>
@@ -261,7 +269,16 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                     <div class="romant-cd-unit"><span data-cd="m">–</span><small>min</small></div>
                     <div class="romant-cd-unit"><span data-cd="s">–</span><small>s</small></div>
                 </div>
-                <p class="romant-preview-note">Teaser + kunkin osion 1. taso (tasot 2+ eivät näy esikatselussa).</p>
+                <p class="romant-preview-note">Avauksen jälkeen: Tapaaminen + kunkin osion 1. taso (tasot 2+ avautuvat saajalle).</p>
+                <?php if ($tapaaminen['line'] !== '') : ?>
+                    <section class="romant-tapaaminen is-restored" aria-label="Tapaaminen">
+                        <h3 class="romant-serif romant-tapaaminen-title">Tapaaminen</h3>
+                        <p class="romant-tapaaminen-when"><?php echo esc_html($tapaaminen['line']); ?></p>
+                        <?php if ($location !== '') : ?>
+                            <p class="romant-tapaaminen-place"><?php echo esc_html($location); ?></p>
+                        <?php endif; ?>
+                    </section>
+                <?php endif; ?>
                 <?php foreach ($sections as $sec) :
                     $st = (string) ($sec['title'] ?? '');
                     $lv = (string) (($sec['levels'][0] ?? ''));

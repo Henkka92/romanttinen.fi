@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.2 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.3 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.3 — Brand align + peel history + Tapaaminen
+Etusivu ja craft/create/manage jakavat saajan Wine/Cream/serif-maailman (ei sydämiä). Peel: osion otsikko vihje-kortissa; avatut tasot jäävät näkyviin ja uusi taso liitetään alle (ei korvausta). **Tapaaminen**-kortti heti *Avaa kutsu* -jälkeen (päivä pakollinen, paikka valinnainen `romant_location`). Teaser pysyy countdown-only — paikka ei näy ennen avausta. Modal yhä +1 / Kerro lisää / Pidän jännityksen. Kehtaisinko (Portti 1) ennallaan.
 
 ### 1.3.2 — Portti 1 visual QA (logo + fabric)
 Saajan näkymä avauksen jälkeen: yksi logo (header-chrome; teaser-wordmark piilotetaan kunnolla — `display:flex` yli kirjoitti `[hidden]`). Cream silk/fabric (`hero-fabric`) säilyy teaser → peel; ei enää flat beige `is-opened`-hyppyä. Vihje-kortit pitävät kermapinnan fabricin päällä.
@@ -39,9 +42,9 @@ define('ROMANTTINEN_STUB_PAYMENTS', true);
 3. Esikatselu: teaser + kunkin osion **ensimmäinen taso**.
 4. **Hanki jaettava linkki (4,90 €)** → kutsujan nimi + Nimi kuittiin + pakollinen sähköposti → stub / Visma Pay → Nea-kuitti + hallintalinkki sähköpostiin.
 5. Vastaanottaja (`/kutsu/{token}/`):
-   - Teaser: Logo A (`logo-a.png`), `{nimi} kutsui sinut`, **Sinut on kutsuttu treffeille**, countdown, valinnainen Saate, CTA **Avaa kutsu**.
+   - Teaser: Logo A (`logo-a.png`), `{nimi} kutsui sinut`, **Sinut on kutsuttu treffeille**, countdown, valinnainen Saate, CTA **Avaa kutsu**. Paikka ei näy teaserissa.
    - **Jaa tarina** / **Kopioi linkki** teaserissa (ei spoilereita PNG:ssä).
-   - Avauksen jälkeen: jokainen osio näyttää avatun syvyyden (alkaa tasosta 1). CTA **Haluatko kuulla lisää?** → modal (*Haluatko kuulla lisää?* / *Voit pitää jännityksen — tai avata seuraavan vihjeen.* / **Kerro lisää** / **Pidän jännityksen**) → unlock seuraava taso.
+   - Avauksen jälkeen: **Tapaaminen**-kortti (päivä + valinnainen paikka), sitten osiot. Jokainen vihje-kortti näyttää osion otsikon; avatut tasot pinoutuvat. CTA **Haluatko kuulla lisää?** → modal (*Haluatko kuulla lisää?* / *Voit pitää jännityksen — tai avata seuraavan vihjeen.* / **Kerro lisää** / **Pidän jännityksen**) → unlock seuraava taso (+1, historia jää).
 6. Edistyminen tallennetaan selainiin (ei vastaanottajatiliä).
 
 ## Data model
@@ -53,6 +56,7 @@ define('ROMANTTINEN_STUB_PAYMENTS', true);
 | `romant_saate` | textarea | Valinnainen teaser-tervehdys (ei spoilereita) |
 | `romant_datetime` | ISO string | Treffiaika (Europe/Helsinki) |
 | `romant_dress` | textarea | Pukeutumisvihje |
+| `romant_location` | string | Valinnainen paikka (Tapaaminen-kortti avauksen jälkeen; ei teaserissa) |
 | `romant_sections` | JSON | Osio-lista (max 3) |
 | `romant_token` | secret | Julkinen vastaanottajalinkki |
 | `romant_manage_key` | secret | Hallintalinkki |
