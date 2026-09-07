@@ -7,16 +7,17 @@
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
  *
- * Open + peel share one rhythm: soft fade/slide (~360ms), then exactly the
- * newly unlocked level (depth 1 after Avaa kutsu; +1 per Kerro lisää).
+ * Display is one hint at a time (current depth), not a stack of unlocked levels.
+ * Open + peel use Pauliina's giftIn (~.38s). Modal uses the same motion (~.32s).
  */
 (function () {
   'use strict';
 
   var cfg = window.romantPeli || {};
   var STORAGE_PREFIX = 'romant_peli_';
-  /** Pauliina: fade/slide open 300–400ms. Same beat for each peeled level. */
-  var PEEL_MS = 360;
+  /** Demo lock: hint giftIn .38s; modal .32s. */
+  var HINT_MS = 380;
+  var MODAL_MS = 320;
 
   function storageKey(token) {
     return STORAGE_PREFIX + token;
@@ -112,15 +113,13 @@
   }
 
   /**
-   * Render only levels[0 .. depth-1] for each section.
+   * Render the current hint only (levels[depth-1]) — not a stack of 0..depth-1.
    * "Haluatko kuulla lisää?" only when more levels remain.
-   * opts.justUnlocked = { index, level } (1-based) animates that newly peeled level.
-   * opts.enterFirst = animate each section's first visible level (Avaa kutsu).
+   * opts.animate = play giftIn on the visible hint.
    */
   function renderSections(container, sections, progress, opts) {
     opts = opts || {};
-    var justUnlocked = opts.justUnlocked || null;
-    var enterFirst = !!opts.enterFirst;
+    var animate = !!opts.animate && !prefersReducedMotion();
     container.innerHTML = '';
     sections.forEach(function (sec, index) {
       var depth = getDepth(progress, index);
@@ -130,39 +129,38 @@
       if (depth < 1) depth = 1;
 
       var wrap = document.createElement('div');
-      wrap.className = 'romant-osio';
+      wrap.className = 'romant-osio' + (sections.length < 2 ? ' is-solo' : '');
       wrap.setAttribute('data-section-index', String(index));
 
-      var title = document.createElement('h2');
-      title.className = 'romant-osio-title romant-serif';
-      title.textContent = sec.title || ('Osio ' + (index + 1));
-      wrap.appendChild(title);
+      if (sections.length > 1) {
+        var title = document.createElement('h2');
+        title.className = 'romant-osio-title romant-serif';
+        title.textContent = sec.title || ('Osio ' + (index + 1));
+        wrap.appendChild(title);
+      }
 
-      // Only unlocked levels: indices 0 .. depth-1
-      for (var i = 0; i < depth; i++) {
-        var text = levels[i];
-        if (text === undefined || text === '') continue;
+      // Current peel only: index depth-1 (replace, do not stack).
+      var i = depth - 1;
+      var text = levels[i];
+      if (text !== undefined && text !== '') {
         var block = document.createElement('div');
-        block.className = 'romant-spoiler romant-osio-level';
-        block.setAttribute('data-level', String(i + 1));
-        var isPeeled = justUnlocked && justUnlocked.index === index && justUnlocked.level === (i + 1);
-        var isFirstEnter = enterFirst && i === 0;
-        if (isPeeled || isFirstEnter) {
-          block.classList.add('romant-level-enter');
-          if (enterFirst && i === 0 && index > 0) {
-            block.style.animationDelay = Math.min(index * 80, 240) + 'ms';
-          }
-        }
+        block.className = 'romant-hint romant-osio-level';
+        block.setAttribute('data-level', String(depth));
         block.innerHTML =
-          '<span class="romant-spoiler-label">Taso ' + (i + 1) + '</span>' +
+          '<span class="romant-spoiler-label">Vihje</span>' +
           '<p>' + escapeHtml(text) + '</p>';
+        if (animate) {
+          block.classList.add('show');
+        } else {
+          block.classList.add('is-restored');
+        }
         wrap.appendChild(block);
       }
 
       if (depth < maxDepth) {
         var more = document.createElement('button');
         more.type = 'button';
-        more.className = 'romant-btn romant-btn-secondary romant-more-btn';
+        more.className = 'romant-btn romant-btn-ghost romant-more-btn';
         more.setAttribute('data-want-more', '');
         more.setAttribute('data-section-index', String(index));
         more.textContent = 'Haluatko kuulla lisää?';
@@ -177,6 +175,10 @@
     var card = document.getElementById('romant-invite');
     if (!card) return;
 
+    var page = document.getElementById('romant-recipient-page');
+    var chrome = document.getElementById('romant-recipient-chrome');
+    var moment = document.getElementById('romant-gift-moment');
+    var cue = document.getElementById('romant-reveal-cue');
     var token = card.getAttribute('data-romant-token') || '';
     var rawSections = card.getAttribute('data-romant-sections') || '[]';
     var sections = [];
@@ -199,40 +201,54 @@
     var unwrapping = false;
     var unlocking = false;
 
-    function setCardState(state) {
-      if (!card) return;
+    function setPageState(state) {
+      if (card) card.setAttribute('data-romant-state', state);
+      if (page) page.setAttribute('data-romant-state', state);
+      document.body.classList.remove('is-teaser', 'is-unwrapping', 'is-opened');
       if (state) {
-        card.setAttribute('data-romant-state', state);
-      } else {
-        card.removeAttribute('data-romant-state');
+        document.body.classList.add('is-' + state);
+      }
+      if (chrome) {
+        chrome.hidden = state !== 'opened';
       }
     }
 
-    function revealGame(animate) {
+    function hideTeaserChrome() {
+      if (teaser) {
+        teaser.hidden = true;
+        teaser.classList.remove('is-unwrapping');
+      }
+      if (moment) {
+        moment.hidden = true;
+        moment.classList.remove('is-unwrapping');
+      }
+      card.classList.remove('is-unwrapping');
+    }
+
+    function revealGame(opts) {
+      opts = opts || {};
+      var animate = !!opts.animate;
+      var showCue = !!opts.showCue;
+      if (cue) {
+        cue.hidden = !showCue;
+      }
       if (reveal) {
         reveal.hidden = false;
-        reveal.classList.toggle('is-entering', !!animate);
-        if (animate) {
-          window.setTimeout(function () {
-            reveal.classList.remove('is-entering');
-          }, PEEL_MS + 40);
-        }
       }
       if (container) {
-        renderSections(container, sections, progress, { enterFirst: !!animate });
+        renderSections(container, sections, progress, { animate: animate });
       }
-      setCardState('opened');
+      setPageState('opened');
     }
 
     // Teaser gate: game content stays hidden until opened (HTML + CSS [hidden]).
     function showGame(opts) {
       opts = opts || {};
-      if (teaser) {
-        teaser.hidden = true;
-        teaser.classList.remove('is-unwrapping');
-      }
-      card.classList.remove('is-unwrapping');
-      revealGame(!!opts.animate);
+      hideTeaserChrome();
+      revealGame({
+        animate: !!opts.animate,
+        showCue: !!opts.showCue
+      });
     }
 
     function keepTeaser() {
@@ -240,36 +256,43 @@
         teaser.hidden = false;
         teaser.classList.remove('is-unwrapping');
       }
+      if (moment) {
+        moment.hidden = false;
+        moment.classList.remove('is-unwrapping');
+      }
       card.classList.remove('is-unwrapping');
       if (reveal) {
         reveal.hidden = true;
-        reveal.classList.remove('is-entering');
         if (container) container.innerHTML = '';
       }
-      setCardState('teaser');
+      if (cue) cue.hidden = true;
+      if (chrome) chrome.hidden = true;
+      setPageState('teaser');
     }
 
     function unwrapThenShow() {
-      if (!teaser || prefersReducedMotion()) {
-        showGame({ animate: false });
+      if (prefersReducedMotion()) {
+        showGame({ animate: false, showCue: true });
         return;
       }
       unwrapping = true;
-      setCardState('unwrapping');
+      setPageState('unwrapping');
       card.classList.add('is-unwrapping');
-      teaser.classList.add('is-unwrapping');
+      if (moment) moment.classList.add('is-unwrapping');
+      if (teaser) teaser.classList.add('is-unwrapping');
       if (openBtn) openBtn.disabled = true;
-      // Same beat: teaser fades while Level 1 slides in (not wait-then-dump).
-      revealGame(true);
+      // Hide open CTA, then giftIn the first hint (not a dump of all levels).
+      if (reveal) reveal.hidden = false;
+      if (cue) cue.hidden = false;
+      if (container) {
+        renderSections(container, sections, progress, { animate: true });
+      }
       window.setTimeout(function () {
-        if (teaser) {
-          teaser.hidden = true;
-          teaser.classList.remove('is-unwrapping');
-        }
-        card.classList.remove('is-unwrapping');
+        hideTeaserChrome();
+        setPageState('opened');
         if (openBtn) openBtn.disabled = false;
         unwrapping = false;
-      }, PEEL_MS);
+      }, HINT_MS);
     }
 
     function openInvite() {
@@ -291,12 +314,12 @@
         unwrapThenShow();
         track('open', token);
       } else {
-        showGame({ animate: false });
+        showGame({ animate: false, showCue: false });
       }
     }
 
     if (progress.opened) {
-      showGame({ animate: false });
+      showGame({ animate: false, showCue: false });
     } else {
       keepTeaser();
     }
@@ -353,12 +376,12 @@
         var sec = sections[idx];
         var cur = getDepth(progress, idx);
         var max = (sec && sec.levels) ? sec.levels.length : cur;
-        var nextDepth = cur;
-        // Confirm modal unlocks exactly +1 level.
+        var didUnlock = false;
+        // Confirm modal unlocks exactly +1 level, then replaces the visible hint.
         if (cur < max) {
-          nextDepth = cur + 1;
-          progress.depth[String(idx)] = nextDepth;
+          progress.depth[String(idx)] = cur + 1;
           saveProgress(token, progress);
+          didUnlock = true;
           track('reveal', token, {
             section: sec ? (sec.title || '') : '',
             section_index: idx
@@ -366,10 +389,9 @@
         }
         closeModal();
         if (container) {
-          renderSections(container, sections, progress, {
-            justUnlocked: nextDepth > cur ? { index: idx, level: nextDepth } : null
-          });
+          renderSections(container, sections, progress, { animate: didUnlock });
         }
+        if (cue) cue.hidden = true;
         unlocking = false;
       });
     }

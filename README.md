@@ -6,8 +6,8 @@ WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** 
 
 ## Changelog
 
-### 1.3.0 — Portti 1: Saajan hetki (peel rhythm)
-Teaser on yksi kortti. **Avaa kutsu** → pehmeä fade/slide (~360 ms) ja vain taso 1. Jokainen **Kerro lisää** avaa tasan yhden uuden tason samalla rytmillä. Avauksen isku: *Nyt saat tietää…*. Modal: **Kerro lisää** / **Pidän jännityksen**. Peli-säännöt (portti, sessionStorage, +1 / vahvistus) ennallaan.
+### 1.3.0 — Portti 1: Saajan hetki (peel rhythm stub)
+Teaser: silk-tausta + kelluva kermakortti, **Avaa kutsu**. Avaus: `giftIn` (.38s) ja *Nyt saat tietää…* + yksi **Vihje**-kortti. **Haluatko kuulla lisää?** → modal (**Kerro lisää** / **Pidän jännityksen**). Seuraava vihje korvaa edellisen (ei pinoa). Portti, sessionStorage ja +1 / vahvistus ennallaan.
 
 ## Asennus / päivitys ilman deaktivointia
 
