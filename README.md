@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.1 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.2 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.2 — Portti 1 visual QA (logo + fabric)
+Saajan näkymä avauksen jälkeen: yksi logo (header-chrome; teaser-wordmark piilotetaan kunnolla — `display:flex` yli kirjoitti `[hidden]`). Cream silk/fabric (`hero-fabric`) säilyy teaser → peel; ei enää flat beige `is-opened`-hyppyä. Vihje-kortit pitävät kermapinnan fabricin päällä.
 
 ### 1.3.1 — Portti 1 peel QA fix
 Juurisyy: «Haluatko kuulla lisää?» / modal näkyy vain kun osiolla on syvempiä tasoja kuin nykyinen depth. Stub-/testikutsut joissa vain L1 täytetty → CTA ei koskaan tule. Korjaus: luontilomake esitäyttää 2 osiota × 3 tasoa; WP-admin **Luo peel-testikutsu**; manage-varoitus jos peel ei ole mahdollinen; JS laskee vain ei-tyhjät tasot.
