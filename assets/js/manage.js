@@ -10,6 +10,7 @@
   var SOFT_MAX = cfg.softMaxLevels || 10;
   var HARD_MAX = cfg.hardMaxLevels || 20;
   var i18n = cfg.i18n || {};
+  var DEFAULT_TITLES = ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
 
   function flash(btn, okText) {
     var prev = btn.textContent;
@@ -116,7 +117,7 @@
 
   function buildSectionCard(si) {
     var card = document.createElement('div');
-    card.className = 'romant-section-card';
+    card.className = 'romant-section-card romant-card';
     card.setAttribute('data-section-card', '');
     card.setAttribute('data-index', String(si));
 
@@ -125,7 +126,6 @@
 
     var titleLabel = document.createElement('label');
     titleLabel.className = 'romant-section-title-label';
-    titleLabel.appendChild(document.createTextNode(i18n.sectionTitle || 'Osion otsikko'));
 
     var idInput = document.createElement('input');
     idInput.type = 'hidden';
@@ -137,12 +137,22 @@
     titleInput.type = 'text';
     titleInput.name = 'romant_sections[' + si + '][title]';
     titleInput.maxLength = 80;
-    titleInput.placeholder = i18n.sectionPh || 'Esim. Leffa';
+    titleInput.placeholder = i18n.sectionPh || 'Esim. Elokuvahetki';
     titleInput.required = true;
     titleInput.setAttribute('data-section-title', '');
 
+    var sr = document.createElement('span');
+    sr.className = 'screen-reader-text';
+    sr.textContent = i18n.sectionTitle || 'Osion otsikko';
+    titleLabel.appendChild(sr);
     titleLabel.appendChild(idInput);
     titleLabel.appendChild(titleInput);
+
+    var oletus = document.createElement('span');
+    oletus.className = 'romant-oletus';
+    oletus.setAttribute('data-oletus-badge', '');
+    oletus.hidden = true;
+    oletus.textContent = 'Oletus';
 
     var removeBtn = document.createElement('button');
     removeBtn.type = 'button';
@@ -151,6 +161,7 @@
     removeBtn.textContent = i18n.removeSection || 'Poista osio';
 
     head.appendChild(titleLabel);
+    head.appendChild(oletus);
     head.appendChild(removeBtn);
 
     var levels = document.createElement('div');
@@ -227,6 +238,15 @@
 
     editor.querySelectorAll('[data-section-card]').forEach(updateSoftCap);
     reindexSections(editor);
+    editor.addEventListener('input', function (e) {
+      var title = e.target.closest('[data-section-title]');
+      if (!title || !editor.contains(title)) return;
+      var card = title.closest('[data-section-card]');
+      var badge = card ? card.querySelector('[data-oletus-badge]') : null;
+      if (badge) {
+        badge.hidden = DEFAULT_TITLES.indexOf(title.value.trim()) === -1;
+      }
+    });
   }
 
   document.addEventListener('click', function (e) {

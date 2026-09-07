@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 $page_title = 'Hallitse kutsua · romanttinen';
+$body_class = 'romant-craft-page';
 $manage_key = $data['manage_key'];
 $paid       = !empty($data['paid']) && $data['token'] !== '';
 $price_disp = Romant_Kutsu_Settings::get_price_display();
@@ -29,12 +30,14 @@ $email_sent  = isset($_GET['email_sent']);
 $email_error = isset($_GET['email_error']) ? sanitize_text_field(wp_unslash((string) $_GET['email_error'])) : '';
 $stored_email = isset($data['email']) ? (string) $data['email'] : '';
 $saate        = (string) ($data['saate'] ?? '');
+$location     = (string) ($data['location'] ?? '');
+$tapaaminen   = Romant_Kutsu_CPT::format_tapaaminen((string) ($data['datetime'] ?? ''));
 
 include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
 <div class="romant-wrap romant-manage">
     <header class="romant-hero">
-        <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <p class="romant-wordmark">romanttinen.fi</p>
         <h1 class="romant-serif">Hallitse kutsua</h1>
         <p class="romant-lead">
             Tallenna tämä linkki — se on ainoa tapa muokata kutsua.
@@ -203,51 +206,47 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
     <div class="romant-manage-grid">
         <section class="romant-panel romant-edit-panel">
             <h2 class="romant-serif">Muokkaa</h2>
-            <form class="romant-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-romant-sections-form>
+            <form class="romant-form romant-craft-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-romant-sections-form>
                 <input type="hidden" name="action" value="romant_update_kutsu" />
                 <input type="hidden" name="manage_key" value="<?php echo esc_attr($manage_key); ?>" />
                 <?php wp_nonce_field('romant_update_kutsu', 'romant_update_nonce'); ?>
 
-                <fieldset>
-                    <legend>Kutsujan nimi</legend>
+                <section class="romant-card">
+                    <h2 class="romant-serif romant-card-title">Perustiedot</h2>
                     <label for="romant_inviter_name">Kutsujan nimi <span class="req">*</span></label>
                     <input type="text" id="romant_inviter_name" name="romant_inviter_name" required maxlength="80"
                            autocomplete="name"
                            value="<?php echo esc_attr($data['inviter_name'] ?? ''); ?>"
                            placeholder="Esim. Alex" />
-                    <p class="romant-hint">Näkyy vastaanottajalle teaserissa — lisää luottamusta (ei spam).</p>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Saate</legend>
                     <label for="romant_saate">Saate (valinnainen)</label>
                     <textarea id="romant_saate" name="romant_saate" rows="2" maxlength="400"
                               placeholder="Lyhyt tervehdys teaserissa — ei spoilereita…"><?php echo esc_textarea($saate); ?></textarea>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Valitse aika</legend>
-                    <label for="romant_datetime">Päivä ja aika (Suomi)</label>
+                    <label for="romant_datetime">Päivä ja aika (Suomi) <span class="req">*</span></label>
                     <input type="datetime-local" id="romant_datetime" name="romant_datetime"
                            value="<?php echo esc_attr($dt_local); ?>" required />
-                </fieldset>
+                    <label for="romant_location">Paikka</label>
+                    <input type="text" id="romant_location" name="romant_location" maxlength="120"
+                           autocomplete="off" placeholder="Lisää paikka…"
+                           value="<?php echo esc_attr($location); ?>" />
+                    <p class="romant-hint">Tapaaminen näkyy saajalle vasta avauksen jälkeen — ei teaserissa.</p>
+                </section>
 
                 <?php include ROMANT_KUTSU_PATH . 'templates/partials-sections-editor.php'; ?>
 
-                <fieldset>
-                    <legend>Pukeutumisvihje</legend>
+                <section class="romant-card">
+                    <h2 class="romant-serif romant-card-title">Pukeutumisvihje</h2>
                     <label for="romant_dress">Pukeutumisvihje (valinnainen)</label>
                     <textarea id="romant_dress" name="romant_dress" rows="2" maxlength="300"><?php echo esc_textarea($data['dress']); ?></textarea>
-                </fieldset>
+                </section>
 
-                <button type="submit" class="romant-btn romant-btn-secondary">Tallenna muutokset</button>
+                <button type="submit" class="romant-btn romant-btn-primary romant-btn-lg">Tallenna muutokset</button>
             </form>
         </section>
 
         <section class="romant-panel romant-preview" aria-label="Esikatselu">
             <h2 class="romant-serif">Näin kutsu näyttää</h2>
             <div class="romant-preview-card" data-romant-countdown="<?php echo esc_attr($data['datetime']); ?>">
-                <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <p class="romant-wordmark">romanttinen.fi</p>
                 <?php if (!empty($data['inviter_name'])) : ?>
                     <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut</p>
                 <?php endif; ?>
@@ -261,7 +260,16 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                     <div class="romant-cd-unit"><span data-cd="m">–</span><small>min</small></div>
                     <div class="romant-cd-unit"><span data-cd="s">–</span><small>s</small></div>
                 </div>
-                <p class="romant-preview-note">Teaser + kunkin osion 1. taso (tasot 2+ eivät näy esikatselussa).</p>
+                <p class="romant-preview-note">Avauksen jälkeen: Tapaaminen + kunkin osion 1. taso (tasot 2+ avautuvat saajalle).</p>
+                <?php if ($tapaaminen['line'] !== '') : ?>
+                    <section class="romant-tapaaminen romant-tapaaminen-display is-restored" aria-label="Tapaaminen">
+                        <span class="romant-tapaaminen-label">Tapaaminen</span>
+                        <p class="romant-tapaaminen-when"><?php echo esc_html($tapaaminen['line']); ?></p>
+                        <?php if ($location !== '') : ?>
+                            <p class="romant-tapaaminen-place"><?php echo esc_html($location); ?></p>
+                        <?php endif; ?>
+                    </section>
+                <?php endif; ?>
                 <?php foreach ($sections as $sec) :
                     $st = (string) ($sec['title'] ?? '');
                     $lv = (string) (($sec['levels'][0] ?? ''));

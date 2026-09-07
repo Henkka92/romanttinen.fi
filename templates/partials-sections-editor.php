@@ -1,6 +1,6 @@
 <?php
 /**
- * Sections editor (create + manage).
+ * Sections editor (create + manage) — cream cards, OLETUS on default titles.
  *
  * @var list<array{id: string, title: string, levels: list<string>}> $sections
  * @package Romanttinen_Kutsu
@@ -17,16 +17,13 @@ $max_sec = Romant_Kutsu_CPT::MAX_SECTIONS;
 $soft    = Romant_Kutsu_CPT::SOFT_MAX_LEVELS;
 $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
 ?>
-<fieldset class="romant-sections-fieldset" data-romant-sections-editor
-          data-max-sections="<?php echo esc_attr((string) $max_sec); ?>"
-          data-soft-max="<?php echo esc_attr((string) $soft); ?>"
-          data-hard-max="<?php echo esc_attr((string) $hard); ?>">
-    <legend>Osiot (peli)</legend>
-    <p class="romant-hint">
-        Enintään <?php echo esc_html((string) $max_sec); ?> osiota (esim. Leffa / Ruoka / Koti).
+<div class="romant-sections-fieldset" data-romant-sections-editor
+     data-max-sections="<?php echo esc_attr((string) $max_sec); ?>"
+     data-soft-max="<?php echo esc_attr((string) $soft); ?>"
+     data-hard-max="<?php echo esc_attr((string) $hard); ?>">
+    <p class="romant-hint romant-sections-lead">
+        Enintään <?php echo esc_html((string) $max_sec); ?> osiota (Elokuvahetki / Yhteinen ateria / Kotona).
         Jokaisessa oletuksena 3 tasoa — vastaanottaja avaa niitä yksi kerrallaan.
-        <strong>Vähintään 2 tasoa</strong> osiossa tarvitaan, jotta vastaanottaja näkee
-        «Haluatko kuulla lisää?» → modalin.
     </p>
 
     <div class="romant-sections-list" data-sections-list>
@@ -40,17 +37,19 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
             while (count($levels) < 3) {
                 $levels[] = '';
             }
+            $is_default = Romant_Kutsu_CPT::is_default_section_title($stitle);
             ?>
-            <div class="romant-section-card" data-section-card data-index="<?php echo esc_attr((string) $si); ?>">
+            <div class="romant-section-card romant-card" data-section-card data-index="<?php echo esc_attr((string) $si); ?>">
                 <div class="romant-section-card-head">
                     <label class="romant-section-title-label">
-                        Osion otsikko
+                        <span class="screen-reader-text">Osion otsikko</span>
                         <input type="hidden" name="romant_sections[<?php echo esc_attr((string) $si); ?>][id]"
                                value="<?php echo esc_attr($sid); ?>" data-section-id />
                         <input type="text" name="romant_sections[<?php echo esc_attr((string) $si); ?>][title]"
                                value="<?php echo esc_attr($stitle); ?>" maxlength="80"
-                               placeholder="Esim. Leffa" required data-section-title />
+                               placeholder="Esim. Elokuvahetki" required data-section-title />
                     </label>
+                    <span class="romant-oletus" data-oletus-badge<?php echo $is_default ? '' : ' hidden'; ?>>Oletus</span>
                     <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section
                             <?php echo count($sections) <= 1 ? ' hidden' : ''; ?>>
                         Poista osio
@@ -83,4 +82,4 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
             <?php echo count($sections) >= $max_sec ? ' hidden' : ''; ?>>
         Lisää osio
     </button>
-</fieldset>
+</div>

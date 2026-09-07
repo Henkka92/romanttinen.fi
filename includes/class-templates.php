@@ -89,7 +89,7 @@ final class Romant_Kutsu_Templates {
                     'softCapWarn'    => 'Pehmeä raja (10) ylitetty — pidä tasot maltillisina.',
                     'hardCap'        => 'Enintään 20 tasoa osiossa.',
                     'maxSections'    => 'Enintään 3 osiota.',
-                    'sectionPh'      => 'Esim. Leffa',
+                    'sectionPh'      => 'Esim. Elokuvahetki',
                     'levelPh'        => 'Kirjoita tämän tason teksti…',
                 ],
             ]);

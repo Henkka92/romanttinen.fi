@@ -7,17 +7,20 @@
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
  *
- * Display is one hint at a time (current depth), not a stack of unlocked levels.
+ * Display stacks unlocked levels (1..depth); the newest appends with giftIn.
  * Open + peel use Pauliina's giftIn (~.38s). Modal uses the same motion (~.32s).
+ * Modal still unlocks exactly +1. Section title lives inside each hint card.
  */
 (function () {
   'use strict';
 
   var cfg = window.romantPeli || {};
   var STORAGE_PREFIX = 'romant_peli_';
-  /** Demo lock: hint giftIn .38s; modal .32s. */
+  /** Demo lock: hint giftIn .38s; modal .32s. Do not rush open. */
   var HINT_MS = 380;
   var MODAL_MS = 320;
+  /** After the *Nyt saat tietää…* beat — Tapaaminen stays secondary. */
+  var MEET_DELAY_MS = 560;
 
   function storageKey(token) {
     return STORAGE_PREFIX + token;
@@ -125,10 +128,15 @@
     return out;
   }
 
+  function sectionTitle(sec, index) {
+    var t = sec && sec.title ? String(sec.title).trim() : '';
+    return t || ('Osio ' + (index + 1));
+  }
+
   /**
-   * Render the current hint only (levels[depth-1]) — not a stack of 0..depth-1.
+   * Render unlocked hints as a stack (levels 0..depth-1). Previous stay visible;
+   * the newest appends below. opts.animate = giftIn on the newest card only.
    * "Haluatko kuulla lisää?" only when more non-empty levels remain.
-   * opts.animate = play giftIn on the visible hint.
    */
   function renderSections(container, sections, progress, opts) {
     opts = opts || {};
@@ -143,32 +151,37 @@
 
       var wrap = document.createElement('div');
       wrap.className = 'romant-osio' + (sections.length < 2 ? ' is-solo' : '');
+      if (depth > 1) {
+        wrap.classList.add('is-stacked');
+      }
       wrap.setAttribute('data-section-index', String(index));
 
-      if (sections.length > 1) {
-        var title = document.createElement('h2');
-        title.className = 'romant-osio-title romant-serif';
-        title.textContent = sec.title || ('Osio ' + (index + 1));
-        wrap.appendChild(title);
-      }
+      var titleText = sectionTitle(sec, index);
+      var stack = document.createElement('div');
+      stack.className = 'romant-hint-stack';
 
-      // Current peel only: index depth-1 (replace, do not stack).
-      var i = depth - 1;
-      var text = levels[i];
-      if (text !== undefined && text !== '') {
+      for (var i = 0; i < depth; i++) {
+        var text = levels[i];
+        if (text === undefined || text === '') {
+          continue;
+        }
+        var levelNum = i + 1;
+        var isNewest = i === depth - 1;
         var block = document.createElement('div');
         block.className = 'romant-hint romant-osio-level';
-        block.setAttribute('data-level', String(depth));
+        block.setAttribute('data-level', String(levelNum));
         block.innerHTML =
+          '<span class="romant-hint-section">' + escapeHtml(titleText) + '</span>' +
           '<span class="romant-spoiler-label">Vihje</span>' +
           '<p>' + escapeHtml(text) + '</p>';
-        if (animate) {
-          block.classList.add('show');
+        if (isNewest) {
+          block.classList.add(animate ? 'show' : 'is-newest');
         } else {
-          block.classList.add('is-restored');
+          block.classList.add('is-prior');
         }
-        wrap.appendChild(block);
+        stack.appendChild(block);
       }
+      wrap.appendChild(stack);
 
       if (depth < maxDepth) {
         var more = document.createElement('button');
@@ -182,6 +195,11 @@
 
       container.appendChild(wrap);
     });
+  }
+
+  function resetMeetingEl(meet) {
+    if (!meet) return;
+    meet.classList.remove('show', 'is-restored', 'is-pending');
   }
 
   function init() {
@@ -213,6 +231,31 @@
     var pendingIndex = -1;
     var unwrapping = false;
     var unlocking = false;
+    var meetTimer = 0;
+
+    function clearMeetTimer() {
+      if (meetTimer) {
+        window.clearTimeout(meetTimer);
+        meetTimer = 0;
+      }
+    }
+
+    function markMeeting(animate) {
+      var meet = document.getElementById('romant-tapaaminen');
+      clearMeetTimer();
+      resetMeetingEl(meet);
+      if (!meet) return;
+      if (animate && !prefersReducedMotion()) {
+        meet.classList.add('is-pending');
+        meetTimer = window.setTimeout(function () {
+          meet.classList.remove('is-pending');
+          meet.classList.add('show');
+          meetTimer = 0;
+        }, MEET_DELAY_MS);
+        return;
+      }
+      meet.classList.add('is-restored');
+    }
 
     function setPageState(state) {
       if (card) card.setAttribute('data-romant-state', state);
@@ -251,6 +294,7 @@
       if (container) {
         renderSections(container, sections, progress, { animate: animate });
       }
+      markMeeting(animate);
       setPageState('opened');
     }
 
@@ -280,6 +324,9 @@
       }
       if (cue) cue.hidden = true;
       if (chrome) chrome.hidden = true;
+      var meet = document.getElementById('romant-tapaaminen');
+      clearMeetTimer();
+      resetMeetingEl(meet);
       setPageState('teaser');
     }
 
@@ -300,6 +347,7 @@
       if (container) {
         renderSections(container, sections, progress, { animate: true });
       }
+      markMeeting(true);
       window.setTimeout(function () {
         hideTeaserChrome();
         setPageState('opened');
@@ -390,7 +438,7 @@
         var cur = getDepth(progress, idx);
         var max = sec ? peelLevels(sec).length : cur;
         var didUnlock = false;
-        // Confirm modal unlocks exactly +1 level, then replaces the visible hint.
+        // Confirm modal unlocks exactly +1 level; previous cards stay in the stack.
         if (cur < max) {
           progress.depth[String(idx)] = cur + 1;
           saveProgress(token, progress);

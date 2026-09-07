@@ -21,6 +21,7 @@ final class Romant_Kutsu_CPT {
     public const META_SPOILER_KOKO    = 'spoiler_koko';
     public const META_SPOILERITASO    = 'spoileritaso';
     public const META_DRESS           = 'romant_dress';
+    public const META_LOCATION        = 'romant_location';
     public const META_INVITER_NAME    = 'romant_inviter_name';
     public const META_RECEIPT_NAME    = 'romant_receipt_name';
     public const META_SAATE           = 'romant_saate';
@@ -40,6 +41,13 @@ final class Romant_Kutsu_CPT {
     public const DEFAULT_LEVELS    = 3;
     public const SOFT_MAX_LEVELS   = 10;
     public const HARD_MAX_LEVELS   = 20;
+
+    /** Nea-locked default section titles (craft OLETUS badge). */
+    public const DEFAULT_SECTION_TITLES = ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
+
+    public static function is_default_section_title(string $title): bool {
+        return in_array($title, self::DEFAULT_SECTION_TITLES, true);
+    }
 
     public function register(): void {
         register_post_type(self::POST_TYPE, [
@@ -79,6 +87,7 @@ final class Romant_Kutsu_CPT {
             self::META_VISMA_TOKEN,
             self::META_PAY_EMAIL_PENDING,
             self::META_OPENED_AT,
+            self::META_LOCATION,
         ];
         $textarea_keys = [
             self::META_SPOILER_PIENI,
@@ -210,7 +219,7 @@ final class Romant_Kutsu_CPT {
         return [
             [
                 'id'     => self::generate_secret(8),
-                'title'  => 'Leffa',
+                'title'  => 'Elokuvahetki',
                 'levels' => [
                     'Elokuva — mutta ei se, jota arvaat ensimmäisenä.',
                     'Jotain kevyttä ja yhteistä. Popcornia saa olla.',
@@ -219,11 +228,20 @@ final class Romant_Kutsu_CPT {
             ],
             [
                 'id'     => self::generate_secret(8),
-                'title'  => 'Ruoka',
+                'title'  => 'Yhteinen ateria',
                 'levels' => [
                     'Syödään hyvin — ei pikaruokaa.',
                     'Pöytä on katettu kahdelle. Tunnelma ratkaisee.',
                     'Jälkiruoka odottaa — tai jätetään se huomiseen.',
+                ],
+            ],
+            [
+                'id'     => self::generate_secret(8),
+                'title'  => 'Kotona',
+                'levels' => [
+                    'Ilta jatkuu — ei vielä kotiin nukkumaan.',
+                    'Valot himmeinä. Ei kiirettä.',
+                    'Viimeinen vihje odottaa ovella.',
                 ],
             ],
         ];
@@ -279,6 +297,7 @@ final class Romant_Kutsu_CPT {
         update_post_meta($post_id, self::META_RECEIPT_NAME, 'Alex');
         update_post_meta($post_id, self::META_SAATE, 'Pieni kutsu — avaa kun olet valmis.');
         update_post_meta($post_id, self::META_DRESS, 'Jotain pehmeää ja kaunista.');
+        update_post_meta($post_id, self::META_LOCATION, 'Keskusta');
         update_post_meta($post_id, self::META_SECTIONS, wp_json_encode($sections, JSON_UNESCAPED_UNICODE));
         update_post_meta($post_id, self::META_PAID, true);
         update_post_meta($post_id, self::META_PAID_AT, gmdate('c'));
@@ -461,6 +480,7 @@ final class Romant_Kutsu_CPT {
             'spoiler_koko'    => (string) get_post_meta($post_id, self::META_SPOILER_KOKO, true),
             'spoileritaso'    => $level,
             'dress'           => (string) get_post_meta($post_id, self::META_DRESS, true),
+            'location'        => (string) get_post_meta($post_id, self::META_LOCATION, true),
             'inviter_name'    => (string) get_post_meta($post_id, self::META_INVITER_NAME, true),
             'receipt_name'    => (string) get_post_meta($post_id, self::META_RECEIPT_NAME, true),
             'saate'           => (string) get_post_meta($post_id, self::META_SAATE, true),
@@ -558,6 +578,33 @@ final class Romant_Kutsu_CPT {
             return $dt->format('j.n.Y H:i');
         } catch (Exception $e) {
             return $iso;
+        }
+    }
+
+    /**
+     * Tapaaminen card line (Europe/Helsinki). Locked: `La 14.6. · 18:00`.
+     *
+     * @return array{date: string, time: string, line: string}
+     */
+    public static function format_tapaaminen(string $iso): array {
+        $empty = ['date' => '', 'time' => '', 'line' => ''];
+        if ($iso === '') {
+            return $empty;
+        }
+        try {
+            $dt   = new DateTimeImmutable($iso);
+            $dt   = $dt->setTimezone(new DateTimeZone('Europe/Helsinki'));
+            $days = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
+            $wd   = $days[(int) $dt->format('w')];
+            $date = $dt->format('j.n.');
+            $time = $dt->format('H:i');
+            return [
+                'date' => $wd . ' ' . $date,
+                'time' => $time,
+                'line' => $wd . ' ' . $date . ' · ' . $time,
+            ];
+        } catch (Exception $e) {
+            return $empty;
         }
     }
 }
