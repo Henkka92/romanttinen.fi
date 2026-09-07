@@ -6,7 +6,7 @@
  * Tapaaminen is an elegant display card (date + optional place, never a form).
  * Every revealed level is a stretchy card box (Pauliina hint-card tokens).
  * Older = prior / prior.mid; newest = wine border + giftIn. Section header
- * once per tinted osio. Next hint needs
+ * once per osio. Section tints stay muted wine/rose/cream (Mari). Next hint needs
  * the confirm modal (+1). Depth stays in sessionStorage. Place is never on
  * the teaser.
  *
