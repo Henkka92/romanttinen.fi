@@ -49,8 +49,6 @@ final class Romant_Kutsu_Home {
         // Embeddable fragment (theme chrome). Prefer full override for brand.
         Romant_Kutsu_Templates::enqueue_assets('home');
         $create_url = Romant_Kutsu_Rewrite::create_url();
-        $teaser_url = ROMANT_KUTSU_URL . 'assets/img/hero-teaser.jpg';
-        $fabric_url = ROMANT_KUTSU_URL . 'assets/img/hero-fabric.jpg';
 
         ob_start();
         ?>
@@ -59,11 +57,7 @@ final class Romant_Kutsu_Home {
                 <header class="romant-home-header">
                     <p class="romant-wordmark romant-home-wordmark">romanttinen.fi</p>
                 </header>
-                <section
-                    class="romant-home-hero"
-                    aria-labelledby="romant-sc-headline"
-                    style="--romant-hero-fabric: url('<?php echo esc_url($fabric_url); ?>');"
-                >
+                <section class="romant-home-hero" aria-labelledby="romant-sc-headline">
                     <div class="romant-home-copy">
                         <h1 id="romant-sc-headline">Kutsu mielitiettysi treffeille tavalla, joka jää mieleen.</h1>
                         <p class="romant-home-sub">Luo henkilökohtainen treffikutsu, joka paljastuu vaiheittain. Luo ilmaiseksi. Maksat 4,90 € vasta, kun lähetät kutsun.</p>
@@ -73,17 +67,10 @@ final class Romant_Kutsu_Home {
                             </a>
                         </div>
                     </div>
-                    <a class="romant-home-teaser-card" href="<?php echo esc_url($create_url); ?>">
-                        <img
-                            class="romant-home-teaser-img"
-                            src="<?php echo esc_url($teaser_url); ?>"
-                            alt="Esimerkki treffikutsun teaserista"
-                            width="1536"
-                            height="1024"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                    </a>
+                    <?php
+                    $preview_href = $create_url;
+                    include ROMANT_KUTSU_PATH . 'templates/partials-home-peel-preview.php';
+                    ?>
                 </section>
                 <section class="romant-home-steps" id="nain-se-toimii" aria-labelledby="romant-sc-steps-heading">
                     <h2 id="romant-sc-steps-heading" class="romant-home-steps-heading">Näin se toimii</h2>

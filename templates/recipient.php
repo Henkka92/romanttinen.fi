@@ -106,11 +106,11 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <div class="romant-reveal" id="romant-reveal" hidden>
             <p class="romant-reveal-cue" id="romant-reveal-cue" hidden>Nyt saat tietää…</p>
             <?php if ($tapaaminen['line'] !== '') : ?>
-                <section class="romant-tapaaminen" id="romant-tapaaminen" aria-label="Tapaaminen">
+                <?php // Gift DISPLAY card — never inputs / pakollinen. Place only if set. ?>
+                <section class="romant-tapaaminen romant-tapaaminen-display" id="romant-tapaaminen" aria-label="Tapaaminen">
                     <span class="romant-tapaaminen-label">Tapaaminen</span>
                     <p class="romant-tapaaminen-when"><?php echo esc_html($tapaaminen['line']); ?></p>
                     <?php if ($location !== '') : ?>
-                        <span class="romant-tapaaminen-place-label">Paikka</span>
                         <p class="romant-tapaaminen-place"><?php echo esc_html($location); ?></p>
                     <?php endif; ?>
                 </section>

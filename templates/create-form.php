@@ -26,48 +26,38 @@ $sections  = Romant_Kutsu_CPT::sample_sections();
         <?php endforeach; ?>
     </ol>
 
-    <form class="romant-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-romant-sections-form>
+    <form class="romant-form romant-craft-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-romant-sections-form>
         <input type="hidden" name="action" value="romant_create_kutsu" />
         <?php wp_nonce_field('romant_create_kutsu', 'romant_create_nonce'); ?>
 
-        <fieldset>
-            <legend>Kutsujan nimi</legend>
+        <section class="romant-card">
+            <h2 class="romant-serif romant-card-title">Perustiedot</h2>
             <label for="romant_inviter_name">Kutsujan nimi <span class="req">*</span></label>
             <input type="text" id="romant_inviter_name" name="romant_inviter_name" required maxlength="80"
                    autocomplete="name" placeholder="Esim. Alex" />
-            <p class="romant-hint">Näkyy vastaanottajalle teaserissa — lisää luottamusta (ei spam).</p>
-        </fieldset>
-
-        <fieldset>
-            <legend>Saate</legend>
             <label for="romant_saate">Saate (valinnainen)</label>
             <textarea id="romant_saate" name="romant_saate" rows="2" maxlength="400"
                       placeholder="Lyhyt tervehdys teaserissa — ei spoilereita…"></textarea>
-            <p class="romant-hint">Näkyy hiljaa otsikon alla ennen kuin kutsu avataan.</p>
-        </fieldset>
-
-        <fieldset>
-            <legend>Tapaaminen</legend>
             <label for="romant_datetime">Päivä ja aika (Suomi) <span class="req">*</span></label>
             <input type="datetime-local" id="romant_datetime" name="romant_datetime" required />
             <label for="romant_location">Paikka</label>
             <input type="text" id="romant_location" name="romant_location" maxlength="120"
                    autocomplete="off" placeholder="Lisää paikka…" />
-            <p class="romant-hint">Näkyy saajalle Tapaaminen-kortissa vasta avauksen jälkeen — ei teaserissa.</p>
-        </fieldset>
+            <p class="romant-hint">Tapaaminen näkyy saajalle vasta avauksen jälkeen — ei teaserissa.</p>
+        </section>
 
         <?php
-        // phpcs:ignore WordPress.FAKESECRET_k1l2m3n4o5p6q7r8s9t0 -- $sections in scope for partial.
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $sections in scope for partial.
         include ROMANT_KUTSU_PATH . 'templates/partials-sections-editor.php';
         ?>
 
-        <fieldset>
-            <legend>Pukeutumisvihje</legend>
+        <section class="romant-card">
+            <h2 class="romant-serif romant-card-title">Pukeutumisvihje</h2>
             <label for="romant_dress">Pukeutumisvihje (valinnainen)</label>
             <textarea id="romant_dress" name="romant_dress" rows="2" maxlength="300"
                       placeholder="Esim. jotain pehmeää ja kaunista…"></textarea>
-        </fieldset>
+        </section>
 
-        <button type="submit" class="romant-btn romant-btn-primary">Tallenna luonnos</button>
+        <button type="submit" class="romant-btn romant-btn-primary romant-btn-lg">Tallenna luonnos</button>
     </form>
 </div>

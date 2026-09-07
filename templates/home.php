@@ -12,8 +12,6 @@ $page_title  = 'romanttinen — treffikutsu hetkeksi';
 $allow_index = true;
 $body_class  = 'romant-home-body';
 $create_url  = Romant_Kutsu_Rewrite::create_url();
-$teaser_url  = ROMANT_KUTSU_URL . 'assets/img/hero-teaser.jpg';
-$fabric_url  = ROMANT_KUTSU_URL . 'assets/img/hero-fabric.jpg';
 
 include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
@@ -22,11 +20,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <p class="romant-wordmark romant-home-wordmark">romanttinen.fi</p>
     </header>
 
-    <section
-        class="romant-home-hero"
-        aria-labelledby="romant-home-headline"
-        style="--romant-hero-fabric: url('<?php echo esc_url($fabric_url); ?>');"
-    >
+    <section class="romant-home-hero" aria-labelledby="romant-home-headline">
         <div class="romant-home-copy">
             <h1 id="romant-home-headline">Kutsu mielitiettysi treffeille tavalla, joka jää mieleen.</h1>
             <p class="romant-home-sub">Luo henkilökohtainen treffikutsu, joka paljastuu vaiheittain. Luo ilmaiseksi. Maksat 4,90 € vasta, kun lähetät kutsun.</p>
@@ -36,18 +30,10 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                 </a>
             </div>
         </div>
-
-        <a class="romant-home-teaser-card" href="<?php echo esc_url($create_url); ?>">
-            <img
-                class="romant-home-teaser-img"
-                src="<?php echo esc_url($teaser_url); ?>"
-                alt="Esimerkki treffikutsun teaserista"
-                width="1536"
-                height="1024"
-                loading="eager"
-                decoding="async"
-            />
-        </a>
+        <?php
+        $preview_href = $create_url;
+        include ROMANT_KUTSU_PATH . 'templates/partials-home-peel-preview.php';
+        ?>
     </section>
 
     <section class="romant-home-steps" id="nain-se-toimii" aria-labelledby="romant-home-steps-heading">

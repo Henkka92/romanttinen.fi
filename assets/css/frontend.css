@@ -70,13 +70,95 @@
   margin: 0 0 0.85rem;
 }
 
+.romant-craft-page {
+  background: linear-gradient(180deg, #F3E6D8 0%, #ebd4c6 100%);
+}
+
 .romant-craft-page .romant-wrap {
-  max-width: 720px;
+  max-width: 640px;
 }
 
 .romant-craft-page .romant-manage {
   max-width: 960px;
   margin-inline: auto;
+}
+
+.romant-card {
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 1.35rem 1.25rem 1.3rem;
+  margin: 0 0 1rem;
+  box-shadow: 0 12px 32px rgba(74, 31, 44, 0.07);
+}
+
+.romant-card-title {
+  font-size: 1.45rem;
+  margin: 0 0 0.85rem;
+}
+
+.romant-craft-form .romant-card label,
+.romant-form .romant-card label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(74, 31, 44, 0.72);
+  margin: 0.75rem 0 0.35rem;
+}
+
+.romant-craft-form .romant-card label:first-of-type,
+.romant-form .romant-card > label:first-of-type {
+  margin-top: 0;
+}
+
+.romant-card input[type="datetime-local"],
+.romant-card textarea,
+.romant-card input[type="text"],
+.romant-card input[type="email"] {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: none;
+  border-radius: 12px;
+  background: #EFE0D2;
+  color: var(--romant-ink);
+  font: inherit;
+}
+
+.romant-card input:focus,
+.romant-card textarea:focus {
+  outline: 2px solid var(--romant-wine);
+  outline-offset: 1px;
+}
+
+.romant-oletus {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(74, 31, 44, 0.08);
+  color: var(--romant-wine);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.romant-oletus[hidden] {
+  display: none !important;
+}
+
+.romant-section-card [data-section-title] {
+  font-family: var(--romant-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--romant-wine);
+  background: transparent;
+  padding: 0.15rem 0;
+  border-radius: 0;
+}
+
+.romant-section-card-head {
+  align-items: center;
 }
 
 .romant-eyebrow {
@@ -336,6 +418,13 @@ p.romant-hint {
   box-shadow: var(--romant-shadow);
 }
 
+.romant-edit-panel.romant-panel {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
 .romant-panel > .romant-serif { margin-bottom: 1rem; }
 
 .romant-pay-form { margin-top: 0.75rem; }
@@ -586,7 +675,7 @@ p.romant-hint {
 }
 
 .romant-home {
-  max-width: 800px;
+  max-width: 920px;
   margin: 0 auto;
   padding: 1.15rem 1.15rem 2.25rem;
   min-height: 100vh;
@@ -657,30 +746,54 @@ img.romant-logo,
 
 .romant-home-hero {
   display: grid;
-  gap: 1.15rem;
+  gap: 1.35rem;
   align-items: center;
   flex: 0 0 auto;
   position: relative;
   isolation: isolate;
-  padding: 1.35rem 1.15rem 1.4rem;
-  border-radius: var(--romant-radius);
-  overflow: hidden;
-  background-color: var(--romant-cream);
-  background-image: var(--romant-hero-fabric, var(--romant-page-fabric));
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: var(--romant-card-border);
-  box-shadow: var(--romant-shadow);
+  padding: 0.35rem 0 0.5rem;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .romant-home-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    linear-gradient(135deg, rgba(243, 230, 216, 0.88) 0%, rgba(243, 230, 216, 0.62) 48%, rgba(243, 230, 216, 0.42) 100%);
+  display: none;
+}
+
+.romant-home-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+  max-width: 360px;
+  margin-inline: auto;
+  padding: 1.15rem 1.05rem 1.2rem;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid rgba(74, 31, 44, 0.14);
+  box-shadow: 0 18px 48px rgba(74, 31, 44, 0.12);
+  text-decoration: none;
+  color: inherit;
+}
+
+.romant-home-preview-kicker {
+  margin: 0 0 0.15rem;
+  font-family: var(--romant-serif);
+  font-size: 0.95rem;
+  color: rgba(74, 31, 44, 0.55);
+  text-align: center;
+}
+
+.romant-home-preview .romant-tapaaminen,
+.romant-home-preview .romant-osio-level {
+  width: 100%;
+  margin: 0;
+}
+
+.romant-home-preview .romant-more-btn {
   pointer-events: none;
 }
 
@@ -711,6 +824,11 @@ img.romant-logo,
 
   .romant-home-ctas {
     justify-content: flex-start;
+  }
+
+  .romant-home-preview {
+    margin-inline: 0;
+    justify-self: end;
   }
 }
 
@@ -948,6 +1066,7 @@ img.romant-logo,
   color: var(--romant-rose);
 }
 
+.screen-reader-text,
 .romant-logo-wrap .screen-reader-text {
   border: 0;
   clip: rect(1px, 1px, 1px, 1px);
@@ -1032,10 +1151,10 @@ img.romant-logo,
 
 /* Sections editor (organizer) */
 .romant-section-card {
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(74, 31, 44, 0.1);
-  border-radius: 16px;
-  padding: 1rem;
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 1.2rem 1.15rem 1.15rem;
   margin: 0 0 0.85rem;
 }
 
@@ -1135,7 +1254,6 @@ img.romant-logo,
 .romant-kutsu-body.romant-recipient-page {
   --romant-wine: #4A1F2C;
   --romant-cream: #F3E6D8;
-  /* Cream silk/fabric for teaser → peel (do not drop to flat beige on open). */
   background-color: #e8d4c4;
   background-image:
     linear-gradient(180deg, rgba(243, 230, 216, 0.28) 0%, rgba(243, 230, 216, 0.12) 40%, rgba(243, 230, 216, 0.35) 100%),
@@ -1144,6 +1262,11 @@ img.romant-logo,
   background-position: center top;
   background-repeat: no-repeat;
   min-height: 100vh;
+}
+
+.romant-kutsu-body.romant-recipient-page.is-opened {
+  background: var(--romant-cream);
+  background-image: none;
 }
 
 .romant-recipient-page .romant-wrap.romant-recipient {
@@ -1422,24 +1545,39 @@ img.romant-logo,
 
 .romant-recipient .romant-hint,
 .romant-recipient .romant-osio-level,
-.romant-tapaaminen {
+.romant-tapaaminen,
+.romant-home-preview .romant-osio-level,
+.romant-home-preview .romant-tapaaminen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: 1.85rem 1.45rem;
+  padding: 1.45rem 1.3rem;
   text-align: center;
-  background: #F3E6D8;
-  border: 1px solid #4A1F2C;
-  border-radius: 22px;
-  box-shadow: 0 14px 36px rgba(74, 31, 44, 0.08);
+  background: #fff;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(74, 31, 44, 0.06);
 }
 
 .romant-recipient .romant-osio-level.is-newest,
-.romant-recipient .romant-osio-level.show {
-  min-height: 13.5rem;
-  padding: 2.2rem 1.55rem;
+.romant-recipient .romant-osio-level.show,
+.romant-home-preview .romant-osio-level.is-newest {
+  min-height: 0;
+  padding: 1.7rem 1.4rem;
+  background: #fff;
+  border: 1.5px solid #4A1F2C;
+  box-shadow: 0 14px 36px rgba(74, 31, 44, 0.1);
+}
+
+.romant-recipient .romant-hint.is-prior,
+.romant-home-preview .romant-osio-level.is-prior {
+  opacity: 0.6;
+  box-shadow: none;
+  padding: 1.05rem 1.15rem;
+  background: var(--romant-cream);
+  border-color: transparent;
 }
 
 .romant-hint-section,
@@ -1463,11 +1601,21 @@ img.romant-logo,
   margin-bottom: 0.75rem;
 }
 
-.romant-tapaaminen {
+.romant-tapaaminen,
+.romant-tapaaminen-display {
   width: 100%;
   margin: 0 auto 1.15rem;
   min-height: 0;
-  padding: 1.45rem 1.35rem 1.35rem;
+  padding: 1.35rem 1.25rem 1.25rem;
+  background: #fff;
+  border: none;
+  box-shadow: 0 12px 32px rgba(74, 31, 44, 0.07);
+}
+
+.romant-tapaaminen-display input,
+.romant-tapaaminen-display textarea,
+.romant-tapaaminen-display select {
+  display: none !important;
 }
 
 .romant-tapaaminen-when {
@@ -1507,23 +1655,25 @@ img.romant-logo,
   text-align: center;
 }
 
-.romant-recipient .romant-more-btn {
+.romant-recipient .romant-more-btn,
+.romant-home-preview .romant-more-btn {
   display: flex;
   width: 100%;
-  margin-top: 1.25rem;
+  margin-top: 0.35rem;
   padding: 0.85rem 1.15rem;
   border-radius: 999px;
   border: 1.5px solid #4A1F2C;
-  background: transparent;
-  color: #4A1F2C;
+  background: #4A1F2C;
+  color: #fff;
   font-family: var(--romant-serif);
   font-size: 1.05rem;
   font-weight: 600;
 }
 
-.romant-recipient .romant-more-btn:hover {
-  background: rgba(74, 31, 44, 0.05);
-  color: #4A1F2C;
+.romant-recipient .romant-more-btn:hover,
+.romant-home-preview .romant-more-btn:hover {
+  background: #3A1823;
+  color: #fff;
 }
 
 .romant-recipient .romant-reveal-aside {

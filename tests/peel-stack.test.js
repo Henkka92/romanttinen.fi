@@ -89,6 +89,7 @@ assert('section is in-card label not heading', /romant-hint-section/.test(hintIn
 assert('modal unlocks exactly +1', unlockPlusOne(1, 3) === 2 && unlockPlusOne(3, 3) === 3);
 assert('tapaaminen line is La 13.6. · 18:00', formatTapaaminen('2026-06-13T18:00:00+03:00') === 'La 13.6. · 18:00');
 assert('teaser must not include place', 'countdown-only'.indexOf('Keskusta') === -1);
+assert('recipient tapaaminen is display not form', !/<input/.test('<section class="romant-tapaaminen-display"><span>Tapaaminen</span><p>La 14.6. · 18:00</p></section>'));
 
 if (fails) {
   process.exit(1);
