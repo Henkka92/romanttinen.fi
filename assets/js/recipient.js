@@ -7,17 +7,16 @@
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
  *
- * Open is a timed unwrap (teaser folds, reveal enters). Peel unlocks exactly +1
- * level per modal confirm; the newly revealed level animates in.
+ * Open + peel share one rhythm: soft fade/slide (~360ms), then exactly the
+ * newly unlocked level (depth 1 after Avaa kutsu; +1 per Kerro lisää).
  */
 (function () {
   'use strict';
 
   var cfg = window.romantPeli || {};
   var STORAGE_PREFIX = 'romant_peli_';
-  /** Visible gift-unwrap: stay within 300–600ms so opening feels like a moment. */
-  var UNWRAP_MS = 480;
-  var LEVEL_ENTER_MS = 460;
+  /** Pauliina: fade/slide open 300–400ms. Same beat for each peeled level. */
+  var PEEL_MS = 360;
 
   function storageKey(token) {
     return STORAGE_PREFIX + token;
@@ -116,7 +115,7 @@
    * Render only levels[0 .. depth-1] for each section.
    * "Haluatko kuulla lisää?" only when more levels remain.
    * opts.justUnlocked = { index, level } (1-based) animates that newly peeled level.
-   * opts.enterFirst = animate each section's first visible level (gift unwrap).
+   * opts.enterFirst = animate each section's first visible level (Avaa kutsu).
    */
   function renderSections(container, sections, progress, opts) {
     opts = opts || {};
@@ -216,7 +215,7 @@
         if (animate) {
           window.setTimeout(function () {
             reveal.classList.remove('is-entering');
-          }, LEVEL_ENTER_MS + 80);
+          }, PEEL_MS + 40);
         }
       }
       if (container) {
@@ -228,8 +227,10 @@
     // Teaser gate: game content stays hidden until opened (HTML + CSS [hidden]).
     function showGame(opts) {
       opts = opts || {};
-      if (teaser) teaser.hidden = true;
-      teaser && teaser.classList.remove('is-unwrapping');
+      if (teaser) {
+        teaser.hidden = true;
+        teaser.classList.remove('is-unwrapping');
+      }
       card.classList.remove('is-unwrapping');
       revealGame(!!opts.animate);
     }
@@ -258,11 +259,17 @@
       card.classList.add('is-unwrapping');
       teaser.classList.add('is-unwrapping');
       if (openBtn) openBtn.disabled = true;
+      // Same beat: teaser fades while Level 1 slides in (not wait-then-dump).
+      revealGame(true);
       window.setTimeout(function () {
-        showGame({ animate: true });
+        if (teaser) {
+          teaser.hidden = true;
+          teaser.classList.remove('is-unwrapping');
+        }
+        card.classList.remove('is-unwrapping');
         if (openBtn) openBtn.disabled = false;
         unwrapping = false;
-      }, UNWRAP_MS);
+      }, PEEL_MS);
     }
 
     function openInvite() {

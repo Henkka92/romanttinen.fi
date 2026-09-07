@@ -6,8 +6,8 @@ WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** 
 
 ## Changelog
 
-### 1.3.0 — Portti 1: Saajan hetki
-Vastaanottajan teaser on yksi lahjakortti (logo, kutsuja, otsikko, countdown). **Avaa kutsu** avaa kutsun taittoanimaatiolla (~480 ms), ei heti show/hide. Seuraava taso vaatii edelleen modalin; uusi taso tulee sisään animaatiolla. Peli-säännöt (teaser-portti, sessionStorage, +1 taso / vahvistus) ennallaan.
+### 1.3.0 — Portti 1: Saajan hetki (peel rhythm)
+Teaser on yksi kortti. **Avaa kutsu** → pehmeä fade/slide (~360 ms) ja vain taso 1. Jokainen **Kerro lisää** avaa tasan yhden uuden tason samalla rytmillä. Avauksen isku: *Nyt saat tietää…*. Modal: **Kerro lisää** / **Pidän jännityksen**. Peli-säännöt (portti, sessionStorage, +1 / vahvistus) ennallaan.
 
 ## Asennus / päivitys ilman deaktivointia
 

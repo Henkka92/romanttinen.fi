@@ -7,7 +7,7 @@
  * unlocked depths (levels[0..depth-1]) are shown.
  *
  * First second is a gift moment (logo, inviter, title, countdown) — not a field list.
- * "Avaa kutsu" unwraps; each further level requires the confirm modal.
+ * "Avaa kutsu" fade/slides; only depth 1 shows. Each further level needs the modal.
  *
  * @var WP_Post $post
  * @var array   $data
@@ -96,6 +96,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 
         <?php // Game / sections: hidden until Avaa kutsu (JS removes hidden). No levels printed as HTML. ?>
         <div class="romant-reveal" id="romant-reveal" hidden>
+            <p class="romant-reveal-cue" id="romant-reveal-cue">Nyt saat tietää…</p>
             <div id="romant-peli-sections" class="romant-peli-sections"></div>
 
             <?php if ($data['dress'] !== '') : ?>
