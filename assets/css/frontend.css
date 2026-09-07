@@ -1094,12 +1094,7 @@ img.romant-logo,
 .romant-kutsu-body.romant-recipient-page {
   --romant-wine: #4A1F2C;
   --romant-cream: #F3E6D8;
-  background-color: #F3E6D8;
-  min-height: 100vh;
-}
-
-.romant-kutsu-body.romant-recipient-page.is-teaser,
-.romant-kutsu-body.romant-recipient-page.is-unwrapping {
+  /* Cream silk/fabric for teaser → peel (do not drop to flat beige on open). */
   background-color: #e8d4c4;
   background-image:
     linear-gradient(180deg, rgba(243, 230, 216, 0.28) 0%, rgba(243, 230, 216, 0.12) 40%, rgba(243, 230, 216, 0.35) 100%),
@@ -1107,6 +1102,7 @@ img.romant-logo,
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .romant-recipient-page .romant-wrap.romant-recipient {
@@ -1132,6 +1128,13 @@ img.romant-logo,
 }
 
 .romant-recipient-chrome[hidden] {
+  display: none !important;
+}
+
+/* display:flex on .romant-gift-moment would otherwise override UA [hidden]
+   and keep the teaser wordmark visible next to chrome after Avaa kutsu. */
+.romant-gift-moment[hidden],
+.romant-recipient-page.is-opened .romant-gift-moment {
   display: none !important;
 }
 
@@ -1163,6 +1166,7 @@ img.romant-logo,
 }
 
 .romant-recipient-page.is-opened .romant-invite-card {
+  /* Shell goes quiet; cream surface continues on .romant-hint cards over fabric. */
   background: transparent;
   border: none;
   box-shadow: none;
