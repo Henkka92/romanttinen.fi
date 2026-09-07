@@ -2,7 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.2.8 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.0 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+
+## Changelog
+
+### 1.3.0 — Portti 1: Saajan hetki
+Vastaanottajan teaser on yksi lahjakortti (logo, kutsuja, otsikko, countdown). **Avaa kutsu** avaa kutsun taittoanimaatiolla (~480 ms), ei heti show/hide. Seuraava taso vaatii edelleen modalin; uusi taso tulee sisään animaatiolla. Peli-säännöt (teaser-portti, sessionStorage, +1 taso / vahvistus) ennallaan.
 
 ## Asennus / päivitys ilman deaktivointia
 

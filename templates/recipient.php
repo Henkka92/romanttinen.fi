@@ -6,6 +6,9 @@
  * visible HTML for levels is rendered client-side after "Avaa kutsu", and only
  * unlocked depths (levels[0..depth-1]) are shown.
  *
+ * First second is a gift moment (logo, inviter, title, countdown) — not a field list.
+ * "Avaa kutsu" unwraps; each further level requires the confirm modal.
+ *
  * @var WP_Post $post
  * @var array   $data
  * @package Romanttinen_Kutsu
@@ -56,32 +59,35 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
              data-romant-token="<?php echo esc_attr($data['token']); ?>"
              data-romant-sections="<?php echo esc_attr(wp_json_encode($sections_payload, JSON_UNESCAPED_UNICODE)); ?>">
 
-        <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <div class="romant-gift-moment" id="romant-gift-moment">
+            <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-        <?php if (!empty($data['inviter_name'])) : ?>
-            <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut</p>
-        <?php endif; ?>
+            <?php if (!empty($data['inviter_name'])) : ?>
+                <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut</p>
+            <?php endif; ?>
 
-        <h1 class="romant-serif">Sinut on kutsuttu treffeille</h1>
+            <h1 class="romant-serif">Sinut on kutsuttu treffeille</h1>
 
-        <div class="romant-countdown" aria-live="polite">
-            <div class="romant-cd-unit"><span data-cd="d">–</span><small>pv</small></div>
-            <div class="romant-cd-unit"><span data-cd="h">–</span><small>t</small></div>
-            <div class="romant-cd-unit"><span data-cd="m">–</span><small>min</small></div>
-            <div class="romant-cd-unit"><span data-cd="s">–</span><small>s</small></div>
+            <div class="romant-countdown" aria-live="polite">
+                <div class="romant-cd-unit"><span data-cd="d">–</span><small>pv</small></div>
+                <div class="romant-cd-unit"><span data-cd="h">–</span><small>t</small></div>
+                <div class="romant-cd-unit"><span data-cd="m">–</span><small>min</small></div>
+                <div class="romant-cd-unit"><span data-cd="s">–</span><small>s</small></div>
+            </div>
+            <p class="romant-countdown-done" hidden>Hetki on täällä.</p>
+
+            <?php if ($saate !== '') : ?>
+                <p class="romant-saate" id="romant-saate"><?php echo esc_html($saate); ?></p>
+            <?php endif; ?>
         </div>
-        <p class="romant-countdown-done" hidden>Hetki on täällä.</p>
-
-        <?php if ($saate !== '') : ?>
-            <p class="romant-saate" id="romant-saate"><?php echo esc_html($saate); ?></p>
-        <?php endif; ?>
 
         <div class="romant-teaser-actions" id="romant-teaser-actions">
+            <div class="romant-gift-rule" aria-hidden="true"></div>
             <button type="button" class="romant-btn romant-btn-primary romant-btn-lg" id="romant-avaa-kutsu">
                 Avaa kutsu
             </button>
             <div class="romant-actions romant-teaser-share">
-                <a class="romant-btn romant-btn-secondary" href="<?php echo esc_url($story_url); ?>">Jaa tarina</a>
+                <a class="romant-btn romant-btn-ghost" href="<?php echo esc_url($story_url); ?>">Jaa tarina</a>
                 <button type="button" class="romant-btn romant-btn-ghost" data-romant-copy-text="<?php echo esc_attr($share_url); ?>">
                     Kopioi linkki
                 </button>

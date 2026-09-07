@@ -6,15 +6,29 @@
  * shared unlock state across all testers/tabs on the same browser, which broke QA.
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
+ *
+ * Open is a timed unwrap (teaser folds, reveal enters). Peel unlocks exactly +1
+ * level per modal confirm; the newly revealed level animates in.
  */
 (function () {
   'use strict';
 
   var cfg = window.romantPeli || {};
   var STORAGE_PREFIX = 'romant_peli_';
+  /** Visible gift-unwrap: stay within 300–600ms so opening feels like a moment. */
+  var UNWRAP_MS = 480;
+  var LEVEL_ENTER_MS = 460;
 
   function storageKey(token) {
     return STORAGE_PREFIX + token;
+  }
+
+  function prefersReducedMotion() {
+    try {
+      return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    } catch (e) {
+      return false;
+    }
   }
 
   /** Expire any legacy cookie left by older builds (no longer read or written). */
@@ -101,8 +115,13 @@
   /**
    * Render only levels[0 .. depth-1] for each section.
    * "Haluatko kuulla lisää?" only when more levels remain.
+   * opts.justUnlocked = { index, level } (1-based) animates that newly peeled level.
+   * opts.enterFirst = animate each section's first visible level (gift unwrap).
    */
-  function renderSections(container, sections, progress) {
+  function renderSections(container, sections, progress, opts) {
+    opts = opts || {};
+    var justUnlocked = opts.justUnlocked || null;
+    var enterFirst = !!opts.enterFirst;
     container.innerHTML = '';
     sections.forEach(function (sec, index) {
       var depth = getDepth(progress, index);
@@ -127,6 +146,14 @@
         var block = document.createElement('div');
         block.className = 'romant-spoiler romant-osio-level';
         block.setAttribute('data-level', String(i + 1));
+        var isPeeled = justUnlocked && justUnlocked.index === index && justUnlocked.level === (i + 1);
+        var isFirstEnter = enterFirst && i === 0;
+        if (isPeeled || isFirstEnter) {
+          block.classList.add('romant-level-enter');
+          if (enterFirst && i === 0 && index > 0) {
+            block.style.animationDelay = Math.min(index * 80, 240) + 'ms';
+          }
+        }
         block.innerHTML =
           '<span class="romant-spoiler-label">Taso ' + (i + 1) + '</span>' +
           '<p>' + escapeHtml(text) + '</p>';
@@ -136,7 +163,7 @@
       if (depth < maxDepth) {
         var more = document.createElement('button');
         more.type = 'button';
-        more.className = 'romant-btn romant-btn-secondary romant-btn-sm romant-more-btn';
+        more.className = 'romant-btn romant-btn-secondary romant-more-btn';
         more.setAttribute('data-want-more', '');
         more.setAttribute('data-section-index', String(index));
         more.textContent = 'Haluatko kuulla lisää?';
@@ -170,23 +197,76 @@
     var modalYes = document.getElementById('romant-modal-yes');
     var modalNo = document.getElementById('romant-modal-no');
     var pendingIndex = -1;
+    var unwrapping = false;
+    var unlocking = false;
 
-    // Teaser gate: game content stays hidden until opened (HTML + CSS [hidden]).
-    function showGame() {
-      if (teaser) teaser.hidden = true;
-      if (reveal) reveal.hidden = false;
-      if (container) renderSections(container, sections, progress);
-    }
-
-    function keepTeaser() {
-      if (teaser) teaser.hidden = false;
-      if (reveal) {
-        reveal.hidden = true;
-        if (container) container.innerHTML = '';
+    function setCardState(state) {
+      if (!card) return;
+      if (state) {
+        card.setAttribute('data-romant-state', state);
+      } else {
+        card.removeAttribute('data-romant-state');
       }
     }
 
+    function revealGame(animate) {
+      if (reveal) {
+        reveal.hidden = false;
+        reveal.classList.toggle('is-entering', !!animate);
+        if (animate) {
+          window.setTimeout(function () {
+            reveal.classList.remove('is-entering');
+          }, LEVEL_ENTER_MS + 80);
+        }
+      }
+      if (container) {
+        renderSections(container, sections, progress, { enterFirst: !!animate });
+      }
+      setCardState('opened');
+    }
+
+    // Teaser gate: game content stays hidden until opened (HTML + CSS [hidden]).
+    function showGame(opts) {
+      opts = opts || {};
+      if (teaser) teaser.hidden = true;
+      teaser && teaser.classList.remove('is-unwrapping');
+      card.classList.remove('is-unwrapping');
+      revealGame(!!opts.animate);
+    }
+
+    function keepTeaser() {
+      if (teaser) {
+        teaser.hidden = false;
+        teaser.classList.remove('is-unwrapping');
+      }
+      card.classList.remove('is-unwrapping');
+      if (reveal) {
+        reveal.hidden = true;
+        reveal.classList.remove('is-entering');
+        if (container) container.innerHTML = '';
+      }
+      setCardState('teaser');
+    }
+
+    function unwrapThenShow() {
+      if (!teaser || prefersReducedMotion()) {
+        showGame({ animate: false });
+        return;
+      }
+      unwrapping = true;
+      setCardState('unwrapping');
+      card.classList.add('is-unwrapping');
+      teaser.classList.add('is-unwrapping');
+      if (openBtn) openBtn.disabled = true;
+      window.setTimeout(function () {
+        showGame({ animate: true });
+        if (openBtn) openBtn.disabled = false;
+        unwrapping = false;
+      }, UNWRAP_MS);
+    }
+
     function openInvite() {
+      if (unwrapping) return;
       var wasOpened = progress.opened;
       progress.opened = true;
       // First open in this session: force every section to depth 1 (ignore any stale depth).
@@ -200,14 +280,16 @@
         }
       });
       saveProgress(token, progress);
-      showGame();
       if (!wasOpened) {
+        unwrapThenShow();
         track('open', token);
+      } else {
+        showGame({ animate: false });
       }
     }
 
     if (progress.opened) {
-      showGame();
+      showGame({ animate: false });
     } else {
       keepTeaser();
     }
@@ -220,6 +302,9 @@
 
     function closeModal() {
       pendingIndex = -1;
+      if (modal) {
+        modal.classList.remove('is-present');
+      }
       if (modal && typeof modal.close === 'function') {
         modal.close();
       } else if (modal) {
@@ -229,6 +314,9 @@
 
     function openModal(index) {
       pendingIndex = index;
+      if (modal) {
+        modal.classList.add('is-present');
+      }
       if (modal && typeof modal.showModal === 'function') {
         modal.showModal();
       } else if (modal) {
@@ -246,7 +334,6 @@
       });
     }
 
-    var unlocking = false;
     if (modalYes) {
       modalYes.addEventListener('click', function () {
         if (unlocking) return;
@@ -259,9 +346,11 @@
         var sec = sections[idx];
         var cur = getDepth(progress, idx);
         var max = (sec && sec.levels) ? sec.levels.length : cur;
+        var nextDepth = cur;
         // Confirm modal unlocks exactly +1 level.
         if (cur < max) {
-          progress.depth[String(idx)] = cur + 1;
+          nextDepth = cur + 1;
+          progress.depth[String(idx)] = nextDepth;
           saveProgress(token, progress);
           track('reveal', token, {
             section: sec ? (sec.title || '') : '',
@@ -269,7 +358,11 @@
           });
         }
         closeModal();
-        if (container) renderSections(container, sections, progress);
+        if (container) {
+          renderSections(container, sections, progress, {
+            justUnlocked: nextDepth > cur ? { index: idx, level: nextDepth } : null
+          });
+        }
         unlocking = false;
       });
     }
@@ -283,6 +376,7 @@
     if (modal) {
       modal.addEventListener('cancel', function () {
         pendingIndex = -1;
+        modal.classList.remove('is-present');
       });
     }
   }
