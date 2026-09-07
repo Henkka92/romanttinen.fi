@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 $checklist = Romant_Kutsu_Templates::checklist_items();
-$sections  = [Romant_Kutsu_CPT::empty_section()];
+$sections  = Romant_Kutsu_CPT::sample_sections();
 ?>
 <div class="romant-wrap romant-create">
     <header class="romant-hero">

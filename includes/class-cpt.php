@@ -201,6 +201,96 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
+     * Multi-level sample sections for create form + peel QA.
+     * Peel CTA ("Haluatko kuulla lisää?") only appears when a section has 2+ levels.
+     *
+     * @return list<array{id: string, title: string, levels: list<string>}>
+     */
+    public static function sample_sections(): array {
+        return [
+            [
+                'id'     => self::generate_secret(8),
+                'title'  => 'Leffa',
+                'levels' => [
+                    'Elokuva — mutta ei se, jota arvaat ensimmäisenä.',
+                    'Jotain kevyttä ja yhteistä. Popcornia saa olla.',
+                    'Paikat on varattu — loppu selviää perillä.',
+                ],
+            ],
+            [
+                'id'     => self::generate_secret(8),
+                'title'  => 'Ruoka',
+                'levels' => [
+                    'Syödään hyvin — ei pikaruokaa.',
+                    'Pöytä on katettu kahdelle. Tunnelma ratkaisee.',
+                    'Jälkiruoka odottaa — tai jätetään se huomiseen.',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * True when any section has at least two non-empty levels (peel path possible).
+     *
+     * @param list<array{id?: string, title?: string, levels?: list<string>}> $sections
+     */
+    public static function sections_offer_peel(array $sections): bool {
+        foreach ($sections as $sec) {
+            $filled = 0;
+            foreach ($sec['levels'] ?? [] as $lv) {
+                if ((string) $lv !== '') {
+                    $filled++;
+                    if ($filled >= 2) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Create a paid stub invite with multi-level sample content for Portti 1 QA.
+     *
+     * @return array{post_id: int, token: string, manage_key: string}|\WP_Error
+     */
+    public static function create_peel_qa_invite() {
+        $manage_key = self::generate_secret(24);
+        $token      = self::generate_secret(24);
+        $tz         = new DateTimeZone('Europe/Helsinki');
+        $dt         = (new DateTimeImmutable('+3 days 19:00', $tz))->format('c');
+        $sections   = self::sample_sections();
+
+        $post_id = wp_insert_post([
+            'post_type'   => self::POST_TYPE,
+            'post_status' => 'publish',
+            'post_title'  => 'Peel QA ' . gmdate('Y-m-d H:i'),
+        ], true);
+
+        if (is_wp_error($post_id)) {
+            return $post_id;
+        }
+
+        $post_id = (int) $post_id;
+        update_post_meta($post_id, self::META_MANAGE_KEY, $manage_key);
+        update_post_meta($post_id, self::META_TOKEN, $token);
+        update_post_meta($post_id, self::META_DATETIME, $dt);
+        update_post_meta($post_id, self::META_INVITER_NAME, 'Alex');
+        update_post_meta($post_id, self::META_RECEIPT_NAME, 'Alex');
+        update_post_meta($post_id, self::META_SAATE, 'Pieni kutsu — avaa kun olet valmis.');
+        update_post_meta($post_id, self::META_DRESS, 'Jotain pehmeää ja kaunista.');
+        update_post_meta($post_id, self::META_SECTIONS, wp_json_encode($sections, JSON_UNESCAPED_UNICODE));
+        update_post_meta($post_id, self::META_PAID, true);
+        update_post_meta($post_id, self::META_PAID_AT, gmdate('c'));
+
+        return [
+            'post_id'    => $post_id,
+            'token'      => $token,
+            'manage_key' => $manage_key,
+        ];
+    }
+
+    /**
      * Normalize / sanitize section list from storage or form.
      *
      * @param mixed $raw

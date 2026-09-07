@@ -96,6 +96,14 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <div class="romant-alert romant-alert-err" role="alert">Sähköpostin lähetys epäonnistui. Yritä uudelleen.</div>
     <?php endif; ?>
 
+
+    <?php if (!Romant_Kutsu_CPT::sections_offer_peel($sections)) : ?>
+        <div class="romant-alert romant-alert-err" role="status">
+            Peel («Haluatko kuulla lisää?» / Kerro lisää) vaatii vähintään <strong>2 tasoa</strong> yhdessä osiossa.
+            Täytä taso 2 (ja mieluiten 3) ennen jakolinkkitestiä — muuten avauksen jälkeen näkyy vain L1.
+        </div>
+    <?php endif; ?>
+
     <ol class="romant-checklist" aria-label="Tarkistuslista">
         <?php
         $has_section = false;

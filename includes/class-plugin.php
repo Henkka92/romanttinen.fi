@@ -60,6 +60,7 @@ final class Romant_Kutsu_Plugin {
         add_action('admin_post_nopriv_romant_pay_kutsu', [$this->payment, 'handle_pay']);
         add_action('admin_post_romant_send_manage_email', [$this->forms, 'handle_send_manage_email']);
         add_action('admin_post_nopriv_romant_send_manage_email', [$this->forms, 'handle_send_manage_email']);
+        add_action('admin_post_romant_create_peel_qa', [$this->settings, 'handle_create_peel_qa']);
     }
 
     /**

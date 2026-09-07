@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.0 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.1 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.1 — Portti 1 peel QA fix
+Juurisyy: «Haluatko kuulla lisää?» / modal näkyy vain kun osiolla on syvempiä tasoja kuin nykyinen depth. Stub-/testikutsut joissa vain L1 täytetty → CTA ei koskaan tule. Korjaus: luontilomake esitäyttää 2 osiota × 3 tasoa; WP-admin **Luo peel-testikutsu**; manage-varoitus jos peel ei ole mahdollinen; JS laskee vain ei-tyhjät tasot.
 
 ### 1.3.0 — Portti 1: Saajan hetki (peel rhythm stub)
 Teaser: silk-tausta + kelluva kermakortti, **Avaa kutsu**. Avaus: `giftIn` (.38s) ja *Nyt saat tietää…* + yksi **Vihje**-kortti. **Haluatko kuulla lisää?** → modal (**Kerro lisää** / **Pidän jännityksen**). Seuraava vihje korvaa edellisen (ei pinoa). Portti, sessionStorage ja +1 / vahvistus ennallaan.
