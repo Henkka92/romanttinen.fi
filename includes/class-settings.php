@@ -163,6 +163,37 @@ final class Romant_Kutsu_Settings {
         return implode(' · ', $parts);
     }
 
+
+    /**
+     * WP-admin: create a paid multi-level peel QA invite (stub-friendly).
+     */
+    public function handle_create_peel_qa(): void {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Ei oikeuksia.', 'romanttinen-kutsu'), 403);
+        }
+        if (!isset($_POST['romant_peel_qa_nonce']) ||
+            !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['romant_peel_qa_nonce'])), 'romant_create_peel_qa')) {
+            wp_die(esc_html__('Turvatarkistus epäonnistui. Yritä uudelleen.', 'romanttinen-kutsu'), 403);
+        }
+
+        $result = Romant_Kutsu_CPT::create_peel_qa_invite();
+        if (is_wp_error($result)) {
+            wp_die(esc_html__('Peel-testikutsun luonti epäonnistui.', 'romanttinen-kutsu'), 500);
+        }
+
+        $redirect = add_query_arg(
+            [
+                'page'       => 'romant-kutsu',
+                'peel_qa'    => '1',
+                'token'      => $result['token'],
+                'manage_key' => $result['manage_key'],
+            ],
+            admin_url('options-general.php')
+        );
+        wp_safe_redirect($redirect);
+        exit;
+    }
+
     public function render_page(): void {
         if (!current_user_can('manage_options')) {
             return;
@@ -261,6 +292,36 @@ final class Romant_Kutsu_Settings {
                 </table>
                 <?php submit_button('Tallenna asetukset'); ?>
             </form>
+
+            <hr />
+            <h2>Peel-testikutsu (Portti 1 QA)</h2>
+            <p class="description">
+                Luo valmis, maksettu kutsu jossa jokaisessa osiossa on <strong>3 tasoa</strong>.
+                Avaa vastaanottajalinkki → <em>Avaa kutsu</em> → näet L1 + <em>Haluatko kuulla lisää?</em>
+                → modal (<em>Kerro lisää</em> / <em>Pidän jännityksen</em>).
+            </p>
+            <?php
+            $peel_qa = isset($_GET['peel_qa']);
+            $qa_token = isset($_GET['token']) ? sanitize_text_field(wp_unslash((string) $_GET['token'])) : '';
+            $qa_manage = isset($_GET['manage_key']) ? sanitize_text_field(wp_unslash((string) $_GET['manage_key'])) : '';
+            if ($peel_qa && $qa_token !== '') :
+                $recv = Romant_Kutsu_Rewrite::recipient_url($qa_token);
+                $mgmt = $qa_manage !== '' ? Romant_Kutsu_Rewrite::manage_url($qa_manage) : '';
+                ?>
+                <div class="notice notice-success is-dismissible">
+                    <p><strong>Peel-testikutsu luotu.</strong></p>
+                    <p>Vastaanottaja: <a href="<?php echo esc_url($recv); ?>" target="_blank" rel="noopener"><?php echo esc_html($recv); ?></a></p>
+                    <?php if ($mgmt !== '') : ?>
+                        <p>Hallinta: <a href="<?php echo esc_url($mgmt); ?>" target="_blank" rel="noopener"><?php echo esc_html($mgmt); ?></a></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                <input type="hidden" name="action" value="romant_create_peel_qa" />
+                <?php wp_nonce_field('romant_create_peel_qa', 'romant_peel_qa_nonce'); ?>
+                <?php submit_button('Luo peel-testikutsu', 'secondary', 'submit', false); ?>
+            </form>
+
             <p class="description">
                 Testiavaimet: Visma Pay Merchant Portal → Sub-merchants, tai pyydä testi-tili
                 <a href="https://www.vismapay.com/docs/web_payments/?page=testing" target="_blank" rel="noopener">dokumentaatiosta</a>.

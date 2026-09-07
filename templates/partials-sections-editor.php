@@ -25,6 +25,8 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
     <p class="romant-hint">
         Enintään <?php echo esc_html((string) $max_sec); ?> osiota (esim. Leffa / Ruoka / Koti).
         Jokaisessa oletuksena 3 tasoa — vastaanottaja avaa niitä yksi kerrallaan.
+        <strong>Vähintään 2 tasoa</strong> osiossa tarvitaan, jotta vastaanottaja näkee
+        «Haluatko kuulla lisää?» → modalin.
     </p>
 
     <div class="romant-sections-list" data-sections-list>

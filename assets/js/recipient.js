@@ -112,9 +112,22 @@
     return Number.isFinite(n) && n >= 1 ? n : 1;
   }
 
+  /** Non-empty levels only — empty slots must not inflate peel depth. */
+  function peelLevels(sec) {
+    var raw = (sec && sec.levels) ? sec.levels : [];
+    var out = [];
+    for (var i = 0; i < raw.length; i++) {
+      var t = raw[i];
+      if (t !== undefined && t !== null && String(t) !== '') {
+        out.push(String(t));
+      }
+    }
+    return out;
+  }
+
   /**
    * Render the current hint only (levels[depth-1]) — not a stack of 0..depth-1.
-   * "Haluatko kuulla lisää?" only when more levels remain.
+   * "Haluatko kuulla lisää?" only when more non-empty levels remain.
    * opts.animate = play giftIn on the visible hint.
    */
   function renderSections(container, sections, progress, opts) {
@@ -123,7 +136,7 @@
     container.innerHTML = '';
     sections.forEach(function (sec, index) {
       var depth = getDepth(progress, index);
-      var levels = sec.levels || [];
+      var levels = peelLevels(sec);
       var maxDepth = levels.length;
       if (depth > maxDepth) depth = maxDepth;
       if (depth < 1) depth = 1;
@@ -375,7 +388,7 @@
         var idx = pendingIndex;
         var sec = sections[idx];
         var cur = getDepth(progress, idx);
-        var max = (sec && sec.levels) ? sec.levels.length : cur;
+        var max = sec ? peelLevels(sec).length : cur;
         var didUnlock = false;
         // Confirm modal unlocks exactly +1 level, then replaces the visible hint.
         if (cur < max) {

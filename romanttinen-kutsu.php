@@ -3,7 +3,7 @@
  * Plugin Name: Romanttinen Kutsu
  * Plugin URI:  https://romanttinen.fi
  * Description: Romanttinen.fi V1.1 – kutsu-peli: osiot, progressiivinen paljastus, Visma Pay (tai stub), jaettava linkki.
- * Version:     1.3.0
+ * Version:     1.3.1
  * Author:      Romanttinen
  * Author URI:  https://romanttinen.fi
  * Text Domain: romanttinen-kutsu
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ROMANT_KUTSU_VERSION', '1.3.0');
+define('ROMANT_KUTSU_VERSION', '1.3.1');
 define('ROMANT_KUTSU_FILE', __FILE__);
 define('ROMANT_KUTSU_PATH', plugin_dir_path(__FILE__));
 define('ROMANT_KUTSU_URL', plugin_dir_url(__FILE__));
