@@ -134,6 +134,7 @@
     return t || ('Osio ' + (index + 1));
   }
 
+  /** Mari lock: number only — `Vihje 1` / `Vihje 2` / `Vihje 3`. No extra markers. */
   function hintLabel(levelNum) {
     return 'Vihje ' + levelNum;
   }

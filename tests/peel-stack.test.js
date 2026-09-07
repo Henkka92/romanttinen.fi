@@ -119,7 +119,12 @@ assert('newest animates with show', stackClasses(2, true).join('|') === 'prior|n
 assert('section title is Elokuvahetki once as heading', sectionTitle(elokuva, 0) === 'Elokuvahetki');
 assert('not short Elokuva/Ruoka', ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'].indexOf('Elokuva') === -1);
 assert('labels are numbered Vihje 1/2/3', hintLabel(1) === 'Vihje 1' && hintLabel(2) === 'Vihje 2' && hintLabel(3) === 'Vihje 3');
+assert('level marker is number only', hintLabel(2) === 'Vihje 2' && !/TASO|taso|•|★/.test(hintInner(2, 'L2')));
 assert('hint label is not TASO', /Vihje 1/.test(hintInner(1, 'L1')) && !/TASO/.test(hintInner(1, 'L1')));
+var family = ['#E8D5C6', '#EBD9CE', '#FFFDF9', '#E5CDBF', '#FBF4EE', '#DCC8BC', '#FAF4EE'];
+assert('card tints stay muted wine/rose/cream', family.every(function (hex) {
+  return !/#[0-3][0-9A-F][8-9A-F]|#[0-9A-F]{2}[8-9A-F]{2}[0-3]/.test(hex);
+}));
 assert('markup is osio > osio-header + hint-stack > hint-card',
   /<section class="[^"]*\bosio\b/.test(html) &&
   /osio-header/.test(html) &&

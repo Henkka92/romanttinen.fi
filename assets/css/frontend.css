@@ -1587,20 +1587,21 @@ img.romant-logo,
   background: rgba(255, 248, 242, 0.55);
 }
 
-/* Subtle tint shift per group — cycles so N sections stay distinct. */
+/* Mari lock: muted wine / rose / cream only — never a rainbow hue.
+   Scale by section index (cycles at 3) inside that warm family. */
 .romant-recipient .romant-osio.romant-osio-tint-0,
 .romant-recipient .romant-osio:nth-child(3n+1) {
-  background: rgba(255, 250, 246, 0.72);
+  background: rgba(243, 230, 216, 0.48); /* cream */
 }
 
 .romant-recipient .romant-osio.romant-osio-tint-1,
 .romant-recipient .romant-osio:nth-child(3n+2) {
-  background: rgba(232, 212, 196, 0.42);
+  background: rgba(201, 160, 144, 0.16); /* muted rose */
 }
 
 .romant-recipient .romant-osio.romant-osio-tint-2,
 .romant-recipient .romant-osio:nth-child(3n+3) {
-  background: rgba(235, 217, 206, 0.5);
+  background: rgba(74, 31, 44, 0.055); /* muted wine */
 }
 
 .romant-recipient .romant-osio-header,
@@ -1685,16 +1686,16 @@ img.romant-logo,
   background: #FBF4EE;
 }
 
-/* Third group (Kotona) and every 3n+2 — scaled blush tint */
+/* tint-2: muted wine-cream (same family, not a new hue) */
 .romant-recipient .romant-osio-tint-2 .romant-hint-card.prior,
 .romant-home-preview .romant-osio-tint-2 .romant-hint-card.prior {
-  background: #E6C9C4;
+  background: #DCC8BC;
 }
 
 .romant-recipient .romant-osio-tint-2 .romant-hint-card.newest,
 .romant-recipient .romant-osio-tint-2 .romant-hint-card.show,
 .romant-home-preview .romant-osio-tint-2 .romant-hint-card.newest {
-  background: #FBF3F0;
+  background: #FAF4EE;
 }
 
 .romant-hint-section,
