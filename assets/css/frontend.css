@@ -801,6 +801,7 @@ img.romant-logo,
   background: rgba(243, 230, 216, 0.45);
 }
 
+.romant-home-preview .romant-osio-header,
 .romant-home-preview .romant-osio-title {
   display: block;
   text-align: center;
@@ -1507,13 +1508,14 @@ img.romant-logo,
   pointer-events: none;
 }
 
-.romant-recipient .romant-hint.show {
+.romant-recipient .romant-hint.show,
+.romant-recipient .romant-hint-card.show {
   opacity: 0;
   transform: translateY(14px) scale(0.98);
   animation: giftIn 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-.romant-recipient .romant-hint.is-newest,
+.romant-recipient .romant-hint-card.newest:not(.show),
 .romant-preview-card .romant-tapaaminen.is-restored {
   opacity: 1;
   transform: none;
@@ -1533,9 +1535,7 @@ img.romant-logo,
   transform: none;
 }
 
-/* Older cards stay boxed — mute via cream fill + ink, never fade the box away. */
-.romant-recipient .romant-hint.is-prior {
-  opacity: 1;
+.romant-recipient .romant-hint-card.prior {
   transform: none;
 }
 
@@ -1603,7 +1603,9 @@ img.romant-logo,
   background: rgba(235, 217, 206, 0.5);
 }
 
-.romant-recipient .romant-osio-title {
+.romant-recipient .romant-osio-header,
+.romant-recipient .romant-osio-title,
+.romant-recipient .osio-header {
   display: block;
   text-align: center;
   font-size: 1.45rem !important;
@@ -1612,16 +1614,19 @@ img.romant-logo,
   color: #4A1F2C;
 }
 
-.romant-hint-stack {
+.romant-hint-stack,
+.hint-stack {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
 }
 
 .romant-recipient .romant-hint,
+.romant-recipient .romant-hint-card,
+.romant-recipient .hint-card,
 .romant-recipient .romant-osio-level,
-.romant-hint-box,
 .romant-tapaaminen,
+.romant-home-preview .romant-hint-card,
 .romant-home-preview .romant-osio-level,
 .romant-home-preview .romant-tapaaminen {
   display: flex;
@@ -1634,29 +1639,62 @@ img.romant-logo,
   margin: 0 auto;
   padding: 1.15rem 1.2rem;
   text-align: center;
-  background: #F3E6D8;
-  border: 1px solid transparent;
   border-radius: 16px;
-  box-shadow: none;
 }
 
-.romant-recipient .romant-osio-level.is-newest,
-.romant-recipient .romant-osio-level.show,
-.romant-home-preview .romant-osio-level.is-newest {
-  min-height: 0;
-  padding: 1.35rem 1.25rem;
-  background: #fff;
-  border: 2px solid #4A1F2C;
-  box-shadow: 0 12px 28px rgba(74, 31, 44, 0.1);
-}
-
-.romant-recipient .romant-hint.is-prior,
-.romant-home-preview .romant-osio-level.is-prior {
-  opacity: 1;
+/* Pauliina peel-boxes — ported tokens */
+.romant-recipient .romant-hint-card.prior,
+.romant-recipient .hint-card.prior,
+.romant-home-preview .romant-hint-card.prior {
+  background: #E8D5C6;
+  border: 1px solid rgba(74, 31, 44, 0.22);
+  opacity: 0.78;
   box-shadow: none;
   padding: 1.05rem 1.15rem;
-  background: #F3E6D8;
-  border: 1px solid transparent;
+}
+
+.romant-recipient .romant-hint-card.prior.mid,
+.romant-recipient .hint-card.prior.mid,
+.romant-home-preview .romant-hint-card.prior.mid {
+  background: #EBD9CE;
+  border: 1px solid rgba(74, 31, 44, 0.26);
+  opacity: 0.86;
+}
+
+.romant-recipient .romant-hint-card.newest,
+.romant-recipient .hint-card.newest,
+.romant-home-preview .romant-hint-card.newest {
+  background: #FFFDF9;
+  border: 1.75px solid #4A1F2C;
+  box-shadow: 0 12px 28px rgba(74, 31, 44, 0.14);
+  padding: 1.35rem 1.25rem;
+}
+
+.romant-recipient .romant-osio-tint-1 .romant-hint-card.prior,
+.romant-recipient .romant-osio.ruoka .romant-hint-card.prior,
+.romant-recipient .osio.ruoka .hint-card.prior,
+.romant-home-preview .romant-osio-tint-1 .romant-hint-card.prior {
+  background: #E5CDBF;
+}
+
+.romant-recipient .romant-osio-tint-1 .romant-hint-card.newest,
+.romant-recipient .romant-osio-tint-1 .romant-hint-card.show,
+.romant-recipient .romant-osio.ruoka .romant-hint-card.newest,
+.romant-recipient .osio.ruoka .hint-card.newest,
+.romant-home-preview .romant-osio-tint-1 .romant-hint-card.newest {
+  background: #FBF4EE;
+}
+
+/* Third group (Kotona) and every 3n+2 — scaled blush tint */
+.romant-recipient .romant-osio-tint-2 .romant-hint-card.prior,
+.romant-home-preview .romant-osio-tint-2 .romant-hint-card.prior {
+  background: #E6C9C4;
+}
+
+.romant-recipient .romant-osio-tint-2 .romant-hint-card.newest,
+.romant-recipient .romant-osio-tint-2 .romant-hint-card.show,
+.romant-home-preview .romant-osio-tint-2 .romant-hint-card.newest {
+  background: #FBF3F0;
 }
 
 .romant-hint-section,
@@ -1670,8 +1708,8 @@ img.romant-logo,
   margin: 0 0 0.35rem;
 }
 
-.romant-recipient .romant-osio-level .romant-spoiler-label,
-.romant-home-preview .romant-osio-level .romant-spoiler-label {
+.romant-recipient .romant-hint-card .romant-spoiler-label,
+.romant-home-preview .romant-hint-card .romant-spoiler-label {
   font-size: 0.82rem;
   letter-spacing: 0.02em;
   text-transform: none;
@@ -1681,15 +1719,15 @@ img.romant-logo,
   margin-bottom: 0.45rem;
 }
 
-.romant-recipient .romant-osio-level.is-newest .romant-spoiler-label,
-.romant-recipient .romant-osio-level.show .romant-spoiler-label,
-.romant-home-preview .romant-osio-level.is-newest .romant-spoiler-label {
+.romant-recipient .romant-hint-card.newest .romant-spoiler-label,
+.romant-recipient .romant-hint-card.show .romant-spoiler-label,
+.romant-home-preview .romant-hint-card.newest .romant-spoiler-label {
   opacity: 0.72;
   color: #4A1F2C;
 }
 
-.romant-recipient .romant-osio-level.is-prior .romant-spoiler-label,
-.romant-home-preview .romant-osio-level.is-prior .romant-spoiler-label {
+.romant-recipient .romant-hint-card.prior .romant-spoiler-label,
+.romant-home-preview .romant-hint-card.prior .romant-spoiler-label {
   color: #8a6a5c;
   opacity: 0.85;
 }
@@ -1766,8 +1804,8 @@ img.romant-logo,
   transform: none;
 }
 
-.romant-recipient .romant-osio-level p,
-.romant-home-preview .romant-osio-level p {
+.romant-recipient .romant-hint-card p,
+.romant-home-preview .romant-hint-card p {
   margin: 0;
   font-family: var(--romant-serif);
   font-size: clamp(1.12rem, 3.6vw, 1.35rem);
@@ -1776,15 +1814,15 @@ img.romant-logo,
   text-align: center;
 }
 
-.romant-recipient .romant-osio-level.is-prior p,
-.romant-home-preview .romant-osio-level.is-prior p {
+.romant-recipient .romant-hint-card.prior p,
+.romant-home-preview .romant-hint-card.prior p {
   color: #6e5348;
   font-size: clamp(1.02rem, 3.2vw, 1.18rem);
 }
 
-.romant-recipient .romant-osio-level.is-newest p,
-.romant-recipient .romant-osio-level.show p,
-.romant-home-preview .romant-osio-level.is-newest p {
+.romant-recipient .romant-hint-card.newest p,
+.romant-recipient .romant-hint-card.show p,
+.romant-home-preview .romant-hint-card.newest p {
   color: #4A1F2C;
   font-size: clamp(1.18rem, 3.8vw, 1.4rem);
 }
@@ -1920,13 +1958,15 @@ img.romant-logo,
   .romant-gift-moment.is-unwrapping,
   .romant-teaser-actions.is-unwrapping,
   .romant-recipient .romant-hint.show,
+  .romant-recipient .romant-hint-card.show,
   .romant-recipient .romant-tapaaminen.show,
   .romant-modal[open],
   .romant-modal.is-present {
     animation: none !important;
   }
 
-  .romant-recipient .romant-hint.show {
+  .romant-recipient .romant-hint.show,
+  .romant-recipient .romant-hint-card.show {
     opacity: 1;
     transform: none;
   }

@@ -16,17 +16,17 @@ $preview_href = $preview_href ?? '#';
         <p class="romant-tapaaminen-when">La 14.3. · 18:00</p>
         <p class="romant-tapaaminen-place">Kotona</p>
     </section>
-    <section class="romant-osio romant-osio-tint-0" aria-hidden="true">
-        <h2 class="romant-osio-title romant-serif">Elokuvahetki</h2>
-        <div class="romant-hint-stack">
-            <div class="romant-hint romant-osio-level romant-hint-box is-prior">
+    <section class="romant-osio osio romant-osio-tint-0" aria-hidden="true">
+        <h2 class="romant-osio-header osio-header romant-serif">Elokuvahetki</h2>
+        <div class="romant-hint-stack hint-stack">
+            <article class="romant-hint-card hint-card prior">
                 <span class="romant-spoiler-label">Vihje 1</span>
                 <p>Elokuva — mutta ei se, jota arvaat ensimmäisenä.</p>
-            </div>
-            <div class="romant-hint romant-osio-level romant-hint-box is-newest">
+            </article>
+            <article class="romant-hint-card hint-card newest">
                 <span class="romant-spoiler-label">Vihje 2</span>
                 <p>Paikat on varattu — loppu selviää perillä.</p>
-            </div>
+            </article>
         </div>
     </section>
     <span class="romant-btn romant-btn-ghost romant-more-btn">Haluatko kuulla lisää?</span>

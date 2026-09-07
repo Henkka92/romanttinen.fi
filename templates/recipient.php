@@ -4,8 +4,9 @@
  *
  * Server prints teaser only. Level texts are JSON for JS. After "Avaa kutsu"
  * Tapaaminen is an elegant display card (date + optional place, never a form).
- * Every revealed level is a stretchy card box; older = muted cream, newest =
- * wine border + giftIn. Section title once per tinted group. Next hint needs
+ * Every revealed level is a stretchy card box (Pauliina hint-card tokens).
+ * Older = prior / prior.mid; newest = wine border + giftIn. Section header
+ * once per tinted osio. Next hint needs
  * the confirm modal (+1). Depth stays in sessionStorage. Place is never on
  * the teaser.
  *

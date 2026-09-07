@@ -7,7 +7,7 @@ WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** 
 ## Changelog
 
 ### 1.3.4 — Peel-boxes (Henry FAIL fix)
-Saajan pino: **jokainen avattu taso on venyvä korttilaatikko** — ei leijuvaa tekstiä. Vanhat: himmeä cream, ei wine-reunaa; uusin: valkoinen + wine-reuna + varjo + `giftIn`. Labelit `Vihje 1` / `Vihje 2` / `Vihje 3`. Osion otsikko kerran ryhmän yllä (`Elokuvahetki` / `Yhteinen ateria` / `Kotona`) + kevyt taustasävy ryhmien välillä. **Tapaaminen** pysyy näyttökorttina ylhäällä (ei lomake). Modal Kerro lisää / +1 / append ennallaan.
+Saajan pino: **jokainen avattu taso on venyvä korttilaatikko** — ei leijuvaa tekstiä. Pauliina-tokenit: `prior` `#E8D5C6` + wine-hairline + opacity .78; `prior.mid` `#EBD9CE` .86; `newest` `#FFFDF9` + 1.75px wine + varjo + `giftIn`. Ruoka-osio (`tint-1`) prior `#E5CDBF` / newest `#FBF4EE`; tintit kiertävät osiolla. Labelit `Vihje 1` / `Vihje 2` / `Vihje 3`. Osion otsikko kerran (`osio-header`). **Tapaaminen** pysyy näyttökorttina ylhäällä (ei lomake). Modal Kerro lisää / +1 / append ennallaan.
 
 ### 1.3.3 — Brand align + peel history + Tapaaminen
 Etusivu ja craft jakavat saajan Wine `#4A1F2C` / Cream `#F3E6D8` / serif-maailman (ei sydämiä); fabric/bokeh vain hero/teaser. Peel: osion otsikko kortissa labelina (`Elokuvahetki` · `Yhteinen ateria` · `Kotona`) + `Vihje`; vanhat tasot 55–65 % opacity, uusin cream+wine+giftIn. **Tapaaminen** avauksen jälkeen (`La 14.6. · 18:00`, paikka valinnainen) — myöhässä/hiljaisena, ei kilpaile *Nyt saat tietää…* -iskun kanssa; avaus pysyy pehmeänä (.38s). Teaser countdown-only. Modal +1. Kehtaisinko (Portti 1) ennallaan.

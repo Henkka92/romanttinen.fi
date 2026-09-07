@@ -138,6 +138,23 @@
     return 'Vihje ' + levelNum;
   }
 
+  function tintIndex(index) {
+    return index % 3;
+  }
+
+  /**
+   * Pauliina peel markup:
+   *   section.osio > h2.osio-header + .hint-stack > article.hint-card.prior|newest
+   * prior.mid = older cards after the first. Tint class scales by section index.
+   */
+  function cardStateClass(i, depth, animate) {
+    var isNewest = i === depth - 1;
+    if (isNewest) {
+      return animate ? 'newest show' : 'newest';
+    }
+    return i > 0 ? 'prior mid' : 'prior';
+  }
+
   /**
    * Render unlocked hints as boxed peel cards (levels 0..depth-1).
    * Section title once per group. Every level is a stretchy card box:
@@ -156,8 +173,12 @@
       if (depth > maxDepth) depth = maxDepth;
       if (depth < 1) depth = 1;
 
+      var tint = tintIndex(index);
       var wrap = document.createElement('section');
-      wrap.className = 'romant-osio romant-osio-tint-' + (index % 3);
+      wrap.className = 'romant-osio osio romant-osio-tint-' + tint;
+      if (tint === 1) {
+        wrap.classList.add('ruoka');
+      }
       if (count < 2) {
         wrap.classList.add('is-solo');
       }
@@ -167,12 +188,12 @@
       wrap.setAttribute('data-section-index', String(index));
 
       var title = document.createElement('h2');
-      title.className = 'romant-osio-title romant-serif';
+      title.className = 'romant-osio-header osio-header romant-osio-title romant-serif';
       title.textContent = sectionTitle(sec, index);
       wrap.appendChild(title);
 
       var stack = document.createElement('div');
-      stack.className = 'romant-hint-stack';
+      stack.className = 'romant-hint-stack hint-stack';
 
       for (var i = 0; i < depth; i++) {
         var text = levels[i];
@@ -180,18 +201,13 @@
           continue;
         }
         var levelNum = i + 1;
-        var isNewest = i === depth - 1;
-        var block = document.createElement('div');
-        block.className = 'romant-hint romant-osio-level romant-hint-box';
+        var block = document.createElement('article');
+        block.className = 'romant-hint romant-hint-card hint-card romant-osio-level ' +
+          cardStateClass(i, depth, animate);
         block.setAttribute('data-level', String(levelNum));
         block.innerHTML =
           '<span class="romant-spoiler-label">' + hintLabel(levelNum) + '</span>' +
           '<p>' + escapeHtml(text) + '</p>';
-        if (isNewest) {
-          block.classList.add(animate ? 'show' : 'is-newest');
-        } else {
-          block.classList.add('is-prior');
-        }
         stack.appendChild(block);
       }
       wrap.appendChild(stack);
