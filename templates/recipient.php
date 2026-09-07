@@ -1,11 +1,13 @@
 <?php
 /**
- * Recipient view: /kutsu/{token}/ — teaser + peel history.
+ * Recipient view: /kutsu/{token}/ — teaser + peel boxes (1.3.4).
  *
  * Server prints teaser only. Level texts are JSON for JS. After "Avaa kutsu"
- * Tapaaminen (date + optional place) is always visible; hints stack as the
- * recipient peels (previous levels stay). Next hint requires the confirm
- * modal (+1). Depth stays in sessionStorage. Place is never on the teaser.
+ * Tapaaminen is an elegant display card (date + optional place, never a form).
+ * Every revealed level is a stretchy card box; older = muted cream, newest =
+ * wine border + giftIn. Section title once per tinted group. Next hint needs
+ * the confirm modal (+1). Depth stays in sessionStorage. Place is never on
+ * the teaser.
  *
  * @var WP_Post $post
  * @var array   $data
@@ -60,6 +62,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 <div class="romant-wrap romant-recipient" id="romant-recipient-page" data-romant-state="teaser">
     <header class="romant-recipient-chrome" id="romant-recipient-chrome" hidden>
         <p class="romant-wordmark">romanttinen.fi</p>
+        <p class="romant-opened-meta">Kutsu avattu · <?php echo esc_html(ROMANT_KUTSU_VERSION); ?></p>
     </header>
 
     <article class="romant-invite-card"
@@ -130,6 +133,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                     Kopioi linkki
                 </button>
             </div>
+            <p class="romant-peel-foot">Peel-boxes · <?php echo esc_html(ROMANT_KUTSU_VERSION); ?> · Henry FAIL fix</p>
         </div>
     </article>
 </div>

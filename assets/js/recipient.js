@@ -7,9 +7,10 @@
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
  *
- * Display stacks unlocked levels (1..depth); the newest appends with giftIn.
+ * Display stacks unlocked levels (1..depth) as stretchy card boxes.
+ * Older cards stay muted cream; the newest appends with wine border + giftIn.
  * Open + peel use Pauliina's giftIn (~.38s). Modal uses the same motion (~.32s).
- * Modal still unlocks exactly +1. Section title lives inside each hint card.
+ * Modal still unlocks exactly +1. Section title is once per group, not in-card.
  */
 (function () {
   'use strict';
@@ -133,14 +134,20 @@
     return t || ('Osio ' + (index + 1));
   }
 
+  function hintLabel(levelNum) {
+    return 'Vihje ' + levelNum;
+  }
+
   /**
-   * Render unlocked hints as a stack (levels 0..depth-1). Previous stay visible;
-   * the newest appends below. opts.animate = giftIn on the newest card only.
+   * Render unlocked hints as boxed peel cards (levels 0..depth-1).
+   * Section title once per group. Every level is a stretchy card box:
+   * older = muted cream, newest = wine border + giftIn when opts.animate.
    * "Haluatko kuulla lisää?" only when more non-empty levels remain.
    */
   function renderSections(container, sections, progress, opts) {
     opts = opts || {};
     var animate = !!opts.animate && !prefersReducedMotion();
+    var count = sections.length;
     container.innerHTML = '';
     sections.forEach(function (sec, index) {
       var depth = getDepth(progress, index);
@@ -149,14 +156,21 @@
       if (depth > maxDepth) depth = maxDepth;
       if (depth < 1) depth = 1;
 
-      var wrap = document.createElement('div');
-      wrap.className = 'romant-osio' + (sections.length < 2 ? ' is-solo' : '');
+      var wrap = document.createElement('section');
+      wrap.className = 'romant-osio romant-osio-tint-' + (index % 3);
+      if (count < 2) {
+        wrap.classList.add('is-solo');
+      }
       if (depth > 1) {
         wrap.classList.add('is-stacked');
       }
       wrap.setAttribute('data-section-index', String(index));
 
-      var titleText = sectionTitle(sec, index);
+      var title = document.createElement('h2');
+      title.className = 'romant-osio-title romant-serif';
+      title.textContent = sectionTitle(sec, index);
+      wrap.appendChild(title);
+
       var stack = document.createElement('div');
       stack.className = 'romant-hint-stack';
 
@@ -168,11 +182,10 @@
         var levelNum = i + 1;
         var isNewest = i === depth - 1;
         var block = document.createElement('div');
-        block.className = 'romant-hint romant-osio-level';
+        block.className = 'romant-hint romant-osio-level romant-hint-box';
         block.setAttribute('data-level', String(levelNum));
         block.innerHTML =
-          '<span class="romant-hint-section">' + escapeHtml(titleText) + '</span>' +
-          '<span class="romant-spoiler-label">Vihje</span>' +
+          '<span class="romant-spoiler-label">' + hintLabel(levelNum) + '</span>' +
           '<p>' + escapeHtml(text) + '</p>';
         if (isNewest) {
           block.classList.add(animate ? 'show' : 'is-newest');
