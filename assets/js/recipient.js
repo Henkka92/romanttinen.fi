@@ -6,15 +6,29 @@
  * shared unlock state across all testers/tabs on the same browser, which broke QA.
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
+ *
+ * Display is one hint at a time (current depth), not a stack of unlocked levels.
+ * Open + peel use Pauliina's giftIn (~.38s). Modal uses the same motion (~.32s).
  */
 (function () {
   'use strict';
 
   var cfg = window.romantPeli || {};
   var STORAGE_PREFIX = 'romant_peli_';
+  /** Demo lock: hint giftIn .38s; modal .32s. */
+  var HINT_MS = 380;
+  var MODAL_MS = 320;
 
   function storageKey(token) {
     return STORAGE_PREFIX + token;
+  }
+
+  function prefersReducedMotion() {
+    try {
+      return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    } catch (e) {
+      return false;
+    }
   }
 
   /** Expire any legacy cookie left by older builds (no longer read or written). */
@@ -99,10 +113,13 @@
   }
 
   /**
-   * Render only levels[0 .. depth-1] for each section.
+   * Render the current hint only (levels[depth-1]) — not a stack of 0..depth-1.
    * "Haluatko kuulla lisää?" only when more levels remain.
+   * opts.animate = play giftIn on the visible hint.
    */
-  function renderSections(container, sections, progress) {
+  function renderSections(container, sections, progress, opts) {
+    opts = opts || {};
+    var animate = !!opts.animate && !prefersReducedMotion();
     container.innerHTML = '';
     sections.forEach(function (sec, index) {
       var depth = getDepth(progress, index);
@@ -112,31 +129,38 @@
       if (depth < 1) depth = 1;
 
       var wrap = document.createElement('div');
-      wrap.className = 'romant-osio';
+      wrap.className = 'romant-osio' + (sections.length < 2 ? ' is-solo' : '');
       wrap.setAttribute('data-section-index', String(index));
 
-      var title = document.createElement('h2');
-      title.className = 'romant-osio-title romant-serif';
-      title.textContent = sec.title || ('Osio ' + (index + 1));
-      wrap.appendChild(title);
+      if (sections.length > 1) {
+        var title = document.createElement('h2');
+        title.className = 'romant-osio-title romant-serif';
+        title.textContent = sec.title || ('Osio ' + (index + 1));
+        wrap.appendChild(title);
+      }
 
-      // Only unlocked levels: indices 0 .. depth-1
-      for (var i = 0; i < depth; i++) {
-        var text = levels[i];
-        if (text === undefined || text === '') continue;
+      // Current peel only: index depth-1 (replace, do not stack).
+      var i = depth - 1;
+      var text = levels[i];
+      if (text !== undefined && text !== '') {
         var block = document.createElement('div');
-        block.className = 'romant-spoiler romant-osio-level';
-        block.setAttribute('data-level', String(i + 1));
+        block.className = 'romant-hint romant-osio-level';
+        block.setAttribute('data-level', String(depth));
         block.innerHTML =
-          '<span class="romant-spoiler-label">Taso ' + (i + 1) + '</span>' +
+          '<span class="romant-spoiler-label">Vihje</span>' +
           '<p>' + escapeHtml(text) + '</p>';
+        if (animate) {
+          block.classList.add('show');
+        } else {
+          block.classList.add('is-restored');
+        }
         wrap.appendChild(block);
       }
 
       if (depth < maxDepth) {
         var more = document.createElement('button');
         more.type = 'button';
-        more.className = 'romant-btn romant-btn-secondary romant-btn-sm romant-more-btn';
+        more.className = 'romant-btn romant-btn-ghost romant-more-btn';
         more.setAttribute('data-want-more', '');
         more.setAttribute('data-section-index', String(index));
         more.textContent = 'Haluatko kuulla lisää?';
@@ -151,6 +175,10 @@
     var card = document.getElementById('romant-invite');
     if (!card) return;
 
+    var page = document.getElementById('romant-recipient-page');
+    var chrome = document.getElementById('romant-recipient-chrome');
+    var moment = document.getElementById('romant-gift-moment');
+    var cue = document.getElementById('romant-reveal-cue');
     var token = card.getAttribute('data-romant-token') || '';
     var rawSections = card.getAttribute('data-romant-sections') || '[]';
     var sections = [];
@@ -170,23 +198,105 @@
     var modalYes = document.getElementById('romant-modal-yes');
     var modalNo = document.getElementById('romant-modal-no');
     var pendingIndex = -1;
+    var unwrapping = false;
+    var unlocking = false;
+
+    function setPageState(state) {
+      if (card) card.setAttribute('data-romant-state', state);
+      if (page) page.setAttribute('data-romant-state', state);
+      document.body.classList.remove('is-teaser', 'is-unwrapping', 'is-opened');
+      if (state) {
+        document.body.classList.add('is-' + state);
+      }
+      if (chrome) {
+        chrome.hidden = state !== 'opened';
+      }
+    }
+
+    function hideTeaserChrome() {
+      if (teaser) {
+        teaser.hidden = true;
+        teaser.classList.remove('is-unwrapping');
+      }
+      if (moment) {
+        moment.hidden = true;
+        moment.classList.remove('is-unwrapping');
+      }
+      card.classList.remove('is-unwrapping');
+    }
+
+    function revealGame(opts) {
+      opts = opts || {};
+      var animate = !!opts.animate;
+      var showCue = !!opts.showCue;
+      if (cue) {
+        cue.hidden = !showCue;
+      }
+      if (reveal) {
+        reveal.hidden = false;
+      }
+      if (container) {
+        renderSections(container, sections, progress, { animate: animate });
+      }
+      setPageState('opened');
+    }
 
     // Teaser gate: game content stays hidden until opened (HTML + CSS [hidden]).
-    function showGame() {
-      if (teaser) teaser.hidden = true;
-      if (reveal) reveal.hidden = false;
-      if (container) renderSections(container, sections, progress);
+    function showGame(opts) {
+      opts = opts || {};
+      hideTeaserChrome();
+      revealGame({
+        animate: !!opts.animate,
+        showCue: !!opts.showCue
+      });
     }
 
     function keepTeaser() {
-      if (teaser) teaser.hidden = false;
+      if (teaser) {
+        teaser.hidden = false;
+        teaser.classList.remove('is-unwrapping');
+      }
+      if (moment) {
+        moment.hidden = false;
+        moment.classList.remove('is-unwrapping');
+      }
+      card.classList.remove('is-unwrapping');
       if (reveal) {
         reveal.hidden = true;
         if (container) container.innerHTML = '';
       }
+      if (cue) cue.hidden = true;
+      if (chrome) chrome.hidden = true;
+      setPageState('teaser');
+    }
+
+    function unwrapThenShow() {
+      if (prefersReducedMotion()) {
+        showGame({ animate: false, showCue: true });
+        return;
+      }
+      unwrapping = true;
+      setPageState('unwrapping');
+      card.classList.add('is-unwrapping');
+      if (moment) moment.classList.add('is-unwrapping');
+      if (teaser) teaser.classList.add('is-unwrapping');
+      if (openBtn) openBtn.disabled = true;
+      // Hide open CTA, then giftIn the first hint (not a dump of all levels).
+      if (reveal) reveal.hidden = false;
+      if (cue) cue.hidden = false;
+      if (container) {
+        renderSections(container, sections, progress, { animate: true });
+      }
+      window.setTimeout(function () {
+        hideTeaserChrome();
+        setPageState('opened');
+        if (openBtn) openBtn.disabled = false;
+        unwrapping = false;
+      }, HINT_MS);
     }
 
     function openInvite() {
+      if (unwrapping) return;
       var wasOpened = progress.opened;
       progress.opened = true;
       // First open in this session: force every section to depth 1 (ignore any stale depth).
@@ -200,14 +310,16 @@
         }
       });
       saveProgress(token, progress);
-      showGame();
       if (!wasOpened) {
+        unwrapThenShow();
         track('open', token);
+      } else {
+        showGame({ animate: false, showCue: false });
       }
     }
 
     if (progress.opened) {
-      showGame();
+      showGame({ animate: false, showCue: false });
     } else {
       keepTeaser();
     }
@@ -220,6 +332,9 @@
 
     function closeModal() {
       pendingIndex = -1;
+      if (modal) {
+        modal.classList.remove('is-present');
+      }
       if (modal && typeof modal.close === 'function') {
         modal.close();
       } else if (modal) {
@@ -229,6 +344,9 @@
 
     function openModal(index) {
       pendingIndex = index;
+      if (modal) {
+        modal.classList.add('is-present');
+      }
       if (modal && typeof modal.showModal === 'function') {
         modal.showModal();
       } else if (modal) {
@@ -246,7 +364,6 @@
       });
     }
 
-    var unlocking = false;
     if (modalYes) {
       modalYes.addEventListener('click', function () {
         if (unlocking) return;
@@ -259,17 +376,22 @@
         var sec = sections[idx];
         var cur = getDepth(progress, idx);
         var max = (sec && sec.levels) ? sec.levels.length : cur;
-        // Confirm modal unlocks exactly +1 level.
+        var didUnlock = false;
+        // Confirm modal unlocks exactly +1 level, then replaces the visible hint.
         if (cur < max) {
           progress.depth[String(idx)] = cur + 1;
           saveProgress(token, progress);
+          didUnlock = true;
           track('reveal', token, {
             section: sec ? (sec.title || '') : '',
             section_index: idx
           });
         }
         closeModal();
-        if (container) renderSections(container, sections, progress);
+        if (container) {
+          renderSections(container, sections, progress, { animate: didUnlock });
+        }
+        if (cue) cue.hidden = true;
         unlocking = false;
       });
     }
@@ -283,6 +405,7 @@
     if (modal) {
       modal.addEventListener('cancel', function () {
         pendingIndex = -1;
+        modal.classList.remove('is-present');
       });
     }
   }

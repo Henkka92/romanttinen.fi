@@ -2,7 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.2.8 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.0 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+
+## Changelog
+
+### 1.3.0 — Portti 1: Saajan hetki (peel rhythm stub)
+Teaser: silk-tausta + kelluva kermakortti, **Avaa kutsu**. Avaus: `giftIn` (.38s) ja *Nyt saat tietää…* + yksi **Vihje**-kortti. **Haluatko kuulla lisää?** → modal (**Kerro lisää** / **Pidän jännityksen**). Seuraava vihje korvaa edellisen (ei pinoa). Portti, sessionStorage ja +1 / vahvistus ennallaan.
 
 ## Asennus / päivitys ilman deaktivointia
 
