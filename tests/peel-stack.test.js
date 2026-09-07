@@ -1,5 +1,5 @@
 /**
- * 1.3.3 peel + Tapaaminen contract (no DOM).
+ * 1.3.4 peel-boxes contract (no DOM).
  * Run: node tests/peel-stack.test.js
  */
 'use strict';
@@ -21,6 +21,22 @@ function sectionTitle(sec, index) {
   return t || ('Osio ' + (index + 1));
 }
 
+function hintLabel(levelNum) {
+  return 'Vihje ' + levelNum;
+}
+
+function tintIndex(index) {
+  return index % 3;
+}
+
+function cardStateClass(i, depth, animate) {
+  var isNewest = i === depth - 1;
+  if (isNewest) {
+    return animate ? 'newest show' : 'newest';
+  }
+  return i > 0 ? 'prior mid' : 'prior';
+}
+
 function stackedLevels(sec, depth) {
   var levels = peelLevels(sec);
   var max = levels.length;
@@ -33,24 +49,39 @@ function unlockPlusOne(depth, max) {
   return depth < max ? depth + 1 : depth;
 }
 
-function hintInner(title, text) {
+function hintInner(levelNum, text) {
   return (
-    '<span class="romant-hint-section">' + title + '</span>' +
-    '<span class="romant-spoiler-label">Vihje</span>' +
+    '<span class="romant-spoiler-label">' + hintLabel(levelNum) + '</span>' +
     '<p>' + text + '</p>'
+  );
+}
+
+function groupMarkup(title, depth, animate, index) {
+  var tint = tintIndex(index || 0);
+  var cards = [];
+  for (var i = 0; i < depth; i++) {
+    var cls = 'romant-hint romant-hint-card hint-card romant-osio-level ' +
+      cardStateClass(i, depth, animate);
+    cards.push('<article class="' + cls + '" data-level="' + (i + 1) + '">' + hintInner(i + 1, 'L' + (i + 1)) + '</article>');
+  }
+  var ruoka = tint === 1 ? ' ruoka' : '';
+  return (
+    '<section class="romant-osio osio romant-osio-tint-' + tint + ruoka + '">' +
+      '<h2 class="romant-osio-header osio-header romant-serif">' + title + '</h2>' +
+      '<div class="romant-hint-stack hint-stack">' + cards.join('') + '</div>' +
+    '</section>'
   );
 }
 
 function stackClasses(depth, animate) {
   var out = [];
   for (var i = 0; i < depth; i++) {
-    var isNewest = i === depth - 1;
-    out.push(isNewest ? (animate ? 'show' : 'is-newest') : 'is-prior');
+    out.push(cardStateClass(i, depth, animate));
   }
   return out;
 }
 
-/** Mirror PHP format_tapaaminen — `La 14.6. · 18:00` */
+/** Mirror PHP format_tapaaminen — `La 14.3. · 18:00` */
 function formatTapaaminen(iso) {
   var dt = new Date(iso);
   var days = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
@@ -77,19 +108,38 @@ var elokuva = {
   levels: ['L1 text', 'L2 text', 'L3 text'],
 };
 
+var html = groupMarkup('Elokuvahetki', 3, false, 0);
+var ruoka = groupMarkup('Yhteinen ateria', 2, false, 1);
+
 assert('depth 1 is only L1', stackedLevels(elokuva, 1).join('|') === 'L1 text');
 assert('depth 2 keeps L1 and appends L2', stackedLevels(elokuva, 2).join('|') === 'L1 text|L2 text');
 assert('depth 3 accumulates', stackedLevels(elokuva, 3).join('|') === 'L1 text|L2 text|L3 text');
-assert('older cards are is-prior, newest is-newest', stackClasses(3, false).join('|') === 'is-prior|is-prior|is-newest');
-assert('newest animates with show', stackClasses(2, true).join('|') === 'is-prior|show');
-assert('section title is Elokuvahetki', sectionTitle(elokuva, 0) === 'Elokuvahetki');
+assert('older/mid/newest classes', stackClasses(3, false).join('|') === 'prior|prior mid|newest');
+assert('newest animates with show', stackClasses(2, true).join('|') === 'prior|newest show');
+assert('section title is Elokuvahetki once as heading', sectionTitle(elokuva, 0) === 'Elokuvahetki');
 assert('not short Elokuva/Ruoka', ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'].indexOf('Elokuva') === -1);
-assert('hint label is Vihje not TASO 1', /Vihje/.test(hintInner('Elokuvahetki', 'L1')) && !/TASO/.test(hintInner('Elokuvahetki', 'L1')));
-assert('section is in-card label not heading', /romant-hint-section/.test(hintInner('Kotona', 'x')) && !/<h[12]/.test(hintInner('Kotona', 'x')));
+assert('labels are numbered Vihje 1/2/3', hintLabel(1) === 'Vihje 1' && hintLabel(2) === 'Vihje 2' && hintLabel(3) === 'Vihje 3');
+assert('level marker is number only', hintLabel(2) === 'Vihje 2' && !/TASO|taso|•|★/.test(hintInner(2, 'L2')));
+assert('hint label is not TASO', /Vihje 1/.test(hintInner(1, 'L1')) && !/TASO/.test(hintInner(1, 'L1')));
+var family = ['#E8D5C6', '#EBD9CE', '#FFFDF9', '#E5CDBF', '#FBF4EE', '#DCC8BC', '#FAF4EE'];
+assert('card tints stay muted wine/rose/cream', family.every(function (hex) {
+  return !/#[0-3][0-9A-F][8-9A-F]|#[0-9A-F]{2}[8-9A-F]{2}[0-3]/.test(hex);
+}));
+assert('markup is osio > osio-header + hint-stack > hint-card',
+  /<section class="[^"]*\bosio\b/.test(html) &&
+  /osio-header/.test(html) &&
+  /hint-stack/.test(html) &&
+  /hint-card/.test(html) &&
+  /<article class="/.test(html)
+);
+assert('section title is group heading not in-card', /romant-osio-header/.test(html) && !/romant-hint-section/.test(html));
+assert('every revealed level is a hint-card', (html.match(/<article class="/g) || []).length === 3 && /hint-card/.test(html));
+assert('tints cycle for N sections', tintIndex(0) === 0 && tintIndex(1) === 1 && tintIndex(3) === 0);
+assert('section 1 is ruoka tint', /\bruoka\b/.test(ruoka) && /romant-osio-tint-1/.test(ruoka));
 assert('modal unlocks exactly +1', unlockPlusOne(1, 3) === 2 && unlockPlusOne(3, 3) === 3);
 assert('tapaaminen line is La 13.6. · 18:00', formatTapaaminen('2026-06-13T18:00:00+03:00') === 'La 13.6. · 18:00');
 assert('teaser must not include place', 'countdown-only'.indexOf('Keskusta') === -1);
-assert('recipient tapaaminen is display not form', !/<input/.test('<section class="romant-tapaaminen-display"><span>Tapaaminen</span><p>La 14.6. · 18:00</p></section>'));
+assert('recipient tapaaminen is display not form', !/<input/.test('<section class="romant-tapaaminen-display"><span>Tapaaminen</span><p>La 14.3. · 18:00</p></section>'));
 assert('open stays soft: meet delay after hint beat', 560 > 380);
 
 if (fails) {

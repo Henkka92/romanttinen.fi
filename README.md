@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.3 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.4 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.4 — Peel-boxes (Henry FAIL fix)
+Saajan pino: **jokainen avattu taso on venyvä korttilaatikko** — ei leijuvaa tekstiä. Pauliina-tokenit: `prior` `#E8D5C6` + wine-hairline + opacity .78; `prior.mid` `#EBD9CE` .86; `newest` `#FFFDF9` + 1.75px wine + varjo + `giftIn`. Osioiden sävyt (Mari): vain himmeä wine / rose / cream — ei sateenkaarta; `tint-0` cream, `tint-1` rose (`#E5CDBF` / `#FBF4EE`), `tint-2` wine-cream. Labelit vain `Vihje 1` / `2` / `3`. Osion otsikko kerran (`osio-header`). **Tapaaminen** pysyy näyttökorttina ylhäällä (ei lomake). Modal Kerro lisää / +1 / append ennallaan.
 
 ### 1.3.3 — Brand align + peel history + Tapaaminen
 Etusivu ja craft jakavat saajan Wine `#4A1F2C` / Cream `#F3E6D8` / serif-maailman (ei sydämiä); fabric/bokeh vain hero/teaser. Peel: osion otsikko kortissa labelina (`Elokuvahetki` · `Yhteinen ateria` · `Kotona`) + `Vihje`; vanhat tasot 55–65 % opacity, uusin cream+wine+giftIn. **Tapaaminen** avauksen jälkeen (`La 14.6. · 18:00`, paikka valinnainen) — myöhässä/hiljaisena, ei kilpaile *Nyt saat tietää…* -iskun kanssa; avaus pysyy pehmeänä (.38s). Teaser countdown-only. Modal +1. Kehtaisinko (Portti 1) ennallaan.

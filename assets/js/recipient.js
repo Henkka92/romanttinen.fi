@@ -7,9 +7,10 @@
  * sessionStorage keeps progress for the current tab/session after "Avaa kutsu", but
  * each new browser session starts fresh at the teaser (depth 1 per section).
  *
- * Display stacks unlocked levels (1..depth); the newest appends with giftIn.
+ * Display stacks unlocked levels (1..depth) as stretchy card boxes.
+ * Older cards stay muted cream; the newest appends with wine border + giftIn.
  * Open + peel use Pauliina's giftIn (~.38s). Modal uses the same motion (~.32s).
- * Modal still unlocks exactly +1. Section title lives inside each hint card.
+ * Modal still unlocks exactly +1. Section title is once per group, not in-card.
  */
 (function () {
   'use strict';
@@ -133,14 +134,38 @@
     return t || ('Osio ' + (index + 1));
   }
 
+  /** Mari lock: number only — `Vihje 1` / `Vihje 2` / `Vihje 3`. No extra markers. */
+  function hintLabel(levelNum) {
+    return 'Vihje ' + levelNum;
+  }
+
+  function tintIndex(index) {
+    return index % 3;
+  }
+
   /**
-   * Render unlocked hints as a stack (levels 0..depth-1). Previous stay visible;
-   * the newest appends below. opts.animate = giftIn on the newest card only.
+   * Pauliina peel markup:
+   *   section.osio > h2.osio-header + .hint-stack > article.hint-card.prior|newest
+   * prior.mid = older cards after the first. Tint class scales by section index.
+   */
+  function cardStateClass(i, depth, animate) {
+    var isNewest = i === depth - 1;
+    if (isNewest) {
+      return animate ? 'newest show' : 'newest';
+    }
+    return i > 0 ? 'prior mid' : 'prior';
+  }
+
+  /**
+   * Render unlocked hints as boxed peel cards (levels 0..depth-1).
+   * Section title once per group. Every level is a stretchy card box:
+   * older = muted cream, newest = wine border + giftIn when opts.animate.
    * "Haluatko kuulla lisää?" only when more non-empty levels remain.
    */
   function renderSections(container, sections, progress, opts) {
     opts = opts || {};
     var animate = !!opts.animate && !prefersReducedMotion();
+    var count = sections.length;
     container.innerHTML = '';
     sections.forEach(function (sec, index) {
       var depth = getDepth(progress, index);
@@ -149,16 +174,27 @@
       if (depth > maxDepth) depth = maxDepth;
       if (depth < 1) depth = 1;
 
-      var wrap = document.createElement('div');
-      wrap.className = 'romant-osio' + (sections.length < 2 ? ' is-solo' : '');
+      var tint = tintIndex(index);
+      var wrap = document.createElement('section');
+      wrap.className = 'romant-osio osio romant-osio-tint-' + tint;
+      if (tint === 1) {
+        wrap.classList.add('ruoka');
+      }
+      if (count < 2) {
+        wrap.classList.add('is-solo');
+      }
       if (depth > 1) {
         wrap.classList.add('is-stacked');
       }
       wrap.setAttribute('data-section-index', String(index));
 
-      var titleText = sectionTitle(sec, index);
+      var title = document.createElement('h2');
+      title.className = 'romant-osio-header osio-header romant-osio-title romant-serif';
+      title.textContent = sectionTitle(sec, index);
+      wrap.appendChild(title);
+
       var stack = document.createElement('div');
-      stack.className = 'romant-hint-stack';
+      stack.className = 'romant-hint-stack hint-stack';
 
       for (var i = 0; i < depth; i++) {
         var text = levels[i];
@@ -166,19 +202,13 @@
           continue;
         }
         var levelNum = i + 1;
-        var isNewest = i === depth - 1;
-        var block = document.createElement('div');
-        block.className = 'romant-hint romant-osio-level';
+        var block = document.createElement('article');
+        block.className = 'romant-hint romant-hint-card hint-card romant-osio-level ' +
+          cardStateClass(i, depth, animate);
         block.setAttribute('data-level', String(levelNum));
         block.innerHTML =
-          '<span class="romant-hint-section">' + escapeHtml(titleText) + '</span>' +
-          '<span class="romant-spoiler-label">Vihje</span>' +
+          '<span class="romant-spoiler-label">' + hintLabel(levelNum) + '</span>' +
           '<p>' + escapeHtml(text) + '</p>';
-        if (isNewest) {
-          block.classList.add(animate ? 'show' : 'is-newest');
-        } else {
-          block.classList.add('is-prior');
-        }
         stack.appendChild(block);
       }
       wrap.appendChild(stack);
