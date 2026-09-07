@@ -137,7 +137,7 @@
     titleInput.type = 'text';
     titleInput.name = 'romant_sections[' + si + '][title]';
     titleInput.maxLength = 80;
-    titleInput.placeholder = i18n.sectionPh || 'Esim. Leffa';
+    titleInput.placeholder = i18n.sectionPh || 'Esim. Elokuvahetki';
     titleInput.required = true;
     titleInput.setAttribute('data-section-title', '');
 

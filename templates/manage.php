@@ -233,9 +233,9 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                     <label for="romant_datetime">Päivä ja aika (Suomi) <span class="req">*</span></label>
                     <input type="datetime-local" id="romant_datetime" name="romant_datetime"
                            value="<?php echo esc_attr($dt_local); ?>" required />
-                    <label for="romant_location">Paikka (valinnainen)</label>
+                    <label for="romant_location">Paikka</label>
                     <input type="text" id="romant_location" name="romant_location" maxlength="120"
-                           autocomplete="off" placeholder="Esim. Keskusta"
+                           autocomplete="off" placeholder="Lisää paikka…"
                            value="<?php echo esc_attr($location); ?>" />
                     <p class="romant-hint">Näkyy saajalle Tapaaminen-kortissa vasta avauksen jälkeen — ei teaserissa.</p>
                 </fieldset>
@@ -272,9 +272,10 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                 <p class="romant-preview-note">Avauksen jälkeen: Tapaaminen + kunkin osion 1. taso (tasot 2+ avautuvat saajalle).</p>
                 <?php if ($tapaaminen['line'] !== '') : ?>
                     <section class="romant-tapaaminen is-restored" aria-label="Tapaaminen">
-                        <h3 class="romant-serif romant-tapaaminen-title">Tapaaminen</h3>
+                        <span class="romant-tapaaminen-label">Tapaaminen</span>
                         <p class="romant-tapaaminen-when"><?php echo esc_html($tapaaminen['line']); ?></p>
                         <?php if ($location !== '') : ?>
+                            <span class="romant-tapaaminen-place-label">Paikka</span>
                             <p class="romant-tapaaminen-place"><?php echo esc_html($location); ?></p>
                         <?php endif; ?>
                     </section>

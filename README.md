@@ -7,7 +7,7 @@ WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** 
 ## Changelog
 
 ### 1.3.3 — Brand align + peel history + Tapaaminen
-Etusivu ja craft/create/manage jakavat saajan Wine/Cream/serif-maailman (ei sydämiä). Peel: osion otsikko vihje-kortissa; avatut tasot jäävät näkyviin ja uusi taso liitetään alle (ei korvausta). **Tapaaminen**-kortti heti *Avaa kutsu* -jälkeen (päivä pakollinen, paikka valinnainen `romant_location`). Teaser pysyy countdown-only — paikka ei näy ennen avausta. Modal yhä +1 / Kerro lisää / Pidän jännityksen. Kehtaisinko (Portti 1) ennallaan.
+Etusivu ja craft jakavat saajan Wine `#4A1F2C` / Cream `#F3E6D8` / serif-maailman (ei sydämiä); fabric/bokeh vain hero/teaser. Peel: osion otsikko kortissa labelina (`Elokuvahetki` · `Yhteinen ateria` · `Kotona`) + `Vihje`; vanhat tasot 55–65 % opacity, uusin cream+wine+giftIn. **Tapaaminen** heti avauksen jälkeen (`La 14.6. · 18:00`, paikka valinnainen). Teaser countdown-only. Modal +1. Kehtaisinko (Portti 1) ennallaan.
 
 ### 1.3.2 — Portti 1 visual QA (logo + fabric)
 Saajan näkymä avauksen jälkeen: yksi logo (header-chrome; teaser-wordmark piilotetaan kunnolla — `display:flex` yli kirjoitti `[hidden]`). Cream silk/fabric (`hero-fabric`) säilyy teaser → peel; ei enää flat beige `is-opened`-hyppyä. Vihje-kortit pitävät kermapinnan fabricin päällä.
@@ -71,7 +71,7 @@ define('ROMANTTINEN_STUB_PAYMENTS', true);
 [
   {
     "id": "a1b2c3d4…",
-    "title": "Leffa",
+    "title": "Elokuvahetki",
     "levels": ["Taso 1 teksti", "Taso 2…", "Taso 3…"]
   }
 ]

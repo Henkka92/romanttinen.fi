@@ -164,17 +164,18 @@
           continue;
         }
         var levelNum = i + 1;
+        var isNewest = i === depth - 1;
         var block = document.createElement('div');
         block.className = 'romant-hint romant-osio-level';
         block.setAttribute('data-level', String(levelNum));
         block.innerHTML =
-          '<h3 class="romant-hint-title romant-serif">' + escapeHtml(titleText) + '</h3>' +
+          '<span class="romant-hint-section">' + escapeHtml(titleText) + '</span>' +
           '<span class="romant-spoiler-label">Vihje</span>' +
           '<p>' + escapeHtml(text) + '</p>';
-        if (animate && i === depth - 1) {
-          block.classList.add('show');
+        if (isNewest) {
+          block.classList.add(animate ? 'show' : 'is-newest');
         } else {
-          block.classList.add('is-restored');
+          block.classList.add('is-prior');
         }
         stack.appendChild(block);
       }

@@ -212,7 +212,7 @@ final class Romant_Kutsu_CPT {
         return [
             [
                 'id'     => self::generate_secret(8),
-                'title'  => 'Leffa',
+                'title'  => 'Elokuvahetki',
                 'levels' => [
                     'Elokuva — mutta ei se, jota arvaat ensimmäisenä.',
                     'Jotain kevyttä ja yhteistä. Popcornia saa olla.',
@@ -221,11 +221,20 @@ final class Romant_Kutsu_CPT {
             ],
             [
                 'id'     => self::generate_secret(8),
-                'title'  => 'Ruoka',
+                'title'  => 'Yhteinen ateria',
                 'levels' => [
                     'Syödään hyvin — ei pikaruokaa.',
                     'Pöytä on katettu kahdelle. Tunnelma ratkaisee.',
                     'Jälkiruoka odottaa — tai jätetään se huomiseen.',
+                ],
+            ],
+            [
+                'id'     => self::generate_secret(8),
+                'title'  => 'Kotona',
+                'levels' => [
+                    'Ilta jatkuu — ei vielä kotiin nukkumaan.',
+                    'Valot himmeinä. Ei kiirettä.',
+                    'Viimeinen vihje odottaa ovella.',
                 ],
             ],
         ];
@@ -566,7 +575,7 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
-     * Tapaaminen card parts (Europe/Helsinki). Date is required on create; time uses Finnish "klo".
+     * Tapaaminen card line (Europe/Helsinki). Locked: `La 14.6. · 18:00`.
      *
      * @return array{date: string, time: string, line: string}
      */
@@ -578,12 +587,14 @@ final class Romant_Kutsu_CPT {
         try {
             $dt   = new DateTimeImmutable($iso);
             $dt   = $dt->setTimezone(new DateTimeZone('Europe/Helsinki'));
-            $date = $dt->format('j.n.Y');
-            $time = 'klo ' . $dt->format('H.i');
+            $days = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
+            $wd   = $days[(int) $dt->format('w')];
+            $date = $dt->format('j.n.');
+            $time = $dt->format('H:i');
             return [
-                'date' => $date,
+                'date' => $wd . ' ' . $date,
                 'time' => $time,
-                'line' => $date . ' · ' . $time,
+                'line' => $wd . ' ' . $date . ' · ' . $time,
             ];
         } catch (Exception $e) {
             return $empty;

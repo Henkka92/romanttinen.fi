@@ -107,9 +107,10 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
             <p class="romant-reveal-cue" id="romant-reveal-cue" hidden>Nyt saat tietää…</p>
             <?php if ($tapaaminen['line'] !== '') : ?>
                 <section class="romant-tapaaminen" id="romant-tapaaminen" aria-label="Tapaaminen">
-                    <h2 class="romant-serif romant-tapaaminen-title">Tapaaminen</h2>
+                    <span class="romant-tapaaminen-label">Tapaaminen</span>
                     <p class="romant-tapaaminen-when"><?php echo esc_html($tapaaminen['line']); ?></p>
                     <?php if ($location !== '') : ?>
+                        <span class="romant-tapaaminen-place-label">Paikka</span>
                         <p class="romant-tapaaminen-place"><?php echo esc_html($location); ?></p>
                     <?php endif; ?>
                 </section>

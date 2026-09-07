@@ -23,7 +23,7 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
           data-hard-max="<?php echo esc_attr((string) $hard); ?>">
     <legend>Osiot (peli)</legend>
     <p class="romant-hint">
-        Enintään <?php echo esc_html((string) $max_sec); ?> osiota (esim. Leffa / Ruoka / Koti).
+        Enintään <?php echo esc_html((string) $max_sec); ?> osiota (esim. Elokuvahetki / Yhteinen ateria / Kotona).
         Jokaisessa oletuksena 3 tasoa — vastaanottaja avaa niitä yksi kerrallaan.
         <strong>Vähintään 2 tasoa</strong> osiossa tarvitaan, jotta vastaanottaja näkee
         «Haluatko kuulla lisää?» → modalin.
@@ -49,7 +49,7 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
                                value="<?php echo esc_attr($sid); ?>" data-section-id />
                         <input type="text" name="romant_sections[<?php echo esc_attr((string) $si); ?>][title]"
                                value="<?php echo esc_attr($stitle); ?>" maxlength="80"
-                               placeholder="Esim. Leffa" required data-section-title />
+                               placeholder="Esim. Elokuvahetki" required data-section-title />
                     </label>
                     <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section
                             <?php echo count($sections) <= 1 ? ' hidden' : ''; ?>>

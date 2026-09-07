@@ -50,9 +50,9 @@ $sections  = Romant_Kutsu_CPT::sample_sections();
             <legend>Tapaaminen</legend>
             <label for="romant_datetime">Päivä ja aika (Suomi) <span class="req">*</span></label>
             <input type="datetime-local" id="romant_datetime" name="romant_datetime" required />
-            <label for="romant_location">Paikka (valinnainen)</label>
+            <label for="romant_location">Paikka</label>
             <input type="text" id="romant_location" name="romant_location" maxlength="120"
-                   autocomplete="off" placeholder="Esim. Keskusta" />
+                   autocomplete="off" placeholder="Lisää paikka…" />
             <p class="romant-hint">Näkyy saajalle Tapaaminen-kortissa vasta avauksen jälkeen — ei teaserissa.</p>
         </fieldset>
 

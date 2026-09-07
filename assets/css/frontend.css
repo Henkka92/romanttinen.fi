@@ -18,13 +18,9 @@
 .romant-kutsu-body {
   margin: 0;
   min-height: 100vh;
-  background-color: #e8d4c4;
-  background-image:
-    linear-gradient(180deg, rgba(243, 230, 216, 0.32) 0%, rgba(243, 230, 216, 0.14) 42%, rgba(243, 230, 216, 0.38) 100%),
-    var(--romant-page-fabric);
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
+  background:
+    radial-gradient(ellipse at top, var(--romant-blush) 0%, transparent 55%),
+    var(--romant-cream);
   color: var(--romant-ink);
   font-family: var(--romant-sans);
   font-size: 16px;
@@ -584,13 +580,9 @@ p.romant-hint {
 
 /* —— Marketing homepage —— */
 .romant-home-body {
-  background-color: #e8d4c4;
-  background-image:
-    linear-gradient(180deg, rgba(243, 230, 216, 0.32) 0%, rgba(243, 230, 216, 0.14) 42%, rgba(243, 230, 216, 0.38) 100%),
-    var(--romant-page-fabric);
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
+  background:
+    radial-gradient(ellipse at top, var(--romant-blush) 0%, transparent 50%),
+    var(--romant-cream);
 }
 
 .romant-home {
@@ -673,13 +665,23 @@ img.romant-logo,
   padding: 1.35rem 1.15rem 1.4rem;
   border-radius: var(--romant-radius);
   overflow: hidden;
-  background: var(--romant-cream);
+  background-color: var(--romant-cream);
+  background-image: var(--romant-hero-fabric, var(--romant-page-fabric));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: var(--romant-card-border);
   box-shadow: var(--romant-shadow);
 }
 
 .romant-home-hero::before {
-  display: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(135deg, rgba(243, 230, 216, 0.88) 0%, rgba(243, 230, 216, 0.62) 48%, rgba(243, 230, 216, 0.42) 100%);
+  pointer-events: none;
 }
 
 .romant-home-hero > * {
@@ -1347,22 +1349,26 @@ img.romant-logo,
   pointer-events: none;
 }
 
-.romant-recipient .romant-hint,
-.romant-recipient .romant-tapaaminen {
-  opacity: 0;
-  transform: translateY(14px) scale(0.98);
-}
-
 .romant-recipient .romant-hint.show,
 .romant-recipient .romant-tapaaminen.show {
+  opacity: 0;
+  transform: translateY(14px) scale(0.98);
   animation: giftIn 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-.romant-recipient .romant-hint.is-restored,
+.romant-recipient .romant-hint.is-newest,
 .romant-recipient .romant-tapaaminen.is-restored,
 .romant-preview-card .romant-tapaaminen.is-restored {
   opacity: 1;
   transform: none;
+}
+
+.romant-recipient .romant-hint.is-prior {
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+  padding: 1.15rem 1.2rem;
+  min-height: 0;
 }
 
 @keyframes giftIn {
@@ -1405,10 +1411,7 @@ img.romant-logo,
 }
 
 .romant-recipient .romant-osio-title {
-  text-align: center;
-  font-size: 1.15rem !important;
-  margin: 0 0 0.85rem;
-  color: #4A1F2C;
+  display: none;
 }
 
 .romant-hint-stack {
@@ -1433,30 +1436,31 @@ img.romant-logo,
   box-shadow: 0 14px 36px rgba(74, 31, 44, 0.08);
 }
 
-.romant-recipient .romant-osio:not(.is-stacked) .romant-osio-level {
+.romant-recipient .romant-osio-level.is-newest,
+.romant-recipient .romant-osio-level.show {
   min-height: 13.5rem;
   padding: 2.2rem 1.55rem;
 }
 
-.romant-recipient .romant-osio.is-stacked .romant-osio-level {
-  min-height: 0;
-}
-
-.romant-hint-title {
-  margin: 0 0 0.35rem;
-  font-size: 1.45rem;
-  line-height: 1.15;
+.romant-hint-section,
+.romant-tapaaminen-label {
+  display: block;
+  font-family: var(--romant-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: #4A1F2C;
+  margin: 0 0 0.35rem;
 }
 
 .romant-recipient .romant-osio-level .romant-spoiler-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   font-weight: 500;
   color: #4A1F2C;
-  opacity: 0.45;
-  margin-bottom: 0.85rem;
+  opacity: 0.5;
+  margin-bottom: 0.75rem;
 }
 
 .romant-tapaaminen {
@@ -1466,24 +1470,27 @@ img.romant-logo,
   padding: 1.45rem 1.35rem 1.35rem;
 }
 
-.romant-tapaaminen-title {
-  margin: 0 0 0.45rem;
-  font-size: 1.45rem;
-  color: #4A1F2C;
-}
-
 .romant-tapaaminen-when {
   margin: 0;
   font-family: var(--romant-serif);
-  font-size: 1.2rem;
-  line-height: 1.35;
+  font-size: 1.45rem;
+  line-height: 1.25;
   color: #4A1F2C;
 }
 
+.romant-tapaaminen-place-label {
+  display: block;
+  margin: 0.7rem 0 0.15rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #4A1F2C;
+  opacity: 0.5;
+}
+
 .romant-tapaaminen-place {
-  margin: 0.45rem 0 0;
-  font-size: 0.95rem;
-  color: rgba(74, 31, 44, 0.72);
+  margin: 0;
+  font-size: 0.98rem;
+  color: rgba(74, 31, 44, 0.68);
 }
 
 .romant-preview-card .romant-tapaaminen {
