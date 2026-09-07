@@ -16,9 +16,11 @@
 
   var cfg = window.romantPeli || {};
   var STORAGE_PREFIX = 'romant_peli_';
-  /** Demo lock: hint giftIn .38s; modal .32s. */
+  /** Demo lock: hint giftIn .38s; modal .32s. Do not rush open. */
   var HINT_MS = 380;
   var MODAL_MS = 320;
+  /** After the *Nyt saat tietää…* beat — Tapaaminen stays secondary. */
+  var MEET_DELAY_MS = 560;
 
   function storageKey(token) {
     return STORAGE_PREFIX + token;
@@ -195,15 +197,9 @@
     });
   }
 
-  function markMeeting(animate) {
-    var meet = document.getElementById('romant-tapaaminen');
+  function resetMeetingEl(meet) {
     if (!meet) return;
-    meet.classList.remove('show', 'is-restored');
-    if (animate && !prefersReducedMotion()) {
-      meet.classList.add('show');
-    } else {
-      meet.classList.add('is-restored');
-    }
+    meet.classList.remove('show', 'is-restored', 'is-pending');
   }
 
   function init() {
@@ -235,6 +231,31 @@
     var pendingIndex = -1;
     var unwrapping = false;
     var unlocking = false;
+    var meetTimer = 0;
+
+    function clearMeetTimer() {
+      if (meetTimer) {
+        window.clearTimeout(meetTimer);
+        meetTimer = 0;
+      }
+    }
+
+    function markMeeting(animate) {
+      var meet = document.getElementById('romant-tapaaminen');
+      clearMeetTimer();
+      resetMeetingEl(meet);
+      if (!meet) return;
+      if (animate && !prefersReducedMotion()) {
+        meet.classList.add('is-pending');
+        meetTimer = window.setTimeout(function () {
+          meet.classList.remove('is-pending');
+          meet.classList.add('show');
+          meetTimer = 0;
+        }, MEET_DELAY_MS);
+        return;
+      }
+      meet.classList.add('is-restored');
+    }
 
     function setPageState(state) {
       if (card) card.setAttribute('data-romant-state', state);
@@ -304,9 +325,8 @@
       if (cue) cue.hidden = true;
       if (chrome) chrome.hidden = true;
       var meet = document.getElementById('romant-tapaaminen');
-      if (meet) {
-        meet.classList.remove('show', 'is-restored');
-      }
+      clearMeetTimer();
+      resetMeetingEl(meet);
       setPageState('teaser');
     }
 

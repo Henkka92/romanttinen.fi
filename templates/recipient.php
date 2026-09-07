@@ -102,7 +102,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
             </button>
         </div>
 
-        <?php // Game: hidden until Avaa kutsu. Tapaaminen first; hints stack as depth grows. ?>
+        <?php // Cue is the open beat; Tapaaminen follows quietly (delayed, secondary). ?>
         <div class="romant-reveal" id="romant-reveal" hidden>
             <p class="romant-reveal-cue" id="romant-reveal-cue" hidden>Nyt saat tietää…</p>
             <?php if ($tapaaminen['line'] !== '') : ?>

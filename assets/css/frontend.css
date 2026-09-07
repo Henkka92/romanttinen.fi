@@ -1472,17 +1472,29 @@ img.romant-logo,
   pointer-events: none;
 }
 
-.romant-recipient .romant-hint.show,
-.romant-recipient .romant-tapaaminen.show {
+.romant-recipient .romant-hint.show {
   opacity: 0;
   transform: translateY(14px) scale(0.98);
   animation: giftIn 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .romant-recipient .romant-hint.is-newest,
-.romant-recipient .romant-tapaaminen.is-restored,
 .romant-preview-card .romant-tapaaminen.is-restored {
   opacity: 1;
+  transform: none;
+}
+
+.romant-recipient .romant-tapaaminen.is-pending {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.romant-recipient .romant-tapaaminen.show {
+  animation: tapaaminenIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.romant-recipient .romant-tapaaminen.is-restored {
+  opacity: 0.7;
   transform: none;
 }
 
@@ -1501,6 +1513,13 @@ img.romant-logo,
   }
 }
 
+@keyframes tapaaminenIn {
+  to {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+}
+
 @keyframes romant-peel-out {
   to {
     opacity: 0;
@@ -1513,13 +1532,13 @@ img.romant-logo,
 }
 
 .romant-reveal-cue {
-  margin: 0 0 1.1rem;
+  margin: 0 0 1.35rem;
   font-family: var(--romant-serif);
-  font-size: 1.08rem;
+  font-size: 1.22rem;
   font-style: italic;
   letter-spacing: 0.02em;
   color: #4A1F2C;
-  opacity: 0.7;
+  opacity: 0.82;
   text-align: center;
 }
 
@@ -1610,6 +1629,30 @@ img.romant-logo,
   background: #fff;
   border: none;
   box-shadow: 0 12px 32px rgba(74, 31, 44, 0.07);
+}
+
+.romant-recipient .romant-tapaaminen-display {
+  margin: 0 auto 1.25rem;
+  padding: 0.9rem 1.1rem 0.85rem;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+}
+
+.romant-recipient .romant-tapaaminen-label {
+  font-size: 0.92rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+
+.romant-recipient .romant-tapaaminen-when {
+  font-size: 1.12rem;
+}
+
+.romant-recipient .romant-tapaaminen-place {
+  margin-top: 0.25rem;
+  font-size: 0.88rem;
+  opacity: 0.75;
 }
 
 .romant-tapaaminen-display input,
@@ -1784,9 +1827,14 @@ img.romant-logo,
     animation: none !important;
   }
 
-  .romant-recipient .romant-hint.show,
-  .romant-recipient .romant-tapaaminen.show {
+  .romant-recipient .romant-hint.show {
     opacity: 1;
+    transform: none;
+  }
+
+  .romant-recipient .romant-tapaaminen.show,
+  .romant-recipient .romant-tapaaminen.is-pending {
+    opacity: 0.7;
     transform: none;
   }
 }
