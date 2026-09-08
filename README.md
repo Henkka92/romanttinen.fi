@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.4 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.5 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.5 — Hotfix: remove recipient debug footer
+Poistaa saajan näkymästä 1.3.4-debug-badgen (`Peel-boxes · … · Henry FAIL fix`) ja sen CSS:n. Ei muita visuaalisia muutoksia.
 
 ### 1.3.4 — Peel-boxes (Henry FAIL fix)
 Saajan pino: **jokainen avattu taso on venyvä korttilaatikko** — ei leijuvaa tekstiä. Pauliina-tokenit: `prior` `#E8D5C6` + wine-hairline + opacity .78; `prior.mid` `#EBD9CE` .86; `newest` `#FFFDF9` + 1.75px wine + varjo + `giftIn`. Osioiden sävyt (Mari): vain himmeä wine / rose / cream — ei sateenkaarta; `tint-0` cream, `tint-1` rose (`#E5CDBF` / `#FBF4EE`), `tint-2` wine-cream. Labelit vain `Vihje 1` / `2` / `3`. Osion otsikko kerran (`osio-header`). **Tapaaminen** pysyy näyttökorttina ylhäällä (ei lomake). Modal Kerro lisää / +1 / append ennallaan.

@@ -134,7 +134,6 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                     Kopioi linkki
                 </button>
             </div>
-            <p class="romant-peel-foot">Peel-boxes · <?php echo esc_html(ROMANT_KUTSU_VERSION); ?> · Henry FAIL fix</p>
         </div>
     </article>
 </div>
