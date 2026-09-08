@@ -9,7 +9,7 @@
  * once per osio. Section tints stay muted wine/rose/cream (Mari). Next hint needs
  * the confirm modal (+1). Depth stays in sessionStorage. Place is never on
  * the teaser. Dress tip is a cream .dress-card labelled "Pukeudu näin".
- * No debug footer.
+ * No debug footer or version badge.
  *
  * @var WP_Post $post
  * @var array   $data
@@ -68,7 +68,6 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 <div class="romant-wrap romant-recipient" id="romant-recipient-page" data-romant-state="teaser">
     <header class="romant-recipient-chrome" id="romant-recipient-chrome" hidden>
         <p class="romant-wordmark">romanttinen.fi</p>
-        <p class="romant-opened-meta">Kutsu avattu</p>
     </header>
 
     <article class="romant-invite-card"

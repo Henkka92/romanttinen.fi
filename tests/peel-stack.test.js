@@ -152,7 +152,11 @@ var storyPhp = fs.readFileSync(path.join(__dirname, '../templates/story.php'), '
 assert('no debug footer markup', !/Peel-boxes|Henry FAIL|romant-peel-foot/.test(recipientPhp));
 assert('dress label is Pukeudu näin', /Pukeudu näin/.test(recipientPhp) && !/Pukeutumisvihje/.test(recipientPhp));
 assert('dress-card class present', /dress-card/.test(recipientPhp));
-assert('opened chrome is Kutsu avattu without version', /Kutsu avattu/.test(recipientPhp) && !/Kutsu avattu ·/.test(recipientPhp));
+assert('no opened-meta version badge',
+  !/romant-opened-meta/.test(recipientPhp) &&
+  !/Kutsu avattu ·/.test(recipientPhp) &&
+  !/ROMANT_KUTSU_VERSION/.test(recipientPhp)
+);
 assert('section markup includes Pauliina tint-N', /tint-0/.test(html) && /tint-1/.test(ruoka));
 assert('opened atmosphere uses heavy fabric blur behind cards',
   /recipient-page\.is-opened::before/.test(css) && /blur\((1[8-9]|[2-9]\d)px\)/.test(css)

@@ -39,6 +39,7 @@ $og_url          = isset($og_url) ? (string) $og_url : '';
     <?php if ($og_description !== '') : ?>
     <meta property="og:description" content="<?php echo esc_attr($og_description); ?>" />
     <meta name="description" content="<?php echo esc_attr($og_description); ?>" />
+    <meta name="twitter:description" content="<?php echo esc_attr($og_description); ?>" />
     <?php endif; ?>
     <?php if ($og_url !== '') : ?>
     <meta property="og:url" content="<?php echo esc_url($og_url); ?>" />

@@ -1360,13 +1360,6 @@ img.romant-logo,
   gap: 0.15rem;
 }
 
-.romant-opened-meta {
-  margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  color: rgba(74, 31, 44, 0.42);
-}
-
 .romant-recipient-chrome[hidden] {
   display: none !important;
 }
