@@ -1828,14 +1828,6 @@ img.romant-logo,
   font-size: clamp(1.18rem, 3.8vw, 1.4rem);
 }
 
-.romant-peel-foot {
-  margin: 1.75rem 0 0;
-  text-align: center;
-  font-size: 0.72rem;
-  letter-spacing: 0.03em;
-  color: rgba(74, 31, 44, 0.38);
-}
-
 .romant-recipient .romant-more-btn,
 .romant-home-preview .romant-more-btn {
   display: flex;
