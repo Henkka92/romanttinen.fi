@@ -1299,18 +1299,20 @@ img.romant-logo,
   background-image: none;
 }
 
+/* Satu lock: heavy blur + wash so fabric is atmosphere behind cards,
+   never a readable wallpaper / tapetti (folds, candles, plants). */
 .romant-kutsu-body.romant-recipient-page.is-opened::before,
 .romant-kutsu-body.romant-recipient-page.is-unwrapping::before {
   content: "";
   position: fixed;
-  inset: -24px;
+  inset: -40px;
   z-index: 0;
   background-image: var(--romant-recipient-fabric, none);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  filter: blur(10px);
-  transform: scale(1.06);
+  filter: blur(22px);
+  transform: scale(1.12);
   pointer-events: none;
 }
 
@@ -1321,9 +1323,9 @@ img.romant-logo,
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 50% 18%, rgba(243, 230, 216, 0.36) 0%, transparent 52%),
-    radial-gradient(ellipse at center, rgba(243, 230, 216, 0.10) 32%, rgba(74, 31, 44, 0.38) 100%),
-    linear-gradient(180deg, rgba(243, 230, 216, 0.55) 0%, rgba(243, 230, 216, 0.28) 42%, rgba(74, 31, 44, 0.22) 100%);
+    radial-gradient(ellipse at 50% 20%, rgba(243, 230, 216, 0.48) 0%, transparent 55%),
+    radial-gradient(ellipse at center, rgba(243, 230, 216, 0.22) 28%, rgba(74, 31, 44, 0.42) 100%),
+    linear-gradient(180deg, rgba(243, 230, 216, 0.62) 0%, rgba(243, 230, 216, 0.38) 45%, rgba(74, 31, 44, 0.26) 100%);
   pointer-events: none;
 }
 

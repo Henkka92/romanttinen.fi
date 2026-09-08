@@ -154,8 +154,8 @@ assert('dress label is Pukeudu näin', /Pukeudu näin/.test(recipientPhp) && !/P
 assert('dress-card class present', /dress-card/.test(recipientPhp));
 assert('opened chrome is Kutsu avattu without version', /Kutsu avattu/.test(recipientPhp) && !/Kutsu avattu ·/.test(recipientPhp));
 assert('section markup includes Pauliina tint-N', /tint-0/.test(html) && /tint-1/.test(ruoka));
-assert('opened atmosphere uses blurred fabric ::before',
-  /recipient-page\.is-opened::before/.test(css) && /blur\(10px\)/.test(css)
+assert('opened atmosphere uses heavy fabric blur behind cards',
+  /recipient-page\.is-opened::before/.test(css) && /blur\((1[8-9]|[2-9]\d)px\)/.test(css)
 );
 assert('opened does not flatten to cream drop',
   !/\.romant-kutsu-body\.romant-recipient-page\.is-opened\s*\{\s*background:\s*var\(--romant-cream\);/.test(css)
