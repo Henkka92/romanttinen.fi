@@ -146,6 +146,8 @@ var fs = require('fs');
 var path = require('path');
 var css = fs.readFileSync(path.join(__dirname, '../assets/css/frontend.css'), 'utf8');
 var recipientPhp = fs.readFileSync(path.join(__dirname, '../templates/recipient.php'), 'utf8');
+var layoutPhp = fs.readFileSync(path.join(__dirname, '../templates/layout-start.php'), 'utf8');
+var storyPhp = fs.readFileSync(path.join(__dirname, '../templates/story.php'), 'utf8');
 
 assert('no debug footer markup', !/Peel-boxes|Henry FAIL|romant-peel-foot/.test(recipientPhp));
 assert('dress label is Pukeudu näin', /Pukeudu näin/.test(recipientPhp) && !/Pukeutumisvihje/.test(recipientPhp));
@@ -153,7 +155,7 @@ assert('dress-card class present', /dress-card/.test(recipientPhp));
 assert('opened chrome is Kutsu avattu without version', /Kutsu avattu/.test(recipientPhp) && !/Kutsu avattu ·/.test(recipientPhp));
 assert('section markup includes Pauliina tint-N', /tint-0/.test(html) && /tint-1/.test(ruoka));
 assert('opened atmosphere uses blurred fabric ::before',
-  /recipient-page\.is-opened::before/.test(css) && /blur\(10px\)/.test(css)
+  /recipient-page\.is-opened::before/.test(css) && /blur\((1[0-9]|[2-9]\d)px\)/.test(css)
 );
 assert('opened does not flatten to cream drop',
   !/\.romant-kutsu-body\.romant-recipient-page\.is-opened\s*\{\s*background:\s*var\(--romant-cream\);/.test(css)
@@ -164,6 +166,16 @@ assert('osio panels have visible border',
 assert('dress-card cream #FFFDF9 + wine hairline',
   /#FFFDF9/.test(css) && /rgba\(74,\s*31,\s*44,\s*0\.16\)/.test(css)
 );
+assert('recipient has non-spoiler OG title',
+  /og_title/.test(recipientPhp) && /Sinut on kutsuttu treffeille\./.test(recipientPhp)
+);
+assert('OG tags have no spoilers',
+  !/Elokuvahetki|Pukeudu|18:00|Kotona|Vihje/.test((recipientPhp.match(/og_description[\s\S]{0,180}/) || [''])[0])
+);
+assert('layout prints og:image and og:title',
+  /og:title/.test(layoutPhp) && /og:image/.test(layoutPhp) && /twitter:card/.test(layoutPhp)
+);
+assert('story share page has OG', /og_title/.test(storyPhp) && /hero-teaser\.jpg/.test(storyPhp));
 
 if (fails) {
   process.exit(1);

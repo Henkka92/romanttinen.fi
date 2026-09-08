@@ -24,6 +24,10 @@ $body_class = 'romant-recipient-page is-teaser';
 $share_url  = Romant_Kutsu_Rewrite::recipient_url($data['token']);
 $story_url  = Romant_Kutsu_Rewrite::story_url($data['token']);
 $fabric_url = ROMANT_KUTSU_URL . 'assets/img/hero-fabric.jpg';
+$og_title       = 'Sinut on kutsuttu treffeille.';
+$og_description = 'Sinulle on lähetetty treffikutsu. Avaa, kun olet valmis.';
+$og_image       = ROMANT_KUTSU_URL . 'assets/img/hero-teaser.jpg';
+$og_url         = $share_url;
 $sections   = $data['sections'] ?? [];
 if (!is_array($sections)) {
     $sections = [];

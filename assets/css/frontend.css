@@ -1309,8 +1309,8 @@ img.romant-logo,
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  filter: blur(10px);
-  transform: scale(1.04);
+  filter: blur(14px);
+  transform: scale(1.06);
   pointer-events: none;
 }
 
@@ -1321,9 +1321,9 @@ img.romant-logo,
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse at 50% 18%, rgba(243, 230, 216, 0.22) 0%, transparent 48%),
-    radial-gradient(ellipse at center, transparent 40%, rgba(74, 31, 44, 0.32) 100%),
-    linear-gradient(180deg, rgba(243, 230, 216, 0.42) 0%, rgba(243, 230, 216, 0.18) 42%, rgba(74, 31, 44, 0.16) 100%);
+    radial-gradient(ellipse at 50% 18%, rgba(243, 230, 216, 0.36) 0%, transparent 52%),
+    radial-gradient(ellipse at center, rgba(243, 230, 216, 0.10) 32%, rgba(74, 31, 44, 0.38) 100%),
+    linear-gradient(180deg, rgba(243, 230, 216, 0.55) 0%, rgba(243, 230, 216, 0.28) 42%, rgba(74, 31, 44, 0.22) 100%);
   pointer-events: none;
 }
 

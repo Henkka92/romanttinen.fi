@@ -13,6 +13,10 @@ if (!defined('ABSPATH')) {
 $page_title = 'Jaa tarina · romanttinen';
 $share_url  = Romant_Kutsu_Rewrite::recipient_url($data['token']);
 $story_title = 'Sinut on kutsuttu treffeille';
+$og_title       = 'Sinut on kutsuttu treffeille.';
+$og_description = 'Sinulle on lähetetty treffikutsu. Avaa, kun olet valmis.';
+$og_image       = ROMANT_KUTSU_URL . 'assets/img/hero-teaser.jpg';
+$og_url         = $share_url;
 
 include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
