@@ -1,5 +1,5 @@
 /**
- * 1.3.4 peel-boxes contract (no DOM).
+ * 1.3.6 peel-boxes + hivelee contract (no DOM).
  * Run: node tests/peel-stack.test.js
  */
 'use strict';
@@ -66,7 +66,7 @@ function groupMarkup(title, depth, animate, index) {
   }
   var ruoka = tint === 1 ? ' ruoka' : '';
   return (
-    '<section class="romant-osio osio romant-osio-tint-' + tint + ruoka + '">' +
+    '<section class="romant-osio osio romant-osio-tint-' + tint + ' tint-' + tint + ruoka + '">' +
       '<h2 class="romant-osio-header osio-header romant-serif">' + title + '</h2>' +
       '<div class="romant-hint-stack hint-stack">' + cards.join('') + '</div>' +
     '</section>'
@@ -141,6 +141,29 @@ assert('tapaaminen line is La 13.6. · 18:00', formatTapaaminen('2026-06-13T18:0
 assert('teaser must not include place', 'countdown-only'.indexOf('Keskusta') === -1);
 assert('recipient tapaaminen is display not form', !/<input/.test('<section class="romant-tapaaminen-display"><span>Tapaaminen</span><p>La 14.3. · 18:00</p></section>'));
 assert('open stays soft: meet delay after hint beat', 560 > 380);
+
+var fs = require('fs');
+var path = require('path');
+var css = fs.readFileSync(path.join(__dirname, '../assets/css/frontend.css'), 'utf8');
+var recipientPhp = fs.readFileSync(path.join(__dirname, '../templates/recipient.php'), 'utf8');
+
+assert('no debug footer markup', !/Peel-boxes|Henry FAIL|romant-peel-foot/.test(recipientPhp));
+assert('dress label is Pukeudu näin', /Pukeudu näin/.test(recipientPhp) && !/Pukeutumisvihje/.test(recipientPhp));
+assert('dress-card class present', /dress-card/.test(recipientPhp));
+assert('opened chrome is Kutsu avattu without version', /Kutsu avattu/.test(recipientPhp) && !/Kutsu avattu ·/.test(recipientPhp));
+assert('section markup includes Pauliina tint-N', /tint-0/.test(html) && /tint-1/.test(ruoka));
+assert('opened atmosphere uses blurred fabric ::before',
+  /recipient-page\.is-opened::before/.test(css) && /blur\(10px\)/.test(css)
+);
+assert('opened does not flatten to cream drop',
+  !/\.romant-kutsu-body\.romant-recipient-page\.is-opened\s*\{\s*background:\s*var\(--romant-cream\);/.test(css)
+);
+assert('osio panels have visible border',
+  /\.romant-recipient \.romant-osio,\s*\.romant-recipient \.osio\s*\{[^}]*border:\s*1px solid rgba\(74,\s*31,\s*44/.test(css)
+);
+assert('dress-card cream #FFFDF9 + wine hairline',
+  /#FFFDF9/.test(css) && /rgba\(74,\s*31,\s*44,\s*0\.16\)/.test(css)
+);
 
 if (fails) {
   process.exit(1);

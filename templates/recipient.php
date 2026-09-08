@@ -1,6 +1,6 @@
 <?php
 /**
- * Recipient view: /kutsu/{token}/ — teaser + peel boxes (1.3.4).
+ * Recipient view: /kutsu/{token}/ — teaser + peel boxes (1.3.6 hivelee).
  *
  * Server prints teaser only. Level texts are JSON for JS. After "Avaa kutsu"
  * Tapaaminen is an elegant display card (date + optional place, never a form).
@@ -8,7 +8,8 @@
  * Older = prior / prior.mid; newest = wine border + giftIn. Section header
  * once per osio. Section tints stay muted wine/rose/cream (Mari). Next hint needs
  * the confirm modal (+1). Depth stays in sessionStorage. Place is never on
- * the teaser.
+ * the teaser. Dress tip is a cream .dress-card labelled "Pukeudu näin".
+ * No debug footer.
  *
  * @var WP_Post $post
  * @var array   $data
@@ -63,7 +64,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 <div class="romant-wrap romant-recipient" id="romant-recipient-page" data-romant-state="teaser">
     <header class="romant-recipient-chrome" id="romant-recipient-chrome" hidden>
         <p class="romant-wordmark">romanttinen.fi</p>
-        <p class="romant-opened-meta">Kutsu avattu · <?php echo esc_html(ROMANT_KUTSU_VERSION); ?></p>
+        <p class="romant-opened-meta">Kutsu avattu</p>
     </header>
 
     <article class="romant-invite-card"
@@ -122,10 +123,10 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
             <div id="romant-peli-sections" class="romant-peli-sections"></div>
 
             <?php if ($data['dress'] !== '') : ?>
-                <div class="romant-dress romant-reveal-aside">
-                    <span class="romant-spoiler-label">Pukeutumisvihje</span>
+                <section class="romant-dress romant-dress-card dress-card" aria-label="Pukeudu näin">
+                    <span class="romant-spoiler-label">Pukeudu näin</span>
                     <p><?php echo esc_html($data['dress']); ?></p>
-                </div>
+                </section>
             <?php endif; ?>
 
             <div class="romant-actions romant-reveal-aside">
