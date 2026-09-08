@@ -155,7 +155,7 @@ assert('dress-card class present', /dress-card/.test(recipientPhp));
 assert('opened chrome is Kutsu avattu without version', /Kutsu avattu/.test(recipientPhp) && !/Kutsu avattu ·/.test(recipientPhp));
 assert('section markup includes Pauliina tint-N', /tint-0/.test(html) && /tint-1/.test(ruoka));
 assert('opened atmosphere uses blurred fabric ::before',
-  /recipient-page\.is-opened::before/.test(css) && /blur\((1[0-9]|[2-9]\d)px\)/.test(css)
+  /recipient-page\.is-opened::before/.test(css) && /blur\(10px\)/.test(css)
 );
 assert('opened does not flatten to cream drop',
   !/\.romant-kutsu-body\.romant-recipient-page\.is-opened\s*\{\s*background:\s*var\(--romant-cream\);/.test(css)
@@ -165,6 +165,9 @@ assert('osio panels have visible border',
 );
 assert('dress-card cream #FFFDF9 + wine hairline',
   /#FFFDF9/.test(css) && /rgba\(74,\s*31,\s*44,\s*0\.16\)/.test(css)
+);
+assert('tapaaminen display is cream card with wine hairline',
+  /\.romant-recipient \.romant-tapaaminen-display\s*\{[^}]*#FFFDF9[^}]*rgba\(74,\s*31,\s*44,\s*0\.16\)/.test(css)
 );
 assert('recipient has non-spoiler OG title',
   /og_title/.test(recipientPhp) && /Sinut on kutsuttu treffeille\./.test(recipientPhp)

@@ -1309,7 +1309,7 @@ img.romant-logo,
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  filter: blur(14px);
+  filter: blur(10px);
   transform: scale(1.06);
   pointer-events: none;
 }
@@ -1798,8 +1798,9 @@ img.romant-logo,
 .romant-recipient .romant-tapaaminen-display {
   margin: 0 auto 1.15rem;
   padding: 1.45rem 1.3rem 1.25rem;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(74, 31, 44, 0.08);
+  background: #FFFDF9;
+  border: 1px solid rgba(74, 31, 44, 0.16);
+  box-shadow: 0 12px 28px rgba(74, 31, 44, 0.10);
 }
 
 .romant-recipient .romant-tapaaminen-label {
