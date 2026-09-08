@@ -1,6 +1,6 @@
 <?php
 /**
- * Decorative homepage peel-stack preview (Pauliina 1.3.4). Display only.
+ * Decorative homepage peel-stack preview (Pauliina 1.3.6). Display only.
  *
  * @package Romanttinen_Kutsu
  */
@@ -16,7 +16,7 @@ $preview_href = $preview_href ?? '#';
         <p class="romant-tapaaminen-when">La 14.3. · 18:00</p>
         <p class="romant-tapaaminen-place">Kotona</p>
     </section>
-    <section class="romant-osio osio romant-osio-tint-0" aria-hidden="true">
+    <section class="romant-osio osio romant-osio-tint-0 tint-0" aria-hidden="true">
         <h2 class="romant-osio-header osio-header romant-serif">Elokuvahetki</h2>
         <div class="romant-hint-stack hint-stack">
             <article class="romant-hint-card hint-card prior">

@@ -1133,7 +1133,7 @@ img.romant-logo,
 .romant-peli-sections {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1.1rem;
   text-align: left;
   margin-top: 0.5rem;
 }
@@ -1280,6 +1280,8 @@ img.romant-logo,
 .romant-kutsu-body.romant-recipient-page {
   --romant-wine: #4A1F2C;
   --romant-cream: #F3E6D8;
+  position: relative;
+  isolation: isolate;
   background-color: #e8d4c4;
   background-image:
     linear-gradient(180deg, rgba(243, 230, 216, 0.28) 0%, rgba(243, 230, 216, 0.12) 40%, rgba(243, 230, 216, 0.35) 100%),
@@ -1290,9 +1292,47 @@ img.romant-logo,
   min-height: 100vh;
 }
 
-.romant-kutsu-body.romant-recipient-page.is-opened {
-  background: var(--romant-cream);
+/* After open: warm fabric continues, softened — never a flat cream drop. */
+.romant-kutsu-body.romant-recipient-page.is-opened,
+.romant-kutsu-body.romant-recipient-page.is-unwrapping {
+  background-color: #cbb09a;
   background-image: none;
+}
+
+/* Satu lock: heavy blur + wash so fabric is atmosphere behind cards,
+   never a readable wallpaper / tapetti (folds, candles, plants). */
+.romant-kutsu-body.romant-recipient-page.is-opened::before,
+.romant-kutsu-body.romant-recipient-page.is-unwrapping::before {
+  content: "";
+  position: fixed;
+  inset: -40px;
+  z-index: 0;
+  background-image: var(--romant-recipient-fabric, none);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  filter: blur(22px);
+  transform: scale(1.12);
+  pointer-events: none;
+}
+
+.romant-kutsu-body.romant-recipient-page.is-opened::after,
+.romant-kutsu-body.romant-recipient-page.is-unwrapping::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(243, 230, 216, 0.48) 0%, transparent 55%),
+    radial-gradient(ellipse at center, rgba(243, 230, 216, 0.22) 28%, rgba(74, 31, 44, 0.42) 100%),
+    linear-gradient(180deg, rgba(243, 230, 216, 0.62) 0%, rgba(243, 230, 216, 0.38) 45%, rgba(74, 31, 44, 0.26) 100%);
+  pointer-events: none;
+}
+
+.romant-kutsu-body.romant-recipient-page.is-opened > *,
+.romant-kutsu-body.romant-recipient-page.is-unwrapping > * {
+  position: relative;
+  z-index: 1;
 }
 
 .romant-recipient-page .romant-wrap.romant-recipient {
@@ -1318,13 +1358,6 @@ img.romant-logo,
   margin: 0 0 1.15rem;
   text-align: center;
   gap: 0.15rem;
-}
-
-.romant-opened-meta {
-  margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  color: rgba(74, 31, 44, 0.42);
 }
 
 .romant-recipient-chrome[hidden] {
@@ -1579,29 +1612,41 @@ img.romant-logo,
   display: none !important;
 }
 
-.romant-recipient .romant-osio {
+.romant-recipient .romant-osio,
+.romant-recipient .osio {
   margin: 0;
-  padding: 1.15rem 0.95rem 1.2rem;
+  padding: 1.2rem 1rem 1.25rem;
   border-bottom: none;
-  border-radius: 20px;
-  background: rgba(255, 248, 242, 0.55);
+  border: 1px solid rgba(74, 31, 44, 0.12);
+  border-radius: 22px;
+  background: rgba(255, 248, 242, 0.62);
 }
 
 /* Mari lock: muted wine / rose / cream only — never a rainbow hue.
-   Scale by section index (cycles at 3) inside that warm family. */
+   Scale by section index (cycles at 3) inside that warm family.
+   Panels keep a visible border so tint-0 / tint-1 / tint-2 read as distinct. */
 .romant-recipient .romant-osio.romant-osio-tint-0,
+.romant-recipient .romant-osio.tint-0,
+.romant-recipient .osio.tint-0,
 .romant-recipient .romant-osio:nth-child(3n+1) {
-  background: rgba(243, 230, 216, 0.48); /* cream */
+  background: rgba(255, 248, 242, 0.86); /* cream */
+  border-color: rgba(74, 31, 44, 0.12);
 }
 
 .romant-recipient .romant-osio.romant-osio-tint-1,
+.romant-recipient .romant-osio.tint-1,
+.romant-recipient .osio.tint-1,
 .romant-recipient .romant-osio:nth-child(3n+2) {
-  background: rgba(201, 160, 144, 0.16); /* muted rose */
+  background: rgba(201, 160, 144, 0.42); /* muted rose */
+  border-color: rgba(74, 31, 44, 0.14);
 }
 
 .romant-recipient .romant-osio.romant-osio-tint-2,
+.romant-recipient .romant-osio.tint-2,
+.romant-recipient .osio.tint-2,
 .romant-recipient .romant-osio:nth-child(3n+3) {
-  background: rgba(74, 31, 44, 0.055); /* muted wine */
+  background: rgba(74, 31, 44, 0.16); /* muted wine wash */
+  border-color: rgba(74, 31, 44, 0.18);
 }
 
 .romant-recipient .romant-osio-header,
@@ -1748,8 +1793,9 @@ img.romant-logo,
 .romant-recipient .romant-tapaaminen-display {
   margin: 0 auto 1.15rem;
   padding: 1.45rem 1.3rem 1.25rem;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(74, 31, 44, 0.08);
+  background: #FFFDF9;
+  border: 1px solid rgba(74, 31, 44, 0.16);
+  box-shadow: 0 12px 28px rgba(74, 31, 44, 0.10);
 }
 
 .romant-recipient .romant-tapaaminen-label {
@@ -1857,6 +1903,45 @@ img.romant-logo,
 .romant-recipient .romant-reveal-aside .romant-btn {
   font-size: 0.8rem;
   font-weight: 500;
+}
+
+/* Pauliina dress-card — cream gift card, not a muted aside */
+.romant-recipient .romant-dress-card,
+.romant-recipient .dress-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 1.15rem auto 0;
+  padding: 1.25rem 1.2rem 1.2rem;
+  text-align: center;
+  background: #FFFDF9;
+  border: 1px solid rgba(74, 31, 44, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(74, 31, 44, 0.10);
+  opacity: 1;
+}
+
+.romant-recipient .romant-dress-card .romant-spoiler-label,
+.romant-recipient .dress-card .romant-spoiler-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-weight: 500;
+  color: #4A1F2C;
+  opacity: 0.72;
+  margin-bottom: 0.45rem;
+}
+
+.romant-recipient .romant-dress-card p,
+.romant-recipient .dress-card p {
+  margin: 0;
+  font-family: var(--romant-serif);
+  font-size: clamp(1.12rem, 3.6vw, 1.35rem);
+  line-height: 1.4;
+  color: #4A1F2C;
+  text-align: center;
 }
 
 /* Modal — cream card, wine border, giftIn .32s */

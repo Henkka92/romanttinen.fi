@@ -145,7 +145,7 @@
 
   /**
    * Pauliina peel markup:
-   *   section.osio > h2.osio-header + .hint-stack > article.hint-card.prior|newest
+   *   section.osio.tint-N > h2.osio-header + .hint-stack > article.hint-card.prior|newest
    * prior.mid = older cards after the first. Tint class scales by section index.
    */
   function cardStateClass(i, depth, animate) {
@@ -176,7 +176,7 @@
 
       var tint = tintIndex(index);
       var wrap = document.createElement('section');
-      wrap.className = 'romant-osio osio romant-osio-tint-' + tint;
+      wrap.className = 'romant-osio osio romant-osio-tint-' + tint + ' tint-' + tint;
       if (tint === 1) {
         wrap.classList.add('ruoka');
       }
