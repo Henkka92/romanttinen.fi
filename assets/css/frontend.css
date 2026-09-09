@@ -180,11 +180,6 @@
   opacity: 0.88;
 }
 
-.romant-story-inner .romant-inviter {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
 .romant-lead {
   color: rgba(42, 36, 34, 0.75);
   max-width: 36rem;
@@ -603,7 +598,7 @@ p.romant-hint {
   border: 1px solid var(--romant-rose);
 }
 
-/* Story page */
+/* Story share — 9:16 teaser (fabric + cream card, Henry PASS 1.3.7) */
 .romant-story-page { max-width: 420px; text-align: center; }
 
 .romant-story-help { margin-left: auto; margin-right: auto; }
@@ -613,41 +608,179 @@ p.romant-hint {
   width: 100%;
   max-width: 360px;
   margin: 0 auto 1.5rem;
+  padding: 6.5% 7.5%;
   border-radius: 20px;
   overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
   box-shadow: var(--romant-shadow);
-  background: linear-gradient(180deg, var(--romant-cream) 0%, var(--romant-blush) 55%, #d9b8bc 100%);
-  border: 1px solid var(--romant-rose);
+  border: none;
+  background-color: #e8d4c4;
+  background-image:
+    radial-gradient(circle at 14% 7%, rgba(255, 226, 150, 0.42) 0%, transparent 26%),
+    radial-gradient(circle at 86% 9%, rgba(255, 210, 120, 0.32) 0%, transparent 30%),
+    radial-gradient(circle at 72% 3%, rgba(255, 240, 190, 0.22) 0%, transparent 18%),
+    linear-gradient(180deg, rgba(243, 230, 216, 0.18) 0%, rgba(243, 230, 216, 0.06) 42%, rgba(243, 230, 216, 0.22) 100%),
+    url("../img/hero-fabric.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
-.romant-story-inner {
+.romant-story-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
   height: 100%;
-  padding: 2rem 1.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   text-align: center;
+  padding: 1.85rem 1.15rem 1.25rem;
+  background: #FFFDF9;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 16px 40px rgba(74, 31, 44, 0.18);
 }
 
-.romant-story-inner .romant-serif {
-  font-size: 2rem;
-  margin-bottom: 0.75rem;
+.romant-story-wordmark {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #4A1F2C;
 }
 
-.romant-story-when {
-  font-size: 0.9rem;
-  color: var(--romant-wine);
-  font-weight: 500;
-  margin: 0 0 1rem;
+.romant-story-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 2.55rem;
+}
+
+.romant-story-headline {
+  font-size: 1.85rem;
+  line-height: 1.12;
+  margin: 0 auto;
+  color: #4A1F2C;
+}
+
+.romant-story-rule {
+  display: flex;
+  align-items: center;
+  width: 72%;
+  max-width: 16rem;
+  margin: 1.15rem auto 1.05rem;
+  color: #4A1F2C;
+}
+
+.romant-story-rule::before,
+.romant-story-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.romant-story-arc {
+  width: 28px;
+  height: 14px;
+  margin: 0 0.15rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.romant-story-teaser {
+  margin: 0;
+  font-family: var(--romant-serif);
+  font-size: 0.98rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #4A1F2C;
+}
+
+.romant-story-card .romant-countdown {
+  margin: 1.15rem 0 0;
+  gap: 0.38rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.romant-story-card .romant-cd-unit {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.12rem 0.35rem;
+  background: #fff;
+  border: 1px solid rgba(74, 31, 44, 0.14);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.romant-story-card .romant-cd-unit span {
+  font-family: var(--romant-serif);
+  font-size: 1.42rem;
+  font-weight: 600;
+  color: #4A1F2C;
+  line-height: 1.05;
+}
+
+.romant-story-card .romant-cd-unit small {
+  font-family: var(--romant-serif);
+  font-size: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(74, 31, 44, 0.42);
+  margin-top: 0.12rem;
+}
+
+.romant-story-card .romant-countdown-done {
+  margin: 1.15rem 0 0;
+  color: #4A1F2C;
+}
+
+.romant-story-card .romant-countdown[hidden],
+.romant-story-card .romant-countdown-done[hidden] {
+  display: none !important;
+}
+
+.romant-story-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1.35rem;
+  padding: 0.82rem 1.2rem;
+  border-radius: 999px;
+  background: #4A1F2C;
+  color: #fff;
+  font-family: var(--romant-serif);
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  user-select: none;
 }
 
 .romant-story-brand {
   margin-top: auto;
-  padding-top: 1rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: lowercase;
-  color: var(--romant-rose);
+  padding-top: 1.15rem;
+  font-family: var(--romant-serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(74, 31, 44, 0.28);
 }
 
 .romant-story-page .romant-actions {
@@ -660,11 +793,6 @@ p.romant-hint {
 /* Spoiler writing friction: hide unused levels */
 .romant-spoiler-field[hidden] {
   display: none !important;
-}
-
-.romant-story-inner .romant-countdown {
-  margin: 1rem auto 1.5rem;
-  justify-content: center;
 }
 
 /* —— Marketing homepage —— */
@@ -733,7 +861,6 @@ img.romant-logo,
 
 .romant-invite-card .romant-logo,
 .romant-preview-card .romant-logo,
-.romant-story-inner .romant-logo,
 .romant-hero .romant-logo {
   margin-inline: auto;
   margin-bottom: 0.75rem;

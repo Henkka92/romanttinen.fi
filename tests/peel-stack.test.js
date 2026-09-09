@@ -1,5 +1,5 @@
 /**
- * 1.3.6 peel-boxes + hivelee contract (no DOM).
+ * 1.3.7 peel-boxes + story share contract (no DOM).
  * Run: node tests/peel-stack.test.js
  */
 'use strict';
@@ -183,6 +183,50 @@ assert('layout prints og:image and og:title',
   /og:title/.test(layoutPhp) && /og:image/.test(layoutPhp) && /twitter:card/.test(layoutPhp)
 );
 assert('story share page has OG', /og_title/.test(storyPhp) && /hero-teaser\.jpg/.test(storyPhp));
+assert('story visual uses hero-fabric', /hero-fabric\.jpg/.test(storyPhp) && /hero-fabric\.jpg/.test(css));
+assert('story wordmark is plain text not framed logo',
+  /romant-story-wordmark/.test(storyPhp) &&
+  /romanttinen\.fi/.test(storyPhp) &&
+  !/logo_markup/.test(storyPhp) &&
+  !/romant-eyebrow-logo/.test(storyPhp)
+);
+assert('story headline has period and two lines',
+  /Sinut on kutsuttu treffeille\./.test(storyPhp) &&
+  /Sinut on<br>\s*kutsuttu treffeille\./.test(storyPhp)
+);
+assert('story teaser line is IG-safe', /Pieni kutsu — avaa kun olet valmis\./.test(storyPhp));
+assert('story countdown uses full Finnish labels',
+  /Päivää/.test(storyPhp) && /Tuntia/.test(storyPhp) && /Minuuttia/.test(storyPhp) && /Sekuntia/.test(storyPhp)
+);
+assert('story visual has Avaa kutsu pill not Jaa tarina',
+  /romant-story-cta/.test(storyPhp) &&
+  /Avaa kutsu/.test(storyPhp) &&
+  !/<article[\s\S]*Jaa tarina/.test(storyPhp)
+);
+assert('story visual has no spoilers',
+  !/Elokuvahetki|Pukeudu|Kotona|18:00|Vihje|data-inviter/.test(storyPhp)
+);
+assert('story CSS is fabric not rose-gradient',
+  /romant-story-frame/.test(css) &&
+  /hero-fabric\.jpg/.test(css) &&
+  !/\.romant-story-frame\s*\{[^}]*linear-gradient\(180deg,\s*var\(--romant-cream\)/.test(css)
+);
+
+var storyJs = fs.readFileSync(path.join(__dirname, '../assets/js/story.js'), 'utf8');
+assert('canvas PNG draws fabric card not rose gradient',
+  /hero-fabric|data-fabric/.test(storyJs) &&
+  /Avaa kutsu/.test(storyJs) &&
+  /Päivää/.test(storyJs) &&
+  /Pieni kutsu/.test(storyJs) &&
+  !/Jaa tarina/.test(storyJs) &&
+  !/addColorStop\(0\.55,\s*BLUSH\)/.test(storyJs)
+);
+assert('canvas PNG has no inviter or spoilers',
+  !/inviter/.test(storyJs) && !/kutsui sinut/.test(storyJs) && !/Elokuvahetki/.test(storyJs)
+);
+
+var pluginPhp = fs.readFileSync(path.join(__dirname, '../romanttinen-kutsu.php'), 'utf8');
+assert('plugin version is 1.3.7', /Version:\s+1\.3\.7/.test(pluginPhp) && /ROMANT_KUTSU_VERSION',\s*'1\.3\.7'/.test(pluginPhp));
 
 if (fails) {
   process.exit(1);

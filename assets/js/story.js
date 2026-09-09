@@ -1,13 +1,20 @@
 /**
- * Generate 1080x1920 story PNG via canvas — teaser only (no spoilers / dress).
+ * Generate 1080×1920 story PNG — Henry PASS teaser (fabric + cream card).
+ * No spoilers / date / place / hints on the image.
  */
 (function () {
   'use strict';
 
   var WINE = '#4A1F2C';
-  var CREAM = '#F3E6D8';
-  var ROSE = '#C9A090';
-  var BLUSH = '#EBD9CE';
+  var CARD = '#FFFDF9';
+  var CELL_BG = '#FFFFFF';
+  var CELL_BORDER = 'rgba(74, 31, 44, 0.14)';
+  var LABEL = 'rgba(74, 31, 44, 0.42)';
+  var BRAND_FAINT = 'rgba(74, 31, 44, 0.28)';
+  var FALLBACK_BG = '#e8d4c4';
+
+  var cachedFabric = null;
+  var cachedFabricUrl = '';
 
   function pad(n) {
     return String(n).padStart(2, '0');
@@ -27,7 +34,7 @@
     var m = Math.floor(s / 60);
     s %= 60;
     return {
-      d: String(d),
+      d: pad(d),
       h: pad(h),
       m: pad(m),
       s: pad(s),
@@ -35,130 +42,232 @@
     };
   }
 
-  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    var words = String(text).split(/\s+/);
-    var line = '';
-    var lines = [];
-    for (var i = 0; i < words.length; i++) {
-      var test = line ? line + ' ' + words[i] : words[i];
-      if (ctx.measureText(test).width > maxWidth && line) {
-        lines.push(line);
-        line = words[i];
-      } else {
-        line = test;
-      }
-    }
-    if (line) lines.push(line);
-    lines.forEach(function (l, idx) {
-      ctx.fillText(l, x, y + idx * lineHeight);
-    });
-    return lines.length * lineHeight;
-  }
-
   function roundRect(ctx, x, y, w, h, r) {
+    var rad = Math.min(r, w / 2, h / 2);
     ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
+    ctx.moveTo(x + rad, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rad);
+    ctx.arcTo(x + w, y + h, x, y + h, rad);
+    ctx.arcTo(x, y + h, x, y, rad);
+    ctx.arcTo(x, y, x + w, y, rad);
     ctx.closePath();
   }
 
-  function drawStory(canvas, frame) {
+  function drawCoverTop(ctx, img, w, h) {
+    var ir = img.naturalWidth / img.naturalHeight;
+    var cr = w / h;
+    var dw;
+    var dh;
+    var dx;
+    var dy;
+    if (ir > cr) {
+      dh = h;
+      dw = h * ir;
+      dx = (w - dw) / 2;
+      dy = 0;
+    } else {
+      dw = w;
+      dh = w / ir;
+      dx = 0;
+      dy = 0;
+    }
+    ctx.drawImage(img, dx, dy, dw, dh);
+  }
+
+  function drawBokeh(ctx, w, h) {
+    var orbs = [
+      { x: 0.12 * w, y: 0.07 * h, r: 130, a: 0.34 },
+      { x: 0.88 * w, y: 0.09 * h, r: 150, a: 0.26 },
+      { x: 0.74 * w, y: 0.035 * h, r: 90, a: 0.2 },
+      { x: 0.22 * w, y: 0.14 * h, r: 70, a: 0.16 }
+    ];
+    orbs.forEach(function (o) {
+      var g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+      g.addColorStop(0, 'rgba(255, 226, 150,' + o.a + ')');
+      g.addColorStop(0.45, 'rgba(255, 210, 120,' + (o.a * 0.35) + ')');
+      g.addColorStop(1, 'rgba(255, 210, 120, 0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  function drawDivider(ctx, cx, y, width) {
+    var half = width / 2;
+    var arcW = 42;
+    var arcH = 16;
+    ctx.save();
+    ctx.strokeStyle = WINE;
+    ctx.globalAlpha = 0.55;
+    ctx.lineWidth = 1.6;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(cx - half, y);
+    ctx.lineTo(cx - arcW / 2, y);
+    ctx.quadraticCurveTo(cx, y - arcH, cx + arcW / 2, y);
+    ctx.lineTo(cx + half, y);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawStory(canvas, frame, fabricImg) {
     var ctx = canvas.getContext('2d');
     var w = canvas.width;
     var h = canvas.height;
+    var cx = w / 2;
 
-    var grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, CREAM);
-    grad.addColorStop(0.55, BLUSH);
-    grad.addColorStop(1, '#d9b8bc');
-    ctx.fillStyle = grad;
+    ctx.fillStyle = FALLBACK_BG;
     ctx.fillRect(0, 0, w, h);
 
-    var padX = 80;
-    var y = 280;
+    if (fabricImg && fabricImg.naturalWidth > 0) {
+      drawCoverTop(ctx, fabricImg, w, h);
+    }
+
+    drawBokeh(ctx, w, h);
+
+    var wash = ctx.createLinearGradient(0, 0, 0, h);
+    wash.addColorStop(0, 'rgba(243, 230, 216, 0.2)');
+    wash.addColorStop(0.42, 'rgba(243, 230, 216, 0.06)');
+    wash.addColorStop(1, 'rgba(243, 230, 216, 0.22)');
+    ctx.fillStyle = wash;
+    ctx.fillRect(0, 0, w, h);
+
+    var cardX = Math.round(w * 0.075);
+    var cardY = Math.round(h * 0.065);
+    var cardW = w - cardX * 2;
+    var cardH = h - cardY * 2;
+    var cardR = 44;
+
+    ctx.save();
+    ctx.shadowColor = 'rgba(74, 31, 44, 0.18)';
+    ctx.shadowBlur = 48;
+    ctx.shadowOffsetY = 18;
+    ctx.fillStyle = CARD;
+    roundRect(ctx, cardX, cardY, cardW, cardH, cardR);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, cardX, cardY, cardW, cardH, cardR);
+    ctx.stroke();
 
     ctx.textAlign = 'center';
-    var logoImg = frame.querySelector('img.romant-logo');
-    if (logoImg && logoImg.naturalWidth > 0) {
-      var maxH = 64;
-      var aspect = logoImg.naturalWidth / logoImg.naturalHeight;
-      var lh = maxH;
-      var lw = lh * aspect;
-      if (lw > w - padX * 2) {
-        lw = w - padX * 2;
-        lh = lw / aspect;
-      }
-      ctx.drawImage(logoImg, (w - lw) / 2, y - lh * 0.35, lw, lh);
-      y += lh * 0.65 + 48;
-    } else {
-      ctx.fillStyle = ROSE;
-      ctx.font = '600 28px "DM Sans", sans-serif';
-      ctx.fillText('romanttinen', w / 2, y);
-      y += 70;
-    }
+    ctx.textBaseline = 'alphabetic';
 
-    var inviter = (frame.getAttribute('data-inviter') || '').trim();
-    if (inviter) {
-      ctx.fillStyle = WINE;
-      ctx.font = '500 32px "DM Sans", sans-serif';
-      y += wrapText(ctx, inviter + ' kutsui sinut', w / 2, y, w - padX * 2, 40);
-      y += 36;
-    } else {
-      y += 30;
-    }
+    var innerL = cardX + 78;
+    var innerR = cardX + cardW - 78;
+    var innerW = innerR - innerL;
 
+    var y = cardY + 118;
     ctx.fillStyle = WINE;
-    ctx.font = '600 72px "Cormorant Garamond", Georgia, serif';
-    y += wrapText(ctx, frame.getAttribute('data-title') || 'Sinut on kutsuttu treffeille', w / 2, y, w - padX * 2, 80);
-    y += 80;
+    ctx.font = '600 40px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('romanttinen.fi', cx, y);
+
+    y += 196;
+    ctx.font = '600 68px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('Sinut on', cx, y);
+    y += 82;
+    ctx.fillText('kutsuttu treffeille.', cx, y);
+
+    y += 56;
+    drawDivider(ctx, cx, y, Math.min(innerW * 0.62, 420));
+
+    y += 62;
+    var teaser = frame.getAttribute('data-teaser') || 'Pieni kutsu — avaa kun olet valmis.';
+    ctx.fillStyle = WINE;
+    ctx.font = '400 30px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText(teaser, cx, y);
 
     var cd = countdownParts(frame.getAttribute('data-romant-countdown') || '');
+    y += 70;
+
     if (cd.done) {
       ctx.fillStyle = WINE;
-      ctx.font = '500 36px "DM Sans", sans-serif';
-      ctx.fillText('Hetki on täällä.', w / 2, y);
+      ctx.font = '500 36px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('Hetki on täällä.', cx, y + 70);
+      y += 160;
     } else {
-      var boxW = w - padX * 2;
-      var boxH = 200;
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      roundRect(ctx, padX, y, boxW, boxH, 28);
-      ctx.fill();
-
+      var gap = 18;
+      var cellW = (innerW - gap * 3) / 4;
+      var cellH = cellW;
+      var cellR = 16;
       var units = [
-        { v: cd.d, l: 'pv' },
-        { v: cd.h, l: 't' },
-        { v: cd.m, l: 'min' },
-        { v: cd.s, l: 's' }
+        { v: cd.d, l: 'Päivää' },
+        { v: cd.h, l: 'Tuntia' },
+        { v: cd.m, l: 'Minuuttia' },
+        { v: cd.s, l: 'Sekuntia' }
       ];
-      var cell = boxW / 4;
       units.forEach(function (u, i) {
-        var cx = padX + cell * i + cell / 2;
+        var x = innerL + i * (cellW + gap);
+        ctx.fillStyle = CELL_BG;
+        ctx.strokeStyle = CELL_BORDER;
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, x, y, cellW, cellH, cellR);
+        ctx.fill();
+        ctx.stroke();
+
+        var ncx = x + cellW / 2;
         ctx.fillStyle = WINE;
-        ctx.font = '600 56px "DM Sans", sans-serif';
-        ctx.fillText(u.v, cx, y + 90);
-        ctx.fillStyle = ROSE;
-        ctx.font = '500 22px "DM Sans", sans-serif';
-        ctx.fillText(u.l, cx, y + 140);
+        ctx.font = '600 52px "Cormorant Garamond", Georgia, serif';
+        ctx.fillText(u.v, ncx, y + cellH * 0.52);
+        ctx.fillStyle = LABEL;
+        ctx.font = '400 18px "Cormorant Garamond", Georgia, serif';
+        ctx.fillText(u.l, ncx, y + cellH * 0.78);
       });
+      y += cellH + 56;
     }
 
-    ctx.fillStyle = ROSE;
-    ctx.font = '600 24px "DM Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('romanttinen.fi', w / 2, h - 80);
+    var cta = frame.getAttribute('data-cta') || 'Avaa kutsu';
+    var btnW = innerW;
+    var btnH = 92;
+    var btnX = innerL;
+    ctx.fillStyle = WINE;
+    roundRect(ctx, btnX, y, btnW, btnH, btnH / 2);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '600 36px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText(cta, cx, y + btnH * 0.64);
+
+    ctx.fillStyle = BRAND_FAINT;
+    ctx.font = '500 24px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('romanttinen.fi', cx, cardY + cardH - 58);
   }
 
-  function init() {
-    var btn = document.getElementById('romant-download-story');
-    var frame = document.getElementById('romant-story-frame');
-    var canvas = document.getElementById('romant-story-canvas');
-    if (!btn || !frame || !canvas) return;
+  function loadFabric(url) {
+    if (!url) {
+      return Promise.resolve(null);
+    }
+    if (cachedFabric && cachedFabricUrl === url && cachedFabric.complete && cachedFabric.naturalWidth > 0) {
+      return Promise.resolve(cachedFabric);
+    }
+    return new Promise(function (resolve) {
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function () {
+        cachedFabric = img;
+        cachedFabricUrl = url;
+        resolve(img);
+      };
+      img.onerror = function () {
+        resolve(null);
+      };
+      img.src = url;
+    });
+  }
 
-    btn.addEventListener('click', function () {
-      drawStory(canvas, frame);
+  function waitFonts() {
+    if (document.fonts && document.fonts.ready) {
+      return document.fonts.ready.catch(function () { return null; });
+    }
+    return Promise.resolve();
+  }
+
+  function downloadPng(canvas, frame) {
+    var url = frame.getAttribute('data-fabric') || '';
+    Promise.all([loadFabric(url), waitFonts()]).then(function (res) {
+      drawStory(canvas, frame, res[0]);
       canvas.toBlob(function (blob) {
         if (!blob) return;
         var a = document.createElement('a');
@@ -168,6 +277,26 @@
         URL.revokeObjectURL(a.href);
       }, 'image/png');
     });
+  }
+
+  function init() {
+    var btn = document.getElementById('romant-download-story');
+    var frame = document.getElementById('romant-story-frame');
+    var canvas = document.getElementById('romant-story-canvas');
+    if (!btn || !frame || !canvas) return;
+
+    loadFabric(frame.getAttribute('data-fabric') || '');
+
+    btn.addEventListener('click', function () {
+      downloadPng(canvas, frame);
+    });
+
+    if (canvas.hasAttribute('data-romant-preview')) {
+      Promise.all([loadFabric(frame.getAttribute('data-fabric') || ''), waitFonts()]).then(function (res) {
+        canvas.hidden = false;
+        drawStory(canvas, frame, res[0]);
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
