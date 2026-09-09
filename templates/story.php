@@ -1,6 +1,6 @@
 <?php
 /**
- * Story share page — teaser only (IG-safe): wordmark, title, countdown.
+ * Story share page — locked teaser visual (IG 1080×1920, no spoilers).
  *
  * @var WP_Post $post
  * @var array   $data
@@ -23,25 +23,30 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 <div class="romant-wrap romant-story-page">
     <p class="romant-lead romant-story-help">Ota kuvakaappaus tai lataa PNG — sopii Instagram Storiesiin. Ei spoilereita.</p>
 
-    <div class="romant-story-frame" id="romant-story-frame"
-         data-title="<?php echo esc_attr($story_title); ?>"
-         data-inviter="<?php echo esc_attr($data['inviter_name'] ?? ''); ?>"
-         data-romant-countdown="<?php echo esc_attr($data['datetime']); ?>">
-        <div class="romant-story-inner">
-            <?php echo Romant_Kutsu_Templates::logo_markup('romant-eyebrow-logo'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-            <?php if (!empty($data['inviter_name'])) : ?>
-                <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut</p>
-            <?php endif; ?>
-            <h1 class="romant-serif"><?php echo esc_html($story_title); ?></h1>
-            <div class="romant-countdown" aria-live="polite">
-                <div class="romant-cd-unit"><span data-cd="d">–</span><small>pv</small></div>
-                <div class="romant-cd-unit"><span data-cd="h">–</span><small>t</small></div>
-                <div class="romant-cd-unit"><span data-cd="m">–</span><small>min</small></div>
-                <div class="romant-cd-unit"><span data-cd="s">–</span><small>s</small></div>
-            </div>
-            <p class="romant-countdown-done" hidden>Hetki on täällä.</p>
-            <p class="romant-story-brand">romanttinen.fi</p>
+    <div class="romant-story-frame" id="romant-story-frame">
+        <div class="romant-story-bokeh" aria-hidden="true">
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
+            <span class="romant-story-orb"></span>
         </div>
+        <article class="romant-story-card">
+            <p class="romant-story-logo">Romanttinen</p>
+            <span class="romant-story-rule" aria-hidden="true"></span>
+            <h1 class="romant-serif romant-story-headline">Sinut on kutsuttu<br>treffeille</h1>
+            <p class="romant-story-teaser">Pieni kutsu — avaa kun olet valmis.</p>
+            <div class="romant-story-cd" aria-hidden="true">
+                <div class="romant-story-cd-unit"><span>··</span><small>päivää</small></div>
+                <div class="romant-story-cd-unit"><span>··</span><small>tuntia</small></div>
+                <div class="romant-story-cd-unit"><span>··</span><small>min</small></div>
+            </div>
+            <p class="romant-story-cta">Avaa kutsu</p>
+            <p class="romant-story-brand">romanttinen.fi</p>
+        </article>
     </div>
 
     <div class="romant-actions">

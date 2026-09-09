@@ -54,7 +54,9 @@ final class Romant_Kutsu_Templates {
             ROMANT_KUTSU_VERSION,
             true
         );
-        wp_enqueue_script('romant-kutsu-countdown');
+        if ($context !== 'story') {
+            wp_enqueue_script('romant-kutsu-countdown');
+        }
 
         if (in_array($context, ['recipient', 'story', 'hallitse'], true)) {
             wp_register_script(

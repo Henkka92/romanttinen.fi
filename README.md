@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.6 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.7 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.7 — Jaa tarina Wine/Cream lock
+Instagram Story -jako (`/kutsu/{token}/story/` + PNG): Pauliinan lukittu Wine/Cream + pehmeä teaser-bokeh. Kermakortti, serif-logo **Romanttinen**, otsikko **Sinut on kutsuttu treffeille**, teaser *Pieni kutsu — avaa kun olet valmis.*, koristeellinen countdown (`··` / päivää · tuntia · min), alleviivattu **Avaa kutsu**, footer `romanttinen.fi`. Ei päivää, paikkaa, kutsujan nimeä eikä live-laskuria. Ei vanhaa tummaa / rose-gradienttia. 1080×1920.
 
 ### 1.3.6 — Portti 1 hivelee (atmosphere + panels)
 Saajan avattu näkymä: lämmin fabric jatkuu pehmennettynä (`::before` heavy blur + cream/wine-vignette, ilmapiiri korttien takana — ei tapettia, ei tasainen cream-drop). Osioiden paneelit (`osio` / `tint-0` cream, `tint-1` rose, `tint-2` wine-wash) saavat näkyvän reunan ja sisäpaddingin. Pukeutumisvihje vastaanottajalle: **Pukeudu näin** cream-korttina (`#FFFDF9`, `rgba(74,31,44,.16)`, pehmeä varjo). Debug-/versio-chrome pysyy poissa (ei Peel-boxes, ei `Kutsu avattu · 1.3.x`). WhatsApp/iMessage: OG-tagit (`Sinut on kutsuttu treffeille.`, pehmeä kuvaus, teaser-kuva — ei spoilereita). Peel-pino, Tapaaminen ja modal ennallaan.
@@ -52,7 +55,7 @@ define('ROMANTTINEN_STUB_PAYMENTS', true);
 4. **Hanki jaettava linkki (4,90 €)** → kutsujan nimi + Nimi kuittiin + pakollinen sähköposti → stub / Visma Pay → Nea-kuitti + hallintalinkki sähköpostiin.
 5. Vastaanottaja (`/kutsu/{token}/`):
    - Teaser: Logo A (`logo-a.png`), `{nimi} kutsui sinut`, **Sinut on kutsuttu treffeille**, countdown, valinnainen Saate, CTA **Avaa kutsu**. Paikka ei näy teaserissa.
-   - **Jaa tarina** / **Kopioi linkki** teaserissa (ei spoilereita PNG:ssä).
+   - **Jaa tarina** / **Kopioi linkki** teaserissa. Story-PNG on lukittu teaser (Wine/Cream + bokeh, ei päivää/paikkaa/laskuria).
    - Avauksen jälkeen: **Tapaaminen**-kortti (päivä + valinnainen paikka), sitten osiot. Jokainen vihje-kortti näyttää osion otsikon; avatut tasot pinoutuvat. CTA **Haluatko kuulla lisää?** → modal (*Haluatko kuulla lisää?* / *Voit pitää jännityksen — tai avata seuraavan vihjeen.* / **Kerro lisää** / **Pidän jännityksen**) → unlock seuraava taso (+1, historia jää).
 6. Edistyminen tallennetaan selainiin (ei vastaanottajatiliä).
 
