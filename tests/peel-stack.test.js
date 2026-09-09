@@ -192,7 +192,8 @@ assert('story wordmark is plain text not framed logo',
 );
 assert('story headline has period and two lines',
   /Sinut on kutsuttu treffeille\./.test(storyPhp) &&
-  /Sinut on<br>\s*kutsuttu treffeille\./.test(storyPhp)
+  /romant-story-line/.test(storyPhp) &&
+  /kutsuttu treffeille\./.test(storyPhp)
 );
 assert('story teaser line is IG-safe', /Pieni kutsu — avaa kun olet valmis\./.test(storyPhp));
 assert('story countdown uses full Finnish labels',

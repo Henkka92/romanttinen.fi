@@ -639,7 +639,7 @@ p.romant-hint {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1.85rem 1.15rem 1.25rem;
+  padding: 1.65rem 1rem 1.15rem;
   background: #FFFDF9;
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.55);
@@ -658,15 +658,25 @@ p.romant-hint {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  padding-top: 2.55rem;
+  padding-top: 1.35rem;
+  padding-bottom: 0.35rem;
 }
 
 .romant-story-headline {
-  font-size: 1.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(1.38rem, 7.4vw, 1.72rem);
   line-height: 1.12;
   margin: 0 auto;
   color: #4A1F2C;
+}
+
+.romant-story-line {
+  display: block;
+  white-space: nowrap;
 }
 
 .romant-story-rule {
@@ -736,12 +746,13 @@ p.romant-hint {
 
 .romant-story-card .romant-cd-unit small {
   font-family: var(--romant-serif);
-  font-size: 0.5rem;
+  font-size: clamp(0.42rem, 2.35vw, 0.55rem);
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   text-transform: none;
   color: rgba(74, 31, 44, 0.42);
   margin-top: 0.12rem;
+  white-space: nowrap;
 }
 
 .romant-story-card .romant-countdown-done {

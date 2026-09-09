@@ -95,12 +95,12 @@
 
   function drawDivider(ctx, cx, y, width) {
     var half = width / 2;
-    var arcW = 42;
-    var arcH = 16;
+    var arcW = 44;
+    var arcH = 15;
     ctx.save();
     ctx.strokeStyle = WINE;
-    ctx.globalAlpha = 0.55;
-    ctx.lineWidth = 1.6;
+    ctx.globalAlpha = 0.72;
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(cx - half, y);
@@ -160,39 +160,50 @@
     var innerR = cardX + cardW - 78;
     var innerW = innerR - innerL;
 
-    var y = cardY + 118;
     ctx.fillStyle = WINE;
     ctx.font = '600 40px "Cormorant Garamond", Georgia, serif';
-    ctx.fillText('romanttinen.fi', cx, y);
+    ctx.fillText('romanttinen.fi', cx, cardY + 118);
 
-    y += 196;
-    ctx.font = '600 68px "Cormorant Garamond", Georgia, serif';
-    ctx.fillText('Sinut on', cx, y);
-    y += 82;
-    ctx.fillText('kutsuttu treffeille.', cx, y);
+    var titleLh = 86;
+    var teaserSize = 30;
+    var gapTitleRule = 50;
+    var gapRuleTeaser = 54;
+    var gapTeaserCd = 62;
+    var gapCdBtn = 54;
+    var btnH = 92;
+    var cd = countdownParts(frame.getAttribute('data-romant-countdown') || '');
+    var gap = 18;
+    var cellW = (innerW - gap * 3) / 4;
+    var cellH = Math.min(cellW, 170);
+    var cdBlock = cd.done ? 120 : cellH;
 
-    y += 56;
+    var blockH = titleLh * 2 + gapTitleRule + gapRuleTeaser + teaserSize + gapTeaserCd + cdBlock + gapCdBtn + btnH;
+    var areaTop = cardY + 118 + 28;
+    var areaBot = cardY + cardH - 110;
+    var y = areaTop + Math.max(12, (areaBot - areaTop - blockH) / 2);
+
+    ctx.font = '600 72px "Cormorant Garamond", Georgia, serif';
+    ctx.fillText('Sinut on', cx, y + titleLh - 8);
+    ctx.fillText('kutsuttu treffeille.', cx, y + titleLh * 2 - 8);
+    y += titleLh * 2;
+
+    y += gapTitleRule;
     drawDivider(ctx, cx, y, Math.min(innerW * 0.62, 420));
 
-    y += 62;
+    y += gapRuleTeaser;
     var teaser = frame.getAttribute('data-teaser') || 'Pieni kutsu — avaa kun olet valmis.';
     ctx.fillStyle = WINE;
     ctx.font = '400 30px "Cormorant Garamond", Georgia, serif';
     ctx.fillText(teaser, cx, y);
 
-    var cd = countdownParts(frame.getAttribute('data-romant-countdown') || '');
-    y += 70;
+    y += gapTeaserCd;
 
     if (cd.done) {
       ctx.fillStyle = WINE;
       ctx.font = '500 36px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Hetki on täällä.', cx, y + 70);
-      y += 160;
+      ctx.fillText('Hetki on täällä.', cx, y + 48);
+      y += cdBlock;
     } else {
-      var gap = 18;
-      var cellW = (innerW - gap * 3) / 4;
-      var cellH = cellW;
-      var cellR = 16;
       var units = [
         { v: cd.d, l: 'Päivää' },
         { v: cd.h, l: 'Tuntia' },
@@ -204,7 +215,7 @@
         ctx.fillStyle = CELL_BG;
         ctx.strokeStyle = CELL_BORDER;
         ctx.lineWidth = 1.5;
-        roundRect(ctx, x, y, cellW, cellH, cellR);
+        roundRect(ctx, x, y, cellW, cellH, 16);
         ctx.fill();
         ctx.stroke();
 
@@ -213,15 +224,15 @@
         ctx.font = '600 52px "Cormorant Garamond", Georgia, serif';
         ctx.fillText(u.v, ncx, y + cellH * 0.52);
         ctx.fillStyle = LABEL;
-        ctx.font = '400 18px "Cormorant Garamond", Georgia, serif';
-        ctx.fillText(u.l, ncx, y + cellH * 0.78);
+        ctx.font = '400 20px "Cormorant Garamond", Georgia, serif';
+        ctx.fillText(u.l, ncx, y + cellH * 0.8);
       });
-      y += cellH + 56;
+      y += cellH;
     }
 
+    y += gapCdBtn;
     var cta = frame.getAttribute('data-cta') || 'Avaa kutsu';
     var btnW = innerW;
-    var btnH = 92;
     var btnX = innerL;
     ctx.fillStyle = WINE;
     roundRect(ctx, btnX, y, btnW, btnH, btnH / 2);

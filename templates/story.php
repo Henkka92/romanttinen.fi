@@ -36,7 +36,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <article class="romant-story-card">
             <p class="romant-wordmark romant-story-wordmark">romanttinen.fi</p>
             <div class="romant-story-body">
-                <h1 class="romant-serif romant-story-headline">Sinut on<br>kutsuttu treffeille.</h1>
+                <h1 class="romant-serif romant-story-headline"><span class="romant-story-line">Sinut on</span><span class="romant-story-line">kutsuttu treffeille.</span></h1>
                 <div class="romant-story-rule" aria-hidden="true">
                     <svg class="romant-story-arc" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 12 Q14 2 27 12" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" fill="none"/>
