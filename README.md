@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.6 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.7 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.7 — Jaa tarina (Henry PASS)
+Instagram-tarina (1080×1920): sama **hero-fabric** silkki + pehmeä bokeh kuin live-teaserissa, keskellä kermakortti. Wordmark **romanttinen.fi** ilman kehystä, otsikko *Sinut on kutsuttu treffeille.*, teaser *Pieni kutsu — avaa kun olet valmis.*, oikea countdown (Päivää / Tuntia / Minuuttia / Sekuntia), wine-pilleri **Avaa kutsu**, himmeä romanttinen.fi kortin alaosassa. Ei spoilereita, ei paikkaa/aikaa/vihjeitä, ei tekstiä “Jaa tarina” kuvassa. PNG-lataus piirtää saman sommitelman canvasille. Portti 2 ennallaan.
 
 ### 1.3.6 — Portti 1 hivelee (atmosphere + panels)
 Saajan avattu näkymä: lämmin fabric jatkuu pehmennettynä (`::before` heavy blur + cream/wine-vignette, ilmapiiri korttien takana — ei tapettia, ei tasainen cream-drop). Osioiden paneelit (`osio` / `tint-0` cream, `tint-1` rose, `tint-2` wine-wash) saavat näkyvän reunan ja sisäpaddingin. Pukeutumisvihje vastaanottajalle: **Pukeudu näin** cream-korttina (`#FFFDF9`, `rgba(74,31,44,.16)`, pehmeä varjo). Debug-/versio-chrome pysyy poissa (ei Peel-boxes, ei `Kutsu avattu · 1.3.x`). WhatsApp/iMessage: OG-tagit (`Sinut on kutsuttu treffeille.`, pehmeä kuvaus, teaser-kuva — ei spoilereita). Peel-pino, Tapaaminen ja modal ennallaan.

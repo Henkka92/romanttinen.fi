@@ -30,7 +30,7 @@
     var elH = root.querySelector('[data-cd="h"]');
     var elM = root.querySelector('[data-cd="m"]');
     var elS = root.querySelector('[data-cd="s"]');
-    if (elD) elD.textContent = String(d);
+    if (elD) elD.textContent = pad(d);
     if (elH) elH.textContent = pad(h);
     if (elM) elM.textContent = pad(m);
     if (elS) elS.textContent = pad(s);

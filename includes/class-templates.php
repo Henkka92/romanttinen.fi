@@ -35,7 +35,7 @@ final class Romant_Kutsu_Templates {
     public static function enqueue_assets(string $context = ''): void {
         wp_register_style(
             'romant-kutsu-fonts',
-            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap',
+            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap',
             [],
             null
         );
