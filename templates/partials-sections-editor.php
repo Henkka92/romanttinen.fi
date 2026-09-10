@@ -1,8 +1,9 @@
 <?php
 /**
- * Sections editor (create + manage) — cream cards, OLETUS on default titles.
+ * Sections editor (create + manage) — cream cards, curated chips, no free planner.
  *
  * @var list<array{id: string, title: string, levels: list<string>}> $sections
+ * @var bool $craft_editor  Portti 2 create: collapsed cards + pohja world.
  * @package Romanttinen_Kutsu
  */
 if (!defined('ABSPATH')) {
@@ -10,21 +11,44 @@ if (!defined('ABSPATH')) {
 }
 
 if (!isset($sections) || !is_array($sections) || $sections === []) {
-    $sections = [Romant_Kutsu_CPT::empty_section()];
+    $sections = Romant_Kutsu_CPT::default_craft_sections();
 }
 
-$max_sec = Romant_Kutsu_CPT::MAX_SECTIONS;
-$soft    = Romant_Kutsu_CPT::SOFT_MAX_LEVELS;
-$hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
+$craft_editor = !empty($craft_editor);
+$max_sec      = Romant_Kutsu_CPT::MAX_SECTIONS;
+$soft         = Romant_Kutsu_CPT::SOFT_MAX_LEVELS;
+$hard         = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
+$ph_empty     = Romant_Kutsu_CPT::PLACEHOLDER_EMPTY;
+$ph_l1        = Romant_Kutsu_CPT::PLACEHOLDER_L1;
+$ph_l2        = Romant_Kutsu_CPT::PLACEHOLDER_L2;
+$used_titles  = [];
+foreach ($sections as $sec) {
+    $used_titles[] = (string) ($sec['title'] ?? '');
+}
+$chip_titles = [];
+foreach (Romant_Kutsu_CPT::EXTRA_SECTION_TITLES as $chip) {
+    if (!in_array($chip, $used_titles, true)) {
+        $chip_titles[] = $chip;
+    }
+}
+if (!$craft_editor) {
+    foreach (Romant_Kutsu_CPT::DEFAULT_SECTION_TITLES as $chip) {
+        if (!in_array($chip, $used_titles, true)) {
+            $chip_titles[] = $chip;
+        }
+    }
+}
 ?>
-<div class="romant-sections-fieldset" data-romant-sections-editor
+<div class="romant-sections-fieldset<?php echo $craft_editor ? ' is-craft' : ''; ?>" data-romant-sections-editor
+     data-romant-craft="<?php echo $craft_editor ? '1' : '0'; ?>"
      data-max-sections="<?php echo esc_attr((string) $max_sec); ?>"
      data-soft-max="<?php echo esc_attr((string) $soft); ?>"
      data-hard-max="<?php echo esc_attr((string) $hard); ?>">
-    <p class="romant-hint romant-sections-lead">
-        Enintään <?php echo esc_html((string) $max_sec); ?> osiota (Elokuvahetki / Yhteinen ateria / Kotona).
-        Jokaisessa oletuksena 3 tasoa — vastaanottaja avaa niitä yksi kerrallaan.
-    </p>
+
+    <div class="romant-hetket-head">
+        <p class="romant-kicker">Kutsun hetket</p>
+        <p class="romant-hetket-count" data-oletus-count><?php echo esc_html((string) count($sections)); ?> oletusta</p>
+    </div>
 
     <div class="romant-sections-list" data-sections-list>
         <?php foreach ($sections as $si => $sec) :
@@ -34,36 +58,45 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
             if (!is_array($levels) || $levels === []) {
                 $levels = ['', '', ''];
             }
-            while (count($levels) < 3) {
+            while (count($levels) < 1) {
                 $levels[] = '';
             }
+            $l1         = (string) ($levels[0] ?? '');
             $is_default = Romant_Kutsu_CPT::is_default_section_title($stitle);
             ?>
-            <div class="romant-section-card romant-card" data-section-card data-index="<?php echo esc_attr((string) $si); ?>">
+            <div class="romant-section-card romant-card<?php echo $craft_editor ? ' is-collapsed' : ''; ?>"
+                 data-section-card data-index="<?php echo esc_attr((string) $si); ?>">
                 <div class="romant-section-card-head">
+                    <span class="romant-section-num" data-section-num aria-hidden="true"><?php echo esc_html((string) ($si + 1)); ?></span>
                     <label class="romant-section-title-label">
                         <span class="screen-reader-text">Osion otsikko</span>
                         <input type="hidden" name="romant_sections[<?php echo esc_attr((string) $si); ?>][id]"
                                value="<?php echo esc_attr($sid); ?>" data-section-id />
                         <input type="text" name="romant_sections[<?php echo esc_attr((string) $si); ?>][title]"
                                value="<?php echo esc_attr($stitle); ?>" maxlength="80"
-                               placeholder="Esim. Elokuvahetki" required data-section-title />
+                               placeholder="Elokuvahetki" required data-section-title />
                     </label>
                     <span class="romant-oletus" data-oletus-badge<?php echo $is_default ? '' : ' hidden'; ?>>Oletus</span>
                     <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section
                             <?php echo count($sections) <= 1 ? ' hidden' : ''; ?>>
-                        Poista osio
+                        Poista
                     </button>
                 </div>
+                <p class="romant-section-preview" data-section-preview><?php echo esc_html($l1); ?></p>
                 <div class="romant-section-levels" data-section-levels>
-                    <?php foreach ($levels as $li => $lv) : ?>
-                        <div class="romant-level-row" data-level-row>
+                    <?php foreach ($levels as $li => $lv) :
+                        $ph = $li === 0 ? $ph_l1 : $ph_l2;
+                        if ((string) $lv === '' && $li === 0) {
+                            $ph = $ph_empty;
+                        }
+                        ?>
+                        <div class="romant-level-row<?php echo $craft_editor && $li > 0 && (string) $lv === '' ? ' is-quiet' : ''; ?>" data-level-row>
                             <label>
-                                <span data-level-label>Taso <?php echo esc_html((string) ($li + 1)); ?></span>
+                                <span data-level-label><?php echo $li === 0 ? 'Vihje' : 'Taso ' . (string) ($li + 1); ?></span>
                                 <span class="req" data-level-req<?php echo $li === 0 ? '' : ' hidden'; ?>>*</span>
                                 <textarea name="romant_sections[<?php echo esc_attr((string) $si); ?>][levels][<?php echo esc_attr((string) $li); ?>]"
                                           rows="2" maxlength="800"
-                                          placeholder="Kirjoita tämän tason teksti…"
+                                          placeholder="<?php echo esc_attr($ph); ?>"
                                           <?php echo $li === 0 ? 'required' : ''; ?>
                                           data-level-text><?php echo esc_textarea((string) $lv); ?></textarea>
                             </label>
@@ -74,12 +107,19 @@ $hard    = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
                 <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>
                     Lisää taso
                 </button>
+                <p class="romant-napauta" data-napauta>napauta muokataksesi</p>
             </div>
         <?php endforeach; ?>
     </div>
 
-    <button type="button" class="romant-btn romant-btn-ghost" data-add-section
-            <?php echo count($sections) >= $max_sec ? ' hidden' : ''; ?>>
-        Lisää osio
-    </button>
+    <p class="romant-hint romant-craft-help">Voit muokata sisältöä vapaasti.</p>
+
+    <div class="romant-section-chips" data-section-chips <?php echo $chip_titles === [] ? ' hidden' : ''; ?>>
+        <?php foreach ($chip_titles as $chip) : ?>
+            <button type="button" class="romant-chip" data-add-chip="<?php echo esc_attr($chip); ?>"
+                    <?php echo count($sections) >= $max_sec ? ' disabled' : ''; ?>>
+                <?php echo esc_html($chip); ?>
+            </button>
+        <?php endforeach; ?>
+    </div>
 </div>

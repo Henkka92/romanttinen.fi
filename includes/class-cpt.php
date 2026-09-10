@@ -45,8 +45,119 @@ final class Romant_Kutsu_CPT {
     /** Nea-locked default section titles (craft OLETUS badge). */
     public const DEFAULT_SECTION_TITLES = ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
 
+    /** Extra curated chips only — not a free planner. */
+    public const EXTRA_SECTION_TITLES = ['Kaupungilla', 'Pieni salaisuus', 'Hellää huomiota'];
+
+    public const CRAFT_INVITE_TITLE = 'Ilta kahdelle';
+
+    public const PLACEHOLDER_EMPTY = 'Kirjoita vihje saajalle…';
+    public const PLACEHOLDER_L1    = 'Pieni vihje — älä paljasta kaikkea';
+    public const PLACEHOLDER_L2    = 'Seuraava kerros…';
+
+    /** Nea-locked default L1 blurbs (Portti 2 craft open state). */
+    public const DEFAULT_SECTION_BLURBS = [
+        'Elokuvahetki'    => 'Valitaan leffa, tehdään popcornit — ja katsotaan yhdessä.',
+        'Yhteinen ateria' => 'Kokataan jotain hyvää tai varataan pöytä.',
+        'Kotona'          => 'Rauhallista aikaa yhdessä, ilman kiirettä.',
+    ];
+
     public static function is_default_section_title(string $title): bool {
         return in_array($title, self::DEFAULT_SECTION_TITLES, true);
+    }
+
+    public static function is_curated_section_title(string $title): bool {
+        return in_array($title, self::curated_section_titles(), true);
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function curated_section_titles(): array {
+        return array_values(array_unique(array_merge(self::DEFAULT_SECTION_TITLES, self::EXTRA_SECTION_TITLES)));
+    }
+
+    /**
+     * Soft L1 when a curated chip is added.
+     */
+    public static function curated_blurb(string $title): string {
+        $all = self::DEFAULT_SECTION_BLURBS + [
+            'Kaupungilla'     => 'Kävelylle — suunta selviää myöhemmin.',
+            'Pieni salaisuus' => 'Ota mukaan jotain lämmintä.',
+            'Hellää huomiota' => '',
+        ];
+        return $all[$title] ?? '';
+    }
+
+    /**
+     * Portti 2 pohjat (max 2). Kotitreffit lands as the default three + Nea blurbs.
+     *
+     * @return array<string, array{label: string, location: string, sections: list<array{title: string, l1: string}>}>
+     */
+    public static function craft_templates(): array {
+        return [
+            'kotitreffit' => [
+                'label'    => 'Kotitreffit',
+                'location' => 'Kotona',
+                'sections' => [
+                    [
+                        'title' => 'Elokuvahetki',
+                        'l1'    => self::DEFAULT_SECTION_BLURBS['Elokuvahetki'],
+                    ],
+                    [
+                        'title' => 'Yhteinen ateria',
+                        'l1'    => self::DEFAULT_SECTION_BLURBS['Yhteinen ateria'],
+                    ],
+                    [
+                        'title' => 'Kotona',
+                        'l1'    => self::DEFAULT_SECTION_BLURBS['Kotona'],
+                    ],
+                ],
+            ],
+            'kaupungilla' => [
+                'label'    => 'Kaupungilla',
+                'location' => '',
+                'sections' => [
+                    [
+                        'title' => 'Kaupungilla',
+                        'l1'    => 'Kävelylle — suunta selviää myöhemmin.',
+                    ],
+                    [
+                        'title' => 'Yhteinen ateria',
+                        'l1'    => 'Pöytä odottaa, mutta missä…',
+                    ],
+                    [
+                        'title' => 'Pieni salaisuus',
+                        'l1'    => 'Ota mukaan jotain lämmintä.',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Soft Kotitreffit L1s (Nea) — applied when re-selecting the home pohja after a switch.
+     *
+     * @return array<string, string>
+     */
+    public static function kotitreffit_soft_l1(): array {
+        return [
+            'Elokuvahetki'    => 'Valitaan jotain kevyttä — ei se ensimmäinen arvaus.',
+            'Yhteinen ateria' => 'Syödään hyvin kotona, rauhassa.',
+            'Kotona'          => 'Illan lopuksi ei kiirettä mihinkään.',
+        ];
+    }
+
+    /**
+     * Next Saturday 18:00 Europe/Helsinki — craft summary line.
+     */
+    public static function default_craft_datetime(): DateTimeImmutable {
+        $tz = new DateTimeZone('Europe/Helsinki');
+        $now = new DateTimeImmutable('now', $tz);
+        $saturday = new DateTimeImmutable('saturday this week 18:00:00', $tz);
+        if ($saturday <= $now) {
+            $saturday = $saturday->modify('+7 days');
+        }
+        return $saturday;
     }
 
     public function register(): void {
@@ -210,7 +321,24 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
-     * Multi-level sample sections for create form + peel QA.
+     * Portti 2 craft open state — three defaults + Nea L1 blurbs (not an empty form).
+     *
+     * @return list<array{id: string, title: string, levels: list<string>}>
+     */
+    public static function default_craft_sections(): array {
+        $out = [];
+        foreach (self::DEFAULT_SECTION_TITLES as $title) {
+            $out[] = [
+                'id'     => self::generate_secret(8),
+                'title'  => $title,
+                'levels' => [self::DEFAULT_SECTION_BLURBS[$title] ?? '', '', ''],
+            ];
+        }
+        return $out;
+    }
+
+    /**
+     * Multi-level sample sections for peel QA (Portti 1).
      * Peel CTA ("Haluatko kuulla lisää?") only appears when a section has 2+ levels.
      *
      * @return list<array{id: string, title: string, levels: list<string>}>

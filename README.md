@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.7 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.8 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.8 — Portti 2 craft (Pauliina cream lock)
+Craft (`/kutsu/uusi/`): **Rakenna kutsu** cream-kortit, Wine-aksentit, serif-otsikot. Avaus ei ole tyhjä lomake — kolme oletusta **Elokuvahetki · Yhteinen ateria · Kotona** Nean L1-blurbeilla + OLETUS. Pohjat max 2: **Kotitreffit** (valittu) ja **Kaupungilla** (L1-esitäyttö). Extra-chipit vain kuratoituna: **Kaupungilla · Pieni salaisuus · Hellää huomiota** — ei vapaata planneria. Placeholdereita: `Kirjoita vihje saajalle…` / L1 `Pieni vihje — älä paljasta kaikkea` / L2+ `Seuraava kerros…`. CTA **Tallenna luonnos**; maksu ja lähetys pysyvät hallinnassa. Portti 1 peel ja Portti 3 etusivu ennallaan.
 
 ### 1.3.7 — Jaa tarina (Henry PASS)
 Instagram-tarina (1080×1920): sama **hero-fabric** silkki + pehmeä bokeh kuin live-teaserissa, keskellä kermakortti. Wordmark **romanttinen.fi** ilman kehystä, otsikko *Sinut on kutsuttu treffeille.*, teaser *Pieni kutsu — avaa kun olet valmis.*, oikea countdown (Päivää / Tuntia / Minuuttia / Sekuntia), wine-pilleri **Avaa kutsu**, himmeä romanttinen.fi kortin alaosassa. Ei spoilereita, ei paikkaa/aikaa/vihjeitä, ei tekstiä “Jaa tarina” kuvassa. PNG-lataus piirtää saman sommitelman canvasille. Portti 2 ennallaan.

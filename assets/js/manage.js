@@ -1,5 +1,6 @@
 /**
  * Copy helpers + sections editor (create / manage).
+ * Portti 2 craft: curated pohjat + chips — no free planner.
  */
 (function () {
   'use strict';
@@ -10,7 +11,16 @@
   var SOFT_MAX = cfg.softMaxLevels || 10;
   var HARD_MAX = cfg.hardMaxLevels || 20;
   var i18n = cfg.i18n || {};
-  var DEFAULT_TITLES = ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
+  var DEFAULT_TITLES = cfg.defaultTitles || ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
+  var EXTRA_TITLES = cfg.extraTitles || ['Kaupungilla', 'Pieni salaisuus', 'Hellää huomiota'];
+  var BLURBS = cfg.blurbs || {};
+  var TEMPLATES = cfg.templates || {};
+  var SOFT_KOTI = cfg.softKotitreffit || {};
+  var PH = cfg.placeholders || {
+    empty: 'Kirjoita vihje saajalle…',
+    l1: 'Pieni vihje — älä paljasta kaikkea',
+    l2: 'Seuraava kerros…'
+  };
 
   function flash(btn, okText) {
     var prev = btn.textContent;
@@ -46,12 +56,94 @@
     }).join('');
   }
 
+  function isCraft(editor) {
+    return editor && editor.getAttribute('data-romant-craft') === '1';
+  }
+
+  function placeholderFor(li, value) {
+    if (li === 0) {
+      return value ? PH.l1 : PH.empty;
+    }
+    return PH.l2;
+  }
+
+  function weekdaysFi() {
+    return ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
+  }
+
+  function formatSummaryLine(dateVal, timeVal, place) {
+    if (!dateVal) return '';
+    var parts = dateVal.split('-');
+    if (parts.length < 3) return '';
+    var dt = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    if (isNaN(dt.getTime())) return '';
+    var wd = weekdaysFi()[dt.getDay()];
+    var line = wd + ' ' + Number(parts[2]) + '.' + Number(parts[1]) + '.';
+    if (timeVal) line += ' · ' + timeVal;
+    if (place) line += ' · ' + place;
+    return line;
+  }
+
+  function syncCraftDatetime(form) {
+    if (!form) return;
+    var dateEl = form.querySelector('[data-craft-date]');
+    var timeEl = form.querySelector('[data-craft-time]');
+    var hidden = form.querySelector('[data-craft-datetime]');
+    var placeEl = form.querySelector('[data-craft-place]');
+    var lineEl = form.querySelector('[data-craft-summary-line]');
+    if (!dateEl || !timeEl || !hidden) return;
+    var dateVal = dateEl.value || '';
+    var timeVal = timeEl.value || '18:00';
+    if (dateVal) hidden.value = dateVal + 'T' + timeVal;
+    if (lineEl) {
+      lineEl.textContent = formatSummaryLine(dateVal, timeVal, placeEl ? placeEl.value.trim() : '');
+    }
+  }
+
+  function updateOletusCount(editor) {
+    var el = editor.querySelector('[data-oletus-count]');
+    if (!el) return;
+    var n = editor.querySelectorAll('[data-section-card]').length;
+    el.textContent = n + ' ' + (i18n.oletusta || 'oletusta');
+  }
+
+  function updateChips(editor) {
+    var wrap = editor.querySelector('[data-section-chips]');
+    if (!wrap) return;
+    var used = [];
+    editor.querySelectorAll('[data-section-title]').forEach(function (input) {
+      used.push((input.value || '').trim());
+    });
+    var catalog = isCraft(editor) ? EXTRA_TITLES.concat(DEFAULT_TITLES) : DEFAULT_TITLES.concat(EXTRA_TITLES);
+    var seen = {};
+    var available = [];
+    catalog.forEach(function (title) {
+      if (seen[title]) return;
+      seen[title] = true;
+      if (used.indexOf(title) === -1) available.push(title);
+    });
+    wrap.innerHTML = '';
+    var atMax = used.length >= MAX_SECTIONS;
+    available.forEach(function (title) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'romant-chip';
+      btn.setAttribute('data-add-chip', title);
+      btn.textContent = title;
+      if (atMax) btn.disabled = true;
+      wrap.appendChild(btn);
+    });
+    wrap.hidden = available.length === 0;
+  }
+
   function reindexSections(editor) {
     var list = editor.querySelector('[data-sections-list]');
     if (!list) return;
     var cards = list.querySelectorAll('[data-section-card]');
     cards.forEach(function (card, si) {
       card.setAttribute('data-index', String(si));
+      var num = card.querySelector('[data-section-num]');
+      if (num) num.textContent = String(si + 1);
       var idInput = card.querySelector('[data-section-id]');
       var titleInput = card.querySelector('[data-section-title]');
       if (idInput) idInput.name = 'romant_sections[' + si + '][id]';
@@ -63,20 +155,24 @@
           ta.name = 'romant_sections[' + si + '][levels][' + li + ']';
           if (li === 0) ta.setAttribute('required', 'required');
           else ta.removeAttribute('required');
+          ta.placeholder = placeholderFor(li, (ta.value || '').trim());
         }
         var labText = row.querySelector('[data-level-label]');
         if (labText) {
-          labText.textContent = (i18n.level || 'Taso') + ' ' + (li + 1);
+          labText.textContent = li === 0
+            ? (i18n.hint || 'Vihje')
+            : ((i18n.level || 'Taso') + ' ' + (li + 1));
         }
         var reqEl = row.querySelector('[data-level-req]');
         if (reqEl) reqEl.hidden = li !== 0;
       });
       var removeBtn = card.querySelector('[data-remove-section]');
       if (removeBtn) removeBtn.hidden = cards.length <= 1;
+      syncPreview(card);
       updateSoftCap(card);
     });
-    var addSec = editor.querySelector('[data-add-section]');
-    if (addSec) addSec.hidden = cards.length >= MAX_SECTIONS;
+    updateOletusCount(editor);
+    updateChips(editor);
   }
 
   function updateSoftCap(card) {
@@ -87,14 +183,27 @@
     if (addBtn) addBtn.hidden = rows.length >= HARD_MAX;
   }
 
-  function buildLevelRow(si, li, required) {
+  function syncPreview(card) {
+    var preview = card.querySelector('[data-section-preview]');
+    var titleInput = card.querySelector('[data-section-title]');
+    var first = card.querySelector('[data-level-text]');
+    if (preview && first) preview.textContent = (first.value || '').trim();
+    var badge = card.querySelector('[data-oletus-badge]');
+    if (badge && titleInput) {
+      badge.hidden = DEFAULT_TITLES.indexOf(titleInput.value.trim()) === -1;
+    }
+  }
+
+  function buildLevelRow(si, li, required, value) {
     var row = document.createElement('div');
     row.className = 'romant-level-row';
     row.setAttribute('data-level-row', '');
     var label = document.createElement('label');
     var labSpan = document.createElement('span');
     labSpan.setAttribute('data-level-label', '');
-    labSpan.textContent = (i18n.level || 'Taso') + ' ' + (li + 1);
+    labSpan.textContent = li === 0
+      ? (i18n.hint || 'Vihje')
+      : ((i18n.level || 'Taso') + ' ' + (li + 1));
     label.appendChild(labSpan);
     label.appendChild(document.createTextNode(' '));
     var req = document.createElement('span');
@@ -107,7 +216,8 @@
     ta.name = 'romant_sections[' + si + '][levels][' + li + ']';
     ta.rows = 2;
     ta.maxLength = 800;
-    ta.placeholder = i18n.levelPh || 'Kirjoita tämän tason teksti…';
+    ta.value = value || '';
+    ta.placeholder = placeholderFor(li, ta.value.trim());
     ta.setAttribute('data-level-text', '');
     if (required) ta.setAttribute('required', 'required');
     label.appendChild(ta);
@@ -115,14 +225,25 @@
     return row;
   }
 
-  function buildSectionCard(si) {
+  function buildSectionCard(si, opts) {
+    opts = opts || {};
+    var title = opts.title || '';
+    var l1 = opts.l1 || '';
+    var collapsed = !!opts.collapsed;
+
     var card = document.createElement('div');
-    card.className = 'romant-section-card romant-card';
+    card.className = 'romant-section-card romant-card' + (collapsed ? ' is-collapsed' : '');
     card.setAttribute('data-section-card', '');
     card.setAttribute('data-index', String(si));
 
     var head = document.createElement('div');
     head.className = 'romant-section-card-head';
+
+    var num = document.createElement('span');
+    num.className = 'romant-section-num';
+    num.setAttribute('data-section-num', '');
+    num.setAttribute('aria-hidden', 'true');
+    num.textContent = String(si + 1);
 
     var titleLabel = document.createElement('label');
     titleLabel.className = 'romant-section-title-label';
@@ -137,8 +258,9 @@
     titleInput.type = 'text';
     titleInput.name = 'romant_sections[' + si + '][title]';
     titleInput.maxLength = 80;
-    titleInput.placeholder = i18n.sectionPh || 'Esim. Elokuvahetki';
+    titleInput.placeholder = i18n.sectionPh || 'Elokuvahetki';
     titleInput.required = true;
+    titleInput.value = title;
     titleInput.setAttribute('data-section-title', '');
 
     var sr = document.createElement('span');
@@ -151,24 +273,33 @@
     var oletus = document.createElement('span');
     oletus.className = 'romant-oletus';
     oletus.setAttribute('data-oletus-badge', '');
-    oletus.hidden = true;
+    oletus.hidden = DEFAULT_TITLES.indexOf(title) === -1;
     oletus.textContent = 'Oletus';
 
     var removeBtn = document.createElement('button');
     removeBtn.type = 'button';
     removeBtn.className = 'romant-btn romant-btn-ghost romant-btn-sm';
     removeBtn.setAttribute('data-remove-section', '');
-    removeBtn.textContent = i18n.removeSection || 'Poista osio';
+    removeBtn.textContent = i18n.removeSection || 'Poista';
 
+    head.appendChild(num);
     head.appendChild(titleLabel);
     head.appendChild(oletus);
     head.appendChild(removeBtn);
 
+    var preview = document.createElement('p');
+    preview.className = 'romant-section-preview';
+    preview.setAttribute('data-section-preview', '');
+    preview.textContent = l1;
+
     var levels = document.createElement('div');
     levels.className = 'romant-section-levels';
     levels.setAttribute('data-section-levels', '');
-    for (var i = 0; i < DEFAULT_LEVELS; i++) {
-      levels.appendChild(buildLevelRow(si, i, i === 0));
+    levels.appendChild(buildLevelRow(si, 0, true, l1));
+    for (var i = 1; i < DEFAULT_LEVELS; i++) {
+      var quiet = buildLevelRow(si, i, false, '');
+      quiet.classList.add('is-quiet');
+      levels.appendChild(quiet);
     }
 
     var warn = document.createElement('p');
@@ -183,15 +314,86 @@
     addLevel.setAttribute('data-add-level', '');
     addLevel.textContent = i18n.addLevel || 'Lisää taso';
 
+    var napauta = document.createElement('p');
+    napauta.className = 'romant-napauta';
+    napauta.setAttribute('data-napauta', '');
+    napauta.textContent = i18n.napauta || 'napauta muokataksesi';
+
     card.appendChild(head);
+    card.appendChild(preview);
     card.appendChild(levels);
     card.appendChild(warn);
     card.appendChild(addLevel);
+    card.appendChild(napauta);
     return card;
+  }
+
+  function applyTemplate(editor, key, opts) {
+    opts = opts || {};
+    var tpl = TEMPLATES[key];
+    if (!tpl || !tpl.sections) return;
+    var list = editor.querySelector('[data-sections-list]');
+    if (!list) return;
+    var sections = tpl.sections.slice(0, MAX_SECTIONS);
+    if (key === 'kotitreffit' && opts.soft) {
+      sections = sections.map(function (sec) {
+        var copy = { title: sec.title, l1: sec.l1 };
+        if (SOFT_KOTI[sec.title]) copy.l1 = SOFT_KOTI[sec.title];
+        return copy;
+      });
+    }
+    list.innerHTML = '';
+    sections.forEach(function (sec, si) {
+      list.appendChild(buildSectionCard(si, {
+        title: sec.title,
+        l1: sec.l1,
+        collapsed: isCraft(editor)
+      }));
+    });
+    var form = editor.closest('form');
+    var place = form ? form.querySelector('[data-craft-place]') : null;
+    if (place && Object.prototype.hasOwnProperty.call(tpl, 'location')) {
+      if (place.value === '' || place.value === 'Kotona' || tpl.location === 'Kotona') {
+        place.value = tpl.location || '';
+      }
+    }
+    reindexSections(editor);
+    syncCraftDatetime(form);
+  }
+
+  function addChip(editor, title) {
+    var list = editor.querySelector('[data-sections-list]');
+    if (!list) return;
+    var n = list.querySelectorAll('[data-section-card]').length;
+    if (n >= MAX_SECTIONS) {
+      alert(i18n.maxSections || 'Enintään 3 osiota.');
+      return;
+    }
+    var allowed = DEFAULT_TITLES.concat(EXTRA_TITLES);
+    if (allowed.indexOf(title) === -1) return;
+    list.appendChild(buildSectionCard(n, {
+      title: title,
+      l1: BLURBS[title] || '',
+      collapsed: false
+    }));
+    reindexSections(editor);
   }
 
   function initSectionsEditor(editor) {
     editor.addEventListener('click', function (e) {
+      var cardHit = e.target.closest('[data-section-card]');
+      if (cardHit && editor.contains(cardHit) && cardHit.classList.contains('is-collapsed')) {
+        if (e.target.closest('[data-remove-section]')) {
+          /* fall through */
+        } else {
+          e.preventDefault();
+          cardHit.classList.remove('is-collapsed');
+          var first = cardHit.querySelector('[data-level-text]');
+          if (first) first.focus();
+          return;
+        }
+      }
+
       var addLevel = e.target.closest('[data-add-level]');
       if (addLevel && editor.contains(addLevel)) {
         e.preventDefault();
@@ -204,7 +406,7 @@
           return;
         }
         var si = parseInt(card.getAttribute('data-index') || '0', 10);
-        levels.appendChild(buildLevelRow(si, count, false));
+        levels.appendChild(buildLevelRow(si, count, false, ''));
         updateSoftCap(card);
         reindexSections(editor);
         return;
@@ -222,17 +424,10 @@
         return;
       }
 
-      var addSec = e.target.closest('[data-add-section]');
-      if (addSec && editor.contains(addSec)) {
+      var chip = e.target.closest('[data-add-chip]');
+      if (chip && editor.contains(chip) && !chip.disabled) {
         e.preventDefault();
-        var list2 = editor.querySelector('[data-sections-list]');
-        var n = list2.querySelectorAll('[data-section-card]').length;
-        if (n >= MAX_SECTIONS) {
-          alert(i18n.maxSections || 'Enintään 3 osiota.');
-          return;
-        }
-        list2.appendChild(buildSectionCard(n));
-        reindexSections(editor);
+        addChip(editor, chip.getAttribute('data-add-chip') || '');
       }
     });
 
@@ -240,12 +435,70 @@
     reindexSections(editor);
     editor.addEventListener('input', function (e) {
       var title = e.target.closest('[data-section-title]');
-      if (!title || !editor.contains(title)) return;
-      var card = title.closest('[data-section-card]');
-      var badge = card ? card.querySelector('[data-oletus-badge]') : null;
-      if (badge) {
-        badge.hidden = DEFAULT_TITLES.indexOf(title.value.trim()) === -1;
+      var level = e.target.closest('[data-level-text]');
+      if (!title && !level) return;
+      if (!editor.contains(e.target)) return;
+      var card = e.target.closest('[data-section-card]');
+      if (card) syncPreview(card);
+      if (title) updateChips(editor);
+      if (level) {
+        var li = Array.prototype.indexOf.call(
+          card.querySelectorAll('[data-level-text]'),
+          level
+        );
+        level.placeholder = placeholderFor(li, (level.value || '').trim());
       }
+    });
+  }
+
+  function initPohja() {
+    document.querySelectorAll('[data-romant-pohja]').forEach(function (wrap) {
+      var form = wrap.closest('[data-romant-craft-form]') || wrap.closest('form');
+      var editor = form ? form.querySelector('[data-romant-sections-editor]') : null;
+      if (!editor) return;
+      wrap.setAttribute('data-applied', 'kotitreffit');
+      wrap.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-pohja]');
+        if (!btn || !wrap.contains(btn)) return;
+        e.preventDefault();
+        var key = btn.getAttribute('data-pohja') || '';
+        if (!TEMPLATES[key]) return;
+        var applied = wrap.getAttribute('data-applied') || '';
+        if (applied === key) return;
+        applyTemplate(editor, key, { soft: key === 'kotitreffit' && applied !== '' });
+        wrap.setAttribute('data-applied', key);
+        wrap.querySelectorAll('[data-pohja]').forEach(function (el) {
+          var on = el === btn;
+          el.classList.toggle('is-selected', on);
+          el.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      });
+    });
+  }
+
+  function initCraftSummary() {
+    document.querySelectorAll('[data-romant-craft-form]').forEach(function (form) {
+      syncCraftDatetime(form);
+      var summary = form.querySelector('[data-craft-summary]');
+      if (summary) {
+        summary.addEventListener('click', function (e) {
+          if (summary.classList.contains('is-collapsed') && !e.target.closest('input')) {
+            summary.classList.remove('is-collapsed');
+            var dateEl = summary.querySelector('[data-craft-date]');
+            if (dateEl) dateEl.focus();
+          }
+        });
+      }
+      form.addEventListener('input', function (e) {
+        if (e.target.closest('[data-craft-date], [data-craft-time], [data-craft-place], [data-craft-summary]')) {
+          syncCraftDatetime(form);
+        }
+      });
+      form.addEventListener('change', function (e) {
+        if (e.target.closest('[data-craft-date], [data-craft-time]')) {
+          syncCraftDatetime(form);
+        }
+      });
     });
   }
 
@@ -274,7 +527,6 @@
     var receipt = document.getElementById('romant_receipt_name_pay');
     if (!inviter || !receipt) return;
     var locked = false;
-    var lastSynced = inviter.value;
     if (receipt.value && receipt.value !== inviter.value) {
       locked = true;
     }
@@ -284,12 +536,13 @@
     inviter.addEventListener('input', function () {
       if (locked) return;
       receipt.value = inviter.value;
-      lastSynced = inviter.value;
     });
   }
 
   function init() {
     document.querySelectorAll('[data-romant-sections-editor]').forEach(initSectionsEditor);
+    initPohja();
+    initCraftSummary();
     initReceiptNameSync();
   }
 

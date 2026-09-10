@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rakenna kutsu · preview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../assets/css/frontend.css" />
+  <style>
+    html, body { margin: 0; }
+  </style>
+</head>
+<body class="romant-kutsu-body romant-craft-page">
+<div class="romant-wrap romant-create romant-craft" data-romant-craft>
+    <header class="romant-craft-top">
+        <p class="romant-wordmark">romanttinen.fi</p>
+        <span class="romant-luonnos-pill">Luonnos</span>
+    </header>
+
+    <p class="romant-craft-eyebrow">Lahjakutsu · Portti 2</p>
+    <h1 class="romant-serif romant-craft-title">Rakenna kutsu</h1>
+    <p class="romant-lead romant-craft-lead">Valitse tunnelma, muokkaa pehmeitä oletuksia — kuin pakkaisit lahjaa, et täyttäisi lomaketta.</p>
+
+    <form class="romant-form romant-craft-form" method="get" action="#" data-romant-sections-form data-romant-craft-form>
+        <input type="hidden" name="romant_datetime" id="romant_datetime" value="2026-03-14T18:00" data-craft-datetime />
+
+        <div class="romant-pohja" data-romant-pohja>
+            <p class="romant-kicker">Pohja</p>
+            <div class="romant-pohja-toggles" role="group" aria-label="Pohja">
+                <button type="button" class="romant-pohja-btn is-selected" data-pohja="kotitreffit" aria-pressed="true">Kotitreffit</button>
+                <button type="button" class="romant-pohja-btn" data-pohja="kaupungilla" aria-pressed="false">Kaupungilla</button>
+            </div>
+        </div>
+
+        <section class="romant-card romant-summary-card is-collapsed" data-craft-summary>
+            <p class="romant-kicker">Kutsun nimi</p>
+            <label class="romant-summary-title-label" for="romant_invite_title">
+                <span class="screen-reader-text">Kutsun nimi</span>
+                <input type="text" id="romant_invite_title" name="romant_invite_title" class="romant-summary-title" maxlength="80" value="Ilta kahdelle" placeholder="Ilta kahdelle" />
+            </label>
+            <p class="romant-summary-line" data-craft-summary-line>La 14.3. · 18:00 · Kotona</p>
+            <div class="romant-summary-meta">
+                <label class="romant-summary-field">
+                    <span class="screen-reader-text">Päivä</span>
+                    <input type="date" data-craft-date value="2026-03-14" />
+                </label>
+                <span class="romant-summary-dot" aria-hidden="true">·</span>
+                <label class="romant-summary-field">
+                    <span class="screen-reader-text">Aika</span>
+                    <input type="time" data-craft-time value="18:00" />
+                </label>
+                <span class="romant-summary-dot" aria-hidden="true">·</span>
+                <label class="romant-summary-field romant-summary-place">
+                    <span class="screen-reader-text">Paikka</span>
+                    <input type="text" id="romant_location" name="romant_location" maxlength="120" autocomplete="off" data-craft-place value="Kotona" placeholder="Lisää paikka…" />
+                </label>
+            </div>
+        </section>
+
+        <div class="romant-sections-fieldset is-craft" data-romant-sections-editor data-romant-craft="1" data-max-sections="3" data-soft-max="10" data-hard-max="20">
+            <div class="romant-hetket-head">
+                <p class="romant-kicker">Kutsun hetket</p>
+                <p class="romant-hetket-count" data-oletus-count>3 oletusta</p>
+            </div>
+            <div class="romant-sections-list" data-sections-list>
+                <div class="romant-section-card romant-card is-collapsed" data-section-card data-index="0">
+                    <div class="romant-section-card-head">
+                        <span class="romant-section-num" data-section-num aria-hidden="true">1</span>
+                        <label class="romant-section-title-label">
+                            <span class="screen-reader-text">Osion otsikko</span>
+                            <input type="hidden" name="romant_sections[0][id]" value="aaa11111" data-section-id />
+                            <input type="text" name="romant_sections[0][title]" value="Elokuvahetki" maxlength="80" required data-section-title />
+                        </label>
+                        <span class="romant-oletus" data-oletus-badge>Oletus</span>
+                        <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section>Poista</button>
+                    </div>
+                    <p class="romant-section-preview" data-section-preview>Valitaan leffa, tehdään popcornit — ja katsotaan yhdessä.</p>
+                    <div class="romant-section-levels" data-section-levels>
+                        <div class="romant-level-row" data-level-row>
+                            <label>
+                                <span data-level-label>Vihje</span>
+                                <span class="req" data-level-req>*</span>
+                                <textarea name="romant_sections[0][levels][0]" rows="2" maxlength="800" placeholder="Pieni vihje — älä paljasta kaikkea" required data-level-text>Valitaan leffa, tehdään popcornit — ja katsotaan yhdessä.</textarea>
+                            </label>
+                        </div>
+                        <div class="romant-level-row is-quiet" data-level-row>
+                            <label>
+                                <span data-level-label>Taso 2</span>
+                                <span class="req" data-level-req hidden>*</span>
+                                <textarea name="romant_sections[0][levels][1]" rows="2" maxlength="800" placeholder="Seuraava kerros…" data-level-text></textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>Lisää taso</button>
+                    <p class="romant-napauta" data-napauta>napauta muokataksesi</p>
+                </div>
+                <div class="romant-section-card romant-card is-collapsed" data-section-card data-index="1">
+                    <div class="romant-section-card-head">
+                        <span class="romant-section-num" data-section-num aria-hidden="true">2</span>
+                        <label class="romant-section-title-label">
+                            <span class="screen-reader-text">Osion otsikko</span>
+                            <input type="hidden" name="romant_sections[1][id]" value="bbb22222" data-section-id />
+                            <input type="text" name="romant_sections[1][title]" value="Yhteinen ateria" maxlength="80" required data-section-title />
+                        </label>
+                        <span class="romant-oletus" data-oletus-badge>Oletus</span>
+                        <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section>Poista</button>
+                    </div>
+                    <p class="romant-section-preview" data-section-preview>Kokataan jotain hyvää tai varataan pöytä.</p>
+                    <div class="romant-section-levels" data-section-levels>
+                        <div class="romant-level-row" data-level-row>
+                            <label>
+                                <span data-level-label>Vihje</span>
+                                <textarea name="romant_sections[1][levels][0]" rows="2" maxlength="800" placeholder="Pieni vihje — älä paljasta kaikkea" required data-level-text>Kokataan jotain hyvää tai varataan pöytä.</textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>Lisää taso</button>
+                    <p class="romant-napauta" data-napauta>napauta muokataksesi</p>
+                </div>
+                <div class="romant-section-card romant-card is-collapsed" data-section-card data-index="2">
+                    <div class="romant-section-card-head">
+                        <span class="romant-section-num" data-section-num aria-hidden="true">3</span>
+                        <label class="romant-section-title-label">
+                            <span class="screen-reader-text">Osion otsikko</span>
+                            <input type="hidden" name="romant_sections[2][id]" value="ccc33333" data-section-id />
+                            <input type="text" name="romant_sections[2][title]" value="Kotona" maxlength="80" required data-section-title />
+                        </label>
+                        <span class="romant-oletus" data-oletus-badge>Oletus</span>
+                        <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section>Poista</button>
+                    </div>
+                    <p class="romant-section-preview" data-section-preview>Rauhallista aikaa yhdessä, ilman kiirettä.</p>
+                    <div class="romant-section-levels" data-section-levels>
+                        <div class="romant-level-row" data-level-row>
+                            <label>
+                                <span data-level-label>Vihje</span>
+                                <textarea name="romant_sections[2][levels][0]" rows="2" maxlength="800" placeholder="Pieni vihje — älä paljasta kaikkea" required data-level-text>Rauhallista aikaa yhdessä, ilman kiirettä.</textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>Lisää taso</button>
+                    <p class="romant-napauta" data-napauta>napauta muokataksesi</p>
+                </div>
+            </div>
+            <p class="romant-hint romant-craft-help">Voit muokata sisältöä vapaasti.</p>
+            <div class="romant-section-chips" data-section-chips>
+                <button type="button" class="romant-chip" data-add-chip="Kaupungilla" disabled>Kaupungilla</button>
+                <button type="button" class="romant-chip" data-add-chip="Pieni salaisuus" disabled>Pieni salaisuus</button>
+                <button type="button" class="romant-chip" data-add-chip="Hellää huomiota" disabled>Hellää huomiota</button>
+            </div>
+        </div>
+
+        <p class="romant-craft-later">Hanki &amp; lähetys myöhemmin. Nyt keskitytään kutsun tunnelmaan — toimitus ja maksu seuraavassa askeleessa.</p>
+        <button type="submit" class="romant-btn romant-btn-primary romant-btn-lg">Tallenna luonnos</button>
+        <button type="submit" class="romant-craft-continue">tai jatka viimeistelyyn</button>
+    </form>
+</div>
+<script>
+window.romantManage = {
+  maxSections: 3,
+  defaultLevels: 3,
+  softMaxLevels: 10,
+  hardMaxLevels: 20,
+  defaultTitles: ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'],
+  extraTitles: ['Kaupungilla', 'Pieni salaisuus', 'Hellää huomiota'],
+  blurbs: {
+    Elokuvahetki: 'Valitaan leffa, tehdään popcornit — ja katsotaan yhdessä.',
+    'Yhteinen ateria': 'Kokataan jotain hyvää tai varataan pöytä.',
+    Kotona: 'Rauhallista aikaa yhdessä, ilman kiirettä.',
+    Kaupungilla: 'Kävelylle — suunta selviää myöhemmin.',
+    'Pieni salaisuus': 'Ota mukaan jotain lämmintä.',
+    'Hellää huomiota': ''
+  },
+  templates: {
+    kotitreffit: {
+      label: 'Kotitreffit',
+      location: 'Kotona',
+      sections: [
+        { title: 'Elokuvahetki', l1: 'Valitaan leffa, tehdään popcornit — ja katsotaan yhdessä.' },
+        { title: 'Yhteinen ateria', l1: 'Kokataan jotain hyvää tai varataan pöytä.' },
+        { title: 'Kotona', l1: 'Rauhallista aikaa yhdessä, ilman kiirettä.' }
+      ]
+    },
+    kaupungilla: {
+      label: 'Kaupungilla',
+      location: '',
+      sections: [
+        { title: 'Kaupungilla', l1: 'Kävelylle — suunta selviää myöhemmin.' },
+        { title: 'Yhteinen ateria', l1: 'Pöytä odottaa, mutta missä…' },
+        { title: 'Pieni salaisuus', l1: 'Ota mukaan jotain lämmintä.' }
+      ]
+    }
+  },
+  softKotitreffit: {
+    Elokuvahetki: 'Valitaan jotain kevyttä — ei se ensimmäinen arvaus.',
+    'Yhteinen ateria': 'Syödään hyvin kotona, rauhassa.',
+    Kotona: 'Illan lopuksi ei kiirettä mihinkään.'
+  },
+  placeholders: {
+    empty: 'Kirjoita vihje saajalle…',
+    l1: 'Pieni vihje — älä paljasta kaikkea',
+    l2: 'Seuraava kerros…'
+  },
+  i18n: { napauta: 'napauta muokataksesi', oletusta: 'oletusta', hint: 'Vihje' }
+};
+</script>
+<script src="../assets/js/manage.js"></script>
+</body>
+</html>

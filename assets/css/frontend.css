@@ -78,6 +78,10 @@
   max-width: 640px;
 }
 
+.romant-craft-page .romant-wrap.romant-craft {
+  max-width: 420px;
+}
+
 .romant-craft-page .romant-manage {
   max-width: 960px;
   margin-inline: auto;
@@ -2192,4 +2196,323 @@ img.romant-logo,
     opacity: 1;
     transform: none;
   }
+}
+
+/* —— Portti 2 craft (Pauliina cream lock) —— */
+.romant-kutsu-body.romant-craft-page {
+  background: #F6EEE4;
+}
+
+.romant-craft {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 1.35rem 1.15rem 3.5rem;
+}
+
+.romant-craft-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 1.65rem;
+}
+
+.romant-craft-top .romant-wordmark {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.romant-luonnos-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 31, 44, 0.14);
+  background: #FFFDF9;
+  color: rgba(74, 31, 44, 0.62);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.romant-craft-eyebrow {
+  margin: 0 0 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(74, 31, 44, 0.48);
+}
+
+.romant-craft-title {
+  font-size: clamp(2.15rem, 8vw, 2.65rem);
+  line-height: 1.08;
+  margin: 0 0 0.65rem;
+}
+
+.romant-craft-lead {
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: rgba(74, 31, 44, 0.72);
+  max-width: 34rem;
+  margin: 0 0 1.65rem;
+}
+
+.romant-kicker {
+  margin: 0 0 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(74, 31, 44, 0.45);
+}
+
+.romant-pohja {
+  margin: 0 0 1.25rem;
+}
+
+.romant-pohja-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.romant-pohja-btn {
+  appearance: none;
+  border: 1px solid rgba(74, 31, 44, 0.12);
+  background: #FFFDF9;
+  color: #4A1F2C;
+  border-radius: 999px;
+  padding: 0.62rem 1.15rem;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.romant-pohja-btn.is-selected,
+.romant-pohja-btn[aria-pressed="true"] {
+  background: #4A1F2C;
+  border-color: #4A1F2C;
+  color: #fff;
+}
+
+.romant-summary-card {
+  background: #FFFDF9;
+  border-radius: 22px;
+  box-shadow: 0 10px 28px rgba(74, 31, 44, 0.06);
+  padding: 1.15rem 1.2rem 1.1rem;
+  margin: 0 0 1.45rem;
+}
+
+.romant-summary-title-label {
+  display: block;
+  margin: 0 !important;
+}
+
+.romant-summary-title,
+.romant-craft-form .romant-summary-title {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-family: var(--romant-serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #4A1F2C;
+  border-radius: 0;
+}
+
+.romant-summary-title:focus {
+  outline: none;
+}
+
+.romant-summary-line {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  color: rgba(74, 31, 44, 0.55);
+}
+
+.romant-summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.romant-summary-card.is-collapsed .romant-summary-meta {
+  display: none;
+}
+
+.romant-summary-field {
+  margin: 0 !important;
+}
+
+.romant-summary-field input {
+  border: none;
+  background: #F3E6D8;
+  border-radius: 10px;
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #4A1F2C;
+  width: auto;
+  max-width: 9.5rem;
+}
+
+.romant-summary-place input {
+  max-width: 8rem;
+}
+
+.romant-summary-dot {
+  color: rgba(74, 31, 44, 0.4);
+  padding: 0 0.1rem;
+}
+
+.romant-hetket-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 0.7rem;
+}
+
+.romant-hetket-head .romant-kicker {
+  margin: 0;
+}
+
+.romant-hetket-count {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(74, 31, 44, 0.42);
+}
+
+.romant-craft .romant-section-card,
+.romant-craft-form .romant-section-card {
+  background: #FFFDF9;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(74, 31, 44, 0.05);
+  padding: 1.05rem 1.15rem 1rem;
+  margin: 0 0 0.7rem;
+}
+
+.romant-craft .romant-section-card.is-collapsed {
+  cursor: pointer;
+}
+
+.romant-craft .romant-section-num,
+.is-craft .romant-section-num {
+  display: none;
+}
+
+.romant-section-card.is-collapsed .romant-section-levels,
+.romant-section-card.is-collapsed [data-add-level],
+.romant-section-card.is-collapsed [data-remove-section],
+.romant-section-card.is-collapsed [data-soft-cap-warn] {
+  display: none !important;
+}
+
+.romant-section-card:not(.is-collapsed) .romant-section-preview,
+.romant-section-card:not(.is-collapsed) .romant-napauta {
+  display: none;
+}
+
+.romant-section-preview {
+  margin: 0.15rem 0 0.55rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: rgba(42, 36, 34, 0.72);
+}
+
+.romant-napauta {
+  margin: 0.15rem 0 0;
+  text-align: right;
+  font-size: 0.75rem;
+  color: rgba(74, 31, 44, 0.38);
+}
+
+.romant-craft-form .romant-section-card [data-section-title] {
+  font-family: var(--romant-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #4A1F2C;
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.romant-craft-form .romant-section-card.is-collapsed [data-section-title] {
+  pointer-events: none;
+}
+
+.romant-craft-help {
+  margin: 0.85rem 0 0.9rem !important;
+  text-align: right;
+  font-size: 0.82rem !important;
+  color: rgba(74, 31, 44, 0.4) !important;
+}
+
+.romant-section-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1.15rem;
+}
+
+.romant-chip {
+  appearance: none;
+  border: 1px dashed rgba(74, 31, 44, 0.22);
+  background: transparent;
+  color: #4A1F2C;
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.romant-chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.romant-craft-later {
+  margin: 0.35rem 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed rgba(74, 31, 44, 0.2);
+  border-radius: 16px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(74, 31, 44, 0.52);
+}
+
+.romant-craft .romant-btn-lg {
+  margin-top: 0.25rem;
+}
+
+.romant-craft-continue {
+  display: block;
+  width: 100%;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.88rem;
+  color: rgba(74, 31, 44, 0.48);
+  cursor: pointer;
+  text-align: center;
+}
+
+.romant-level-row.is-quiet textarea:placeholder-shown {
+  min-height: 2.6rem;
+}
+
+.romant-section-card:not(.is-collapsed) .romant-level-row.is-quiet + .romant-level-row.is-quiet {
+  opacity: 0.85;
 }

@@ -61,7 +61,7 @@ final class Romant_Kutsu_Forms {
     }
 
     /**
-     * @return array{datetime: string, location: string, inviter_name: string, saate: string, dress: string, sections: list<array{id: string, title: string, levels: list<string>}>}
+     * @return array{datetime: string, location: string, inviter_name: string, invite_title: string, saate: string, dress: string, sections: list<array{id: string, title: string, levels: list<string>}>}
      */
     private function sanitize_invite_fields(array $src): array {
         $datetime = isset($src['romant_datetime'])
@@ -105,14 +105,24 @@ final class Romant_Kutsu_Forms {
             $location = substr($location, 0, 120);
         }
 
+        $invite_title = isset($src['romant_invite_title'])
+            ? sanitize_text_field(wp_unslash((string) $src['romant_invite_title']))
+            : '';
+        if (function_exists('mb_substr')) {
+            $invite_title = mb_substr($invite_title, 0, 80);
+        } else {
+            $invite_title = substr($invite_title, 0, 80);
+        }
+
         return [
-            'datetime'     => $datetime,
-            'location'     => $location,
-            'inviter_name' => $inviter,
-            'saate'        => $saate,
-            'dress'        => isset($src['romant_dress'])
+            'datetime'      => $datetime,
+            'location'      => $location,
+            'inviter_name'  => $inviter,
+            'invite_title'  => $invite_title,
+            'saate'         => $saate,
+            'dress'         => isset($src['romant_dress'])
                 ? sanitize_textarea_field(wp_unslash((string) $src['romant_dress'])) : '',
-            'sections'     => $this->parse_sections_from_post($src),
+            'sections'      => $this->parse_sections_from_post($src),
         ];
     }
 
@@ -160,19 +170,19 @@ final class Romant_Kutsu_Forms {
         if ($fields['datetime'] === '') {
             wp_die(esc_html__('Valitse aika.', 'romanttinen-kutsu'), 400);
         }
-        if ($fields['inviter_name'] === '') {
-            wp_die(esc_html__('Kirjoita kutsujan nimi.', 'romanttinen-kutsu'), 400);
-        }
         if (!$this->sections_are_valid($fields['sections'])) {
             wp_die(esc_html__('Lisää vähintään yksi osio otsikolla ja ensimmäisellä tasolla.', 'romanttinen-kutsu'), 400);
         }
 
-        $manage_key = Romant_Kutsu_CPT::generate_secret(24);
+        $manage_key   = Romant_Kutsu_CPT::generate_secret(24);
+        $invite_title = $fields['invite_title'] !== ''
+            ? $fields['invite_title']
+            : 'Kutsu ' . gmdate('Y-m-d H:i');
 
         $post_id = wp_insert_post([
             'post_type'   => Romant_Kutsu_CPT::POST_TYPE,
             'post_status' => 'draft',
-            'post_title'  => 'Kutsu ' . gmdate('Y-m-d H:i'),
+            'post_title'  => $invite_title,
         ], true);
 
         if (is_wp_error($post_id)) {
@@ -206,14 +216,17 @@ final class Romant_Kutsu_Forms {
         if ($fields['datetime'] === '') {
             wp_die(esc_html__('Valitse aika.', 'romanttinen-kutsu'), 400);
         }
-        if ($fields['inviter_name'] === '') {
-            wp_die(esc_html__('Kirjoita kutsujan nimi.', 'romanttinen-kutsu'), 400);
-        }
         if (!$this->sections_are_valid($fields['sections'])) {
             wp_die(esc_html__('Lisää vähintään yksi osio otsikolla ja ensimmäisellä tasolla.', 'romanttinen-kutsu'), 400);
         }
 
         $this->save_invite_meta((int) $post->ID, $fields);
+        if ($fields['invite_title'] !== '') {
+            wp_update_post([
+                'ID'         => (int) $post->ID,
+                'post_title' => $fields['invite_title'],
+            ]);
+        }
 
         wp_safe_redirect(Romant_Kutsu_Rewrite::manage_url($manage_key) . '?saved=1');
         exit;
