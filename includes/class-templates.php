@@ -112,6 +112,7 @@ final class Romant_Kutsu_Templates {
                     'levelPh'        => Romant_Kutsu_CPT::PLACEHOLDER_EMPTY,
                     'napauta'        => 'napauta muokataksesi',
                     'oletusta'       => 'oletusta',
+                    'useExample'     => 'Käytä esimerkkiä',
                 ],
             ]);
             wp_enqueue_script('romant-kutsu-manage');

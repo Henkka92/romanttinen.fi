@@ -60,6 +60,52 @@
     return editor && editor.getAttribute('data-romant-craft') === '1';
   }
 
+  function pohjaWrap(editor) {
+    var form = editor ? editor.closest('form') : null;
+    return form ? form.querySelector('[data-romant-pohja]') : null;
+  }
+
+  function exampleL1(title, editor) {
+    var wrap = pohjaWrap(editor);
+    var key = wrap ? (wrap.getAttribute('data-applied') || 'kotitreffit') : 'kotitreffit';
+    var soft = !!(wrap && wrap.getAttribute('data-soft') === '1');
+    if (key === 'kotitreffit' && soft && SOFT_KOTI[title]) {
+      return SOFT_KOTI[title];
+    }
+    var tpl = TEMPLATES[key];
+    if (tpl && tpl.sections) {
+      for (var i = 0; i < tpl.sections.length; i++) {
+        if (tpl.sections[i].title === title && tpl.sections[i].l1) {
+          return tpl.sections[i].l1;
+        }
+      }
+    }
+    return BLURBS[title] || '';
+  }
+
+  function applyExample(card, editor) {
+    if (!card) return;
+    var titleInput = card.querySelector('[data-section-title]');
+    var title = titleInput ? titleInput.value.trim() : '';
+    var example = exampleL1(title, editor);
+    if (!example) return;
+    var first = card.querySelector('[data-level-text]');
+    if (first) {
+      first.value = example;
+      first.placeholder = placeholderFor(0, example);
+    }
+    syncPreview(card);
+    syncExampleButton(card, editor);
+  }
+
+  function syncExampleButton(card, editor) {
+    var btn = card.querySelector('[data-use-example]');
+    if (!btn) return;
+    var titleInput = card.querySelector('[data-section-title]');
+    var title = titleInput ? titleInput.value.trim() : '';
+    btn.hidden = exampleL1(title, editor) === '';
+  }
+
   function placeholderFor(li, value) {
     if (li === 0) {
       return value ? PH.l1 : PH.empty;
@@ -169,6 +215,7 @@
       var removeBtn = card.querySelector('[data-remove-section]');
       if (removeBtn) removeBtn.hidden = cards.length <= 1;
       syncPreview(card);
+      syncExampleButton(card, editor);
       updateSoftCap(card);
     });
     updateOletusCount(editor);
@@ -314,17 +361,27 @@
     addLevel.setAttribute('data-add-level', '');
     addLevel.textContent = i18n.addLevel || 'Lisää taso';
 
+    var foot = document.createElement('div');
+    foot.className = 'romant-section-foot';
+    var useEx = document.createElement('button');
+    useEx.type = 'button';
+    useEx.className = 'romant-use-example';
+    useEx.setAttribute('data-use-example', '');
+    useEx.textContent = i18n.useExample || 'Käytä esimerkkiä';
+    useEx.hidden = exampleL1(title, null) === '';
     var napauta = document.createElement('p');
     napauta.className = 'romant-napauta';
     napauta.setAttribute('data-napauta', '');
     napauta.textContent = i18n.napauta || 'napauta muokataksesi';
+    foot.appendChild(useEx);
+    foot.appendChild(napauta);
 
     card.appendChild(head);
     card.appendChild(preview);
     card.appendChild(levels);
     card.appendChild(warn);
     card.appendChild(addLevel);
-    card.appendChild(napauta);
+    card.appendChild(foot);
     return card;
   }
 
@@ -381,6 +438,13 @@
 
   function initSectionsEditor(editor) {
     editor.addEventListener('click', function (e) {
+      var useExBtn = e.target.closest('[data-use-example]');
+      if (useExBtn && editor.contains(useExBtn)) {
+        e.preventDefault();
+        applyExample(useExBtn.closest('[data-section-card]'), editor);
+        return;
+      }
+
       var cardHit = e.target.closest('[data-section-card]');
       if (cardHit && editor.contains(cardHit) && cardHit.classList.contains('is-collapsed')) {
         if (e.target.closest('[data-remove-section]')) {
@@ -457,6 +521,7 @@
       var editor = form ? form.querySelector('[data-romant-sections-editor]') : null;
       if (!editor) return;
       wrap.setAttribute('data-applied', 'kotitreffit');
+      wrap.setAttribute('data-soft', '0');
       wrap.addEventListener('click', function (e) {
         var btn = e.target.closest('[data-pohja]');
         if (!btn || !wrap.contains(btn)) return;
@@ -465,8 +530,10 @@
         if (!TEMPLATES[key]) return;
         var applied = wrap.getAttribute('data-applied') || '';
         if (applied === key) return;
-        applyTemplate(editor, key, { soft: key === 'kotitreffit' && applied !== '' });
+        var soft = key === 'kotitreffit' && applied !== '';
+        applyTemplate(editor, key, { soft: soft });
         wrap.setAttribute('data-applied', key);
+        wrap.setAttribute('data-soft', soft ? '1' : '0');
         wrap.querySelectorAll('[data-pohja]').forEach(function (el) {
           var on = el === btn;
           el.classList.toggle('is-selected', on);

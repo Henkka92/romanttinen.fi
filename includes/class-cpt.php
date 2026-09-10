@@ -89,6 +89,27 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
+     * Nea example L1 for Käytä esimerkkiä (pohja-aware).
+     */
+    public static function example_l1(string $title, string $pohja = 'kotitreffit', bool $soft = false): string {
+        if ($pohja === 'kotitreffit' && $soft) {
+            $soft_map = self::kotitreffit_soft_l1();
+            if (isset($soft_map[$title]) && $soft_map[$title] !== '') {
+                return $soft_map[$title];
+            }
+        }
+        $templates = self::craft_templates();
+        if (isset($templates[$pohja]['sections']) && is_array($templates[$pohja]['sections'])) {
+            foreach ($templates[$pohja]['sections'] as $sec) {
+                if (($sec['title'] ?? '') === $title && ($sec['l1'] ?? '') !== '') {
+                    return (string) $sec['l1'];
+                }
+            }
+        }
+        return self::curated_blurb($title);
+    }
+
+    /**
      * Portti 2 pohjat (max 2). Kotitreffit lands as the default three + Nea blurbs.
      *
      * @return array<string, array{label: string, location: string, sections: list<array{title: string, l1: string}>}>
@@ -113,6 +134,7 @@ final class Romant_Kutsu_CPT {
                     ],
                 ],
             ],
+            // Mari: Kaupungilla may rename its 3 sections (curated only — not a free planner).
             'kaupungilla' => [
                 'label'    => 'Kaupungilla',
                 'location' => '',

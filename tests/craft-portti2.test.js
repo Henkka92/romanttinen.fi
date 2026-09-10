@@ -133,6 +133,25 @@ assert('Portti 3 home not rebuilt',
   !/Rakenna kutsu/.test(home)
 );
 
+assert('Mari: Käytä esimerkkiä control',
+  /Käytä esimerkkiä/.test(editor) &&
+  /data-use-example/.test(editor) &&
+  /data-use-example/.test(manageJs) &&
+  /exampleL1|example_l1/.test(manageJs) &&
+  /useExample/.test(read('includes/class-templates.php'))
+);
+assert('Mari: Kaupungilla renames its 3 curated sections',
+  /Mari: Kaupungilla may rename/.test(cpt) &&
+  /'kaupungilla' => \[[\s\S]*?'title' => 'Kaupungilla'[\s\S]*?'title' => 'Yhteinen ateria'[\s\S]*?'title' => 'Pieni salaisuus'/.test(cpt) &&
+  !/'kaupungilla' => \[[\s\S]*?'title' => 'Elokuvahetki'/.test(cpt) &&
+  !/'kaupungilla' => \[[\s\S]*?'title' => 'Kotona'/.test(cpt)
+);
+assert('Mari package still max 2 pohjat, no free planner',
+  /craft_templates\(/.test(cpt) &&
+  !/data-add-section/.test(editor) &&
+  /Käytä esimerkkiä/.test(editor)
+);
+
 if (fails) {
   process.exit(1);
 }

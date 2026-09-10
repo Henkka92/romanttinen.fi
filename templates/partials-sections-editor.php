@@ -63,6 +63,7 @@ if (!$craft_editor) {
             }
             $l1         = (string) ($levels[0] ?? '');
             $is_default = Romant_Kutsu_CPT::is_default_section_title($stitle);
+            $example    = Romant_Kutsu_CPT::example_l1($stitle, 'kotitreffit', false);
             ?>
             <div class="romant-section-card romant-card<?php echo $craft_editor ? ' is-collapsed' : ''; ?>"
                  data-section-card data-index="<?php echo esc_attr((string) $si); ?>">
@@ -107,7 +108,13 @@ if (!$craft_editor) {
                 <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>
                     Lisää taso
                 </button>
-                <p class="romant-napauta" data-napauta>napauta muokataksesi</p>
+                <div class="romant-section-foot">
+                    <button type="button" class="romant-use-example" data-use-example
+                            <?php echo $example === '' ? ' hidden' : ''; ?>>
+                        Käytä esimerkkiä
+                    </button>
+                    <p class="romant-napauta" data-napauta>napauta muokataksesi</p>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
