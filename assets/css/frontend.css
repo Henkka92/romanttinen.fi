@@ -2200,7 +2200,7 @@ img.romant-logo,
 
 /* —— Portti 2 craft (Pauliina cream lock) —— */
 .romant-kutsu-body.romant-craft-page {
-  background: #F6EEE4;
+  background: #F3E6D8;
 }
 
 .romant-craft {
@@ -2310,23 +2310,25 @@ img.romant-logo,
   margin: 0 !important;
 }
 
-.romant-summary-title,
-.romant-craft-form .romant-summary-title {
+.romant-form.romant-craft-form .romant-summary-card input[type="text"].romant-summary-title,
+.romant-card.romant-summary-card input[type="text"].romant-summary-title {
   width: 100%;
   border: none;
   background: transparent;
   padding: 0;
   margin: 0;
   font-family: var(--romant-serif);
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   font-weight: 600;
   line-height: 1.2;
   color: #4A1F2C;
   border-radius: 0;
+  box-shadow: none;
 }
 
-.romant-summary-title:focus {
+.romant-form.romant-craft-form .romant-summary-card input[type="text"].romant-summary-title:focus {
   outline: none;
+  box-shadow: none;
 }
 
 .romant-summary-line {
