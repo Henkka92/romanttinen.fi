@@ -1,5 +1,5 @@
 /**
- * 1.3.7 peel-boxes + story share contract (no DOM).
+ * 1.3.8 peel-boxes + story share contract (no DOM).
  * Run: node tests/peel-stack.test.js
  */
 'use strict';
@@ -227,7 +227,7 @@ assert('canvas PNG has no inviter or spoilers',
 );
 
 var pluginPhp = fs.readFileSync(path.join(__dirname, '../romanttinen-kutsu.php'), 'utf8');
-assert('plugin version is 1.3.7', /Version:\s+1\.3\.7/.test(pluginPhp) && /ROMANT_KUTSU_VERSION',\s*'1\.3\.7'/.test(pluginPhp));
+assert('plugin version is 1.3.8', /Version:\s+1\.3\.8/.test(pluginPhp) && /ROMANT_KUTSU_VERSION',\s*'1\.3\.8'/.test(pluginPhp));
 
 if (fails) {
   process.exit(1);

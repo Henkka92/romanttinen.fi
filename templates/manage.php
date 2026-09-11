@@ -20,7 +20,7 @@ $checklist  = Romant_Kutsu_Templates::checklist_items();
 $share_url  = $paid ? Romant_Kutsu_Rewrite::recipient_url($data['token']) : '';
 $sections   = $data['sections'] ?? [];
 if (!is_array($sections) || $sections === []) {
-    $sections = [Romant_Kutsu_CPT::empty_section()];
+    $sections = Romant_Kutsu_CPT::default_craft_sections();
 }
 
 $saved       = isset($_GET['saved']);
