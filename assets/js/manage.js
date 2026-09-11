@@ -92,7 +92,7 @@
     var first = card.querySelector('[data-level-text]');
     if (first) {
       first.value = example;
-      first.placeholder = placeholderFor(0, example);
+      first.placeholder = placeholderFor(0);
     }
     syncPreview(card);
     syncExampleButton(card, editor);
@@ -106,9 +106,9 @@
     btn.hidden = exampleL1(title, editor) === '';
   }
 
-  function placeholderFor(li, value) {
+  function placeholderFor(li) {
     if (li === 0) {
-      return value ? PH.l1 : PH.empty;
+      return PH.l1;
     }
     return PH.l2;
   }
@@ -201,7 +201,7 @@
           ta.name = 'romant_sections[' + si + '][levels][' + li + ']';
           if (li === 0) ta.setAttribute('required', 'required');
           else ta.removeAttribute('required');
-          ta.placeholder = placeholderFor(li, (ta.value || '').trim());
+          ta.placeholder = placeholderFor(li);
         }
         var labText = row.querySelector('[data-level-label]');
         if (labText) {
@@ -264,7 +264,7 @@
     ta.rows = 2;
     ta.maxLength = 800;
     ta.value = value || '';
-    ta.placeholder = placeholderFor(li, ta.value.trim());
+    ta.placeholder = placeholderFor(li);
     ta.setAttribute('data-level-text', '');
     if (required) ta.setAttribute('required', 'required');
     label.appendChild(ta);
@@ -392,18 +392,11 @@
     var list = editor.querySelector('[data-sections-list]');
     if (!list) return;
     var sections = tpl.sections.slice(0, MAX_SECTIONS);
-    if (key === 'kotitreffit' && opts.soft) {
-      sections = sections.map(function (sec) {
-        var copy = { title: sec.title, l1: sec.l1 };
-        if (SOFT_KOTI[sec.title]) copy.l1 = SOFT_KOTI[sec.title];
-        return copy;
-      });
-    }
     list.innerHTML = '';
     sections.forEach(function (sec, si) {
       list.appendChild(buildSectionCard(si, {
         title: sec.title,
-        l1: sec.l1,
+        l1: '',
         collapsed: isCraft(editor)
       }));
     });
@@ -430,7 +423,7 @@
     if (allowed.indexOf(title) === -1) return;
     list.appendChild(buildSectionCard(n, {
       title: title,
-      l1: BLURBS[title] || '',
+      l1: '',
       collapsed: false
     }));
     reindexSections(editor);
@@ -510,7 +503,7 @@
           card.querySelectorAll('[data-level-text]'),
           level
         );
-        level.placeholder = placeholderFor(li, (level.value || '').trim());
+        level.placeholder = placeholderFor(li);
       }
     });
   }

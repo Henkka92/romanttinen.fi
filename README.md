@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.8 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.3.9 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.3.9 — Hotfix: empty L1 on craft open (Mari FAIL D)
+Craft (`/kutsu/uusi/`): L1-kentät avautuvat **tyhjinä**; placeholderit pysyvät lukittuina (`Pieni vihje — älä paljasta kaikkea`). Nean esimerkit täyttyvät vain **Käytä esimerkkiä** -napista — eivät alkuperäisinä arvoina. Kolme oletusosiota, Kotitreffit/Kaupungilla, ei vapaata planneria, Kaupungilla-osiouudelleennimet ennallaan.
 
 ### 1.3.8 — Portti 2 craft (Pauliina cream lock)
 Craft (`/kutsu/uusi/`): **Rakenna kutsu** cream-kortit, Wine-aksentit, serif-otsikot. Avaus ei ole tyhjä lomake — kolme oletusta **Elokuvahetki · Yhteinen ateria · Kotona** Nean L1-blurbeilla + OLETUS. Pohjat max 2: **Kotitreffit** (valittu) ja **Kaupungilla** (saa nimetä 3 osiota uudelleen, kuratoituna). Extra-chipit vain kuratoituna: **Kaupungilla · Pieni salaisuus · Hellää huomiota** — ei vapaata planneria. Placeholdereita + kontrolli **Käytä esimerkkiä**. CTA **Tallenna luonnos**; maksu ja lähetys pysyvät hallinnassa. Portti 1 peel ja Portti 3 etusivu ennallaan.

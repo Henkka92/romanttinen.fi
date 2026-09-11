@@ -1,5 +1,5 @@
 /**
- * 1.3.8 Portti 2 craft contract (Pauliina cream lock).
+ * 1.3.9 Portti 2 craft contract (Pauliina cream lock + Mari FAIL D empty L1).
  * Run: node tests/craft-portti2.test.js
  */
 'use strict';
@@ -31,8 +31,9 @@ var css = read('assets/css/frontend.css');
 var forms = read('includes/class-forms.php');
 var managePhp = read('templates/manage.php');
 var home = read('templates/home.php');
+var preview = read('tests/craft-preview.html');
 
-assert('version is 1.3.8', /Version:\s+1\.3\.8/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.3\.8'/.test(plugin));
+assert('version is 1.3.9', /Version:\s+1\.3\.9/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.3\.9'/.test(plugin));
 
 assert('header wordmark + Luonnos pill',
   /romanttinen\.fi/.test(create) && /romant-luonnos-pill/.test(create) && /Luonnos/.test(create)
@@ -150,6 +151,34 @@ assert('Mari package still max 2 pohjat, no free planner',
   /craft_templates\(/.test(cpt) &&
   !/data-add-section/.test(editor) &&
   /Käytä esimerkkiä/.test(editor)
+);
+
+var defCraft = cpt.split('function default_craft_sections')[1] || '';
+defCraft = defCraft.split('function sample_sections')[0] || '';
+assert('Mari FAIL D: default_craft_sections L1 empty (titles kept)',
+  /DEFAULT_SECTION_TITLES/.test(defCraft) &&
+  /'levels'\s*=>\s*\[\s*''\s*,\s*''\s*,\s*''\s*\]/.test(defCraft) &&
+  !/DEFAULT_SECTION_BLURBS/.test(defCraft)
+);
+assert('Mari FAIL D: Nea examples stay in templates for Käytä esimerkkiä',
+  /function example_l1/.test(cpt) &&
+  /function applyExample/.test(manageJs) &&
+  /first\.value = example/.test(manageJs)
+);
+assert('Mari FAIL D: applyTemplate / addChip do not prefill L1',
+  /buildSectionCard\(si, \{[\s\S]*?l1:\s*''/.test(manageJs) &&
+  /buildSectionCard\(n, \{[\s\S]*?l1:\s*''/.test(manageJs)
+);
+assert('Mari FAIL D: L1 placeholder stays locked copy when empty',
+  /function placeholderFor[\s\S]*?return PH\.l1/.test(manageJs) &&
+  !/\$ph_empty/.test(editor) &&
+  /placeholder="Pieni vihje — älä paljasta kaikkea"/.test(preview)
+);
+assert('Mari FAIL D: preview L1 textareas start empty',
+  /data-level-text><\/textarea>/.test(preview) &&
+  !/data-level-text>Valitaan leffa/.test(preview) &&
+  !/data-level-text>Kokataan jotain/.test(preview) &&
+  !/data-level-text>Rauhallista aikaa/.test(preview)
 );
 
 if (fails) {
