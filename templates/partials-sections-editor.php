@@ -18,6 +18,7 @@ $craft_editor = !empty($craft_editor);
 $max_sec      = Romant_Kutsu_CPT::MAX_SECTIONS;
 $soft         = Romant_Kutsu_CPT::SOFT_MAX_LEVELS;
 $hard         = Romant_Kutsu_CPT::HARD_MAX_LEVELS;
+$ph_empty     = Romant_Kutsu_CPT::PLACEHOLDER_EMPTY;
 $ph_l1        = Romant_Kutsu_CPT::PLACEHOLDER_L1;
 $ph_l2        = Romant_Kutsu_CPT::PLACEHOLDER_L2;
 $used_titles  = [];
@@ -86,6 +87,9 @@ if (!$craft_editor) {
                 <div class="romant-section-levels" data-section-levels>
                     <?php foreach ($levels as $li => $lv) :
                         $ph = $li === 0 ? $ph_l1 : $ph_l2;
+                        if ((string) $lv === '' && $li === 0) {
+                            $ph = $ph_empty;
+                        }
                         ?>
                         <div class="romant-level-row<?php echo $craft_editor && $li > 0 && (string) $lv === '' ? ' is-quiet' : ''; ?>" data-level-row>
                             <label>

@@ -169,10 +169,11 @@ assert('Mari FAIL D: applyTemplate / addChip do not prefill L1',
   /buildSectionCard\(si, \{[\s\S]*?l1:\s*''/.test(manageJs) &&
   /buildSectionCard\(n, \{[\s\S]*?l1:\s*''/.test(manageJs)
 );
-assert('Mari FAIL D: L1 placeholder stays locked copy when empty',
-  /function placeholderFor[\s\S]*?return PH\.l1/.test(manageJs) &&
-  !/\$ph_empty/.test(editor) &&
-  /placeholder="Pieni vihje — älä paljasta kaikkea"/.test(preview)
+assert('Mari FAIL D: empty hint placeholder is Kirjoita vihje saajalle…',
+  /function placeholderFor[\s\S]*?return value \? PH\.l1 : PH\.empty/.test(manageJs) &&
+  /\$ph_empty/.test(editor) &&
+  /placeholder="Kirjoita vihje saajalle…"/.test(preview) &&
+  /PLACEHOLDER_EMPTY = 'Kirjoita vihje saajalle…'/.test(cpt)
 );
 assert('Mari FAIL D: preview L1 textareas start empty',
   /data-level-text><\/textarea>/.test(preview) &&

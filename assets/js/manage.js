@@ -92,7 +92,7 @@
     var first = card.querySelector('[data-level-text]');
     if (first) {
       first.value = example;
-      first.placeholder = placeholderFor(0);
+      first.placeholder = placeholderFor(0, example);
     }
     syncPreview(card);
     syncExampleButton(card, editor);
@@ -106,9 +106,9 @@
     btn.hidden = exampleL1(title, editor) === '';
   }
 
-  function placeholderFor(li) {
+  function placeholderFor(li, value) {
     if (li === 0) {
-      return PH.l1;
+      return value ? PH.l1 : PH.empty;
     }
     return PH.l2;
   }
@@ -201,7 +201,7 @@
           ta.name = 'romant_sections[' + si + '][levels][' + li + ']';
           if (li === 0) ta.setAttribute('required', 'required');
           else ta.removeAttribute('required');
-          ta.placeholder = placeholderFor(li);
+          ta.placeholder = placeholderFor(li, (ta.value || '').trim());
         }
         var labText = row.querySelector('[data-level-label]');
         if (labText) {
@@ -264,7 +264,7 @@
     ta.rows = 2;
     ta.maxLength = 800;
     ta.value = value || '';
-    ta.placeholder = placeholderFor(li);
+    ta.placeholder = placeholderFor(li, ta.value.trim());
     ta.setAttribute('data-level-text', '');
     if (required) ta.setAttribute('required', 'required');
     label.appendChild(ta);
@@ -503,7 +503,7 @@
           card.querySelectorAll('[data-level-text]'),
           level
         );
-        level.placeholder = placeholderFor(li);
+        level.placeholder = placeholderFor(li, (level.value || '').trim());
       }
     });
   }
