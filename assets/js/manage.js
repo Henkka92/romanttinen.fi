@@ -392,18 +392,11 @@
     var list = editor.querySelector('[data-sections-list]');
     if (!list) return;
     var sections = tpl.sections.slice(0, MAX_SECTIONS);
-    if (key === 'kotitreffit' && opts.soft) {
-      sections = sections.map(function (sec) {
-        var copy = { title: sec.title, l1: sec.l1 };
-        if (SOFT_KOTI[sec.title]) copy.l1 = SOFT_KOTI[sec.title];
-        return copy;
-      });
-    }
     list.innerHTML = '';
     sections.forEach(function (sec, si) {
       list.appendChild(buildSectionCard(si, {
         title: sec.title,
-        l1: sec.l1,
+        l1: '',
         collapsed: isCraft(editor)
       }));
     });
@@ -430,7 +423,7 @@
     if (allowed.indexOf(title) === -1) return;
     list.appendChild(buildSectionCard(n, {
       title: title,
-      l1: BLURBS[title] || '',
+      l1: '',
       collapsed: false
     }));
     reindexSections(editor);

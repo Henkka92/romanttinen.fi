@@ -54,7 +54,7 @@ final class Romant_Kutsu_CPT {
     public const PLACEHOLDER_L1    = 'Pieni vihje — älä paljasta kaikkea';
     public const PLACEHOLDER_L2    = 'Seuraava kerros…';
 
-    /** Nea-locked default L1 blurbs (Portti 2 craft open state). */
+    /** Nea-locked L1 examples (Käytä esimerkkiä — not initial input values). */
     public const DEFAULT_SECTION_BLURBS = [
         'Elokuvahetki'    => 'Valitaan leffa, tehdään popcornit — ja katsotaan yhdessä.',
         'Yhteinen ateria' => 'Kokataan jotain hyvää tai varataan pöytä.',
@@ -110,7 +110,7 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
-     * Portti 2 pohjat (max 2). Kotitreffit lands as the default three + Nea blurbs.
+     * Portti 2 pohjat (max 2). Kotitreffit lands as the default three; Nea L1s via Käytä esimerkkiä.
      *
      * @return array<string, array{label: string, location: string, sections: list<array{title: string, l1: string}>}>
      */
@@ -343,7 +343,7 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
-     * Portti 2 craft open state — three defaults + Nea L1 blurbs (not an empty form).
+     * Portti 2 craft open state — three default titles, empty L1 (Nea via Käytä esimerkkiä).
      *
      * @return list<array{id: string, title: string, levels: list<string>}>
      */
@@ -353,7 +353,7 @@ final class Romant_Kutsu_CPT {
             $out[] = [
                 'id'     => self::generate_secret(8),
                 'title'  => $title,
-                'levels' => [self::DEFAULT_SECTION_BLURBS[$title] ?? '', '', ''],
+                'levels' => ['', '', ''],
             ];
         }
         return $out;
