@@ -37,7 +37,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
 <div class="romant-wrap romant-manage">
     <header class="romant-hero">
-        <p class="romant-wordmark">romanttinen.fi</p>
+        <?php echo Romant_Kutsu_Templates::wordmark_markup(); ?>
         <h1 class="romant-serif">Hallitse kutsua</h1>
         <p class="romant-lead">
             Tallenna tämä linkki — se on ainoa tapa muokata kutsua.
@@ -246,7 +246,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <section class="romant-panel romant-preview" aria-label="Esikatselu">
             <h2 class="romant-serif">Näin kutsu näyttää</h2>
             <div class="romant-preview-card" data-romant-countdown="<?php echo esc_attr($data['datetime']); ?>">
-                <p class="romant-wordmark">romanttinen.fi</p>
+                <?php echo Romant_Kutsu_Templates::wordmark_markup(); ?>
                 <?php if (!empty($data['inviter_name'])) : ?>
                     <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut</p>
                 <?php endif; ?>

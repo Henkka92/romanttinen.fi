@@ -17,7 +17,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
 <div class="romant-home">
     <header class="romant-home-header">
-        <p class="romant-wordmark romant-home-wordmark">romanttinen.fi</p>
+        <?php echo Romant_Kutsu_Templates::wordmark_markup('romant-home-wordmark'); ?>
     </header>
 
     <section class="romant-home-hero" aria-labelledby="romant-home-headline">

@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.3.9 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.0 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.0 — Craft fabric + Muu + wordmark home
+Craft (`/kutsu/uusi/`): Pauliina-kangas — sama **hero-fabric** silkki + pehmeä bokeh kuin teaserissa, kermakortit (#FFFDF9) päällä (ei litteä cream-sivu). Wordmark **romanttinen.fi** vie etusivulle (`/`) kaikkialla (craft, teaser, peel, story, etusivu, hallinta). Pohjat max 3: **Kotitreffit · Kaupungilla · Muu**. Kotitreffit/Kaupungilla ennallaan (tyhjä L1, Nea vain **Käytä esimerkkiä**). **Muu** = kolme tyhjää osiota + placeholdereita, ei esitäyttöjä, ei vapaata planneria. Extra-chipit ennallaan: **Kaupungilla · Pieni salaisuus · Hellää huomiota**. Portti 3 etusivu / soft-launch / ALV ennallaan.
 
 ### 1.3.9 — Hotfix: empty L1 on craft open (Mari FAIL D)
 Craft (`/kutsu/uusi/`): L1-kentät avautuvat **tyhjinä**; tyhjän vihjeen placeholder on **Kirjoita vihje saajalle…**. Nean esimerkit täyttyvät vain **Käytä esimerkkiä** -napista — eivät alkuperäisinä arvoina. Kolme oletusosiota, Kotitreffit/Kaupungilla, ei vapaata planneria, Kaupungilla-osiouudelleennimet ennallaan.

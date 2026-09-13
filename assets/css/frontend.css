@@ -71,7 +71,18 @@
 }
 
 .romant-craft-page {
-  background: linear-gradient(180deg, #F3E6D8 0%, #ebd4c6 100%);
+  --romant-craft-fabric: url("../img/hero-fabric.jpg");
+  isolation: isolate;
+  background-color: #e8d4c4;
+  background-image:
+    radial-gradient(circle at 14% 7%, rgba(255, 226, 150, 0.38) 0%, transparent 26%),
+    radial-gradient(circle at 86% 9%, rgba(255, 210, 120, 0.28) 0%, transparent 30%),
+    radial-gradient(circle at 78% 72%, rgba(255, 236, 180, 0.18) 0%, transparent 24%),
+    linear-gradient(180deg, rgba(243, 230, 216, 0.16) 0%, rgba(243, 230, 216, 0.05) 40%, rgba(243, 230, 216, 0.20) 100%),
+    var(--romant-craft-fabric);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 .romant-craft-page .romant-wrap {
@@ -795,6 +806,11 @@ p.romant-hint {
   font-weight: 500;
   letter-spacing: 0.01em;
   text-transform: none;
+  color: rgba(74, 31, 44, 0.28);
+}
+
+a.romant-story-brand {
+  text-decoration: none;
   color: rgba(74, 31, 44, 0.28);
 }
 
@@ -1522,6 +1538,19 @@ img.romant-logo,
   color: #4A1F2C;
 }
 
+a.romant-wordmark {
+  display: inline-block;
+  text-decoration: none;
+  color: #4A1F2C;
+  cursor: pointer;
+}
+
+a.romant-wordmark:hover,
+a.romant-wordmark:focus {
+  color: #4A1F2C;
+  text-decoration: none;
+}
+
 .romant-recipient-chrome .romant-wordmark {
   font-size: 1.05rem;
 }
@@ -2198,9 +2227,20 @@ img.romant-logo,
   }
 }
 
-/* —— Portti 2 craft (Pauliina cream lock) —— */
+/* —— Portti 2 craft (Pauliina fabric/bokeh lock 1.4.0) —— */
 .romant-kutsu-body.romant-craft-page {
-  background: #F3E6D8;
+  --romant-craft-fabric: url("../img/hero-fabric.jpg");
+  isolation: isolate;
+  background-color: #e8d4c4;
+  background-image:
+    radial-gradient(circle at 14% 7%, rgba(255, 226, 150, 0.38) 0%, transparent 26%),
+    radial-gradient(circle at 86% 9%, rgba(255, 210, 120, 0.28) 0%, transparent 30%),
+    radial-gradient(circle at 78% 72%, rgba(255, 236, 180, 0.18) 0%, transparent 24%),
+    linear-gradient(180deg, rgba(243, 230, 216, 0.16) 0%, rgba(243, 230, 216, 0.05) 40%, rgba(243, 230, 216, 0.20) 100%),
+    var(--romant-craft-fabric);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 .romant-craft {
@@ -2274,7 +2314,7 @@ img.romant-logo,
 .romant-pohja-toggles {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 
 .romant-pohja-btn {
@@ -2283,9 +2323,9 @@ img.romant-logo,
   background: #FFFDF9;
   color: #4A1F2C;
   border-radius: 999px;
-  padding: 0.62rem 1.15rem;
+  padding: 0.58rem 1rem;
   font: inherit;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
 }

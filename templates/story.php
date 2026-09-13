@@ -34,7 +34,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
          data-fabric="<?php echo esc_url($fabric_url); ?>"
          data-romant-countdown="<?php echo esc_attr($data['datetime']); ?>">
         <article class="romant-story-card">
-            <p class="romant-wordmark romant-story-wordmark">romanttinen.fi</p>
+            <?php echo Romant_Kutsu_Templates::wordmark_markup('romant-story-wordmark'); ?>
             <div class="romant-story-body">
                 <h1 class="romant-serif romant-story-headline"><span class="romant-story-line">Sinut on</span><span class="romant-story-line">kutsuttu treffeille.</span></h1>
                 <div class="romant-story-rule" aria-hidden="true">
@@ -52,7 +52,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                 <p class="romant-countdown-done" hidden>Hetki on täällä.</p>
                 <span class="romant-story-cta">Avaa kutsu</span>
             </div>
-            <p class="romant-story-brand">romanttinen.fi</p>
+            <a class="romant-story-brand" href="<?php echo esc_url(home_url('/')); ?>">romanttinen.fi</a>
         </article>
     </div>
 
