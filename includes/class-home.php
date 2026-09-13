@@ -55,7 +55,7 @@ final class Romant_Kutsu_Home {
         <div class="romant-kutsu-body romant-home-body" style="min-height:auto;background:transparent;">
             <div class="romant-home" style="min-height:auto;padding-top:1rem;padding-bottom:2rem;">
                 <header class="romant-home-header">
-                    <p class="romant-wordmark romant-home-wordmark">romanttinen.fi</p>
+                    <?php echo Romant_Kutsu_Templates::wordmark_markup('romant-home-wordmark'); ?>
                 </header>
                 <section class="romant-home-hero" aria-labelledby="romant-sc-headline">
                     <div class="romant-home-copy">

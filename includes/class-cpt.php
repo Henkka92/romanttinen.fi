@@ -50,6 +50,7 @@ final class Romant_Kutsu_CPT {
 
     public const CRAFT_INVITE_TITLE = 'Ilta kahdelle';
 
+    public const PLACEHOLDER_TITLE = 'Osion otsikko';
     public const PLACEHOLDER_EMPTY = 'Kirjoita vihje saajalle…';
     public const PLACEHOLDER_L1    = 'Pieni vihje — älä paljasta kaikkea';
     public const PLACEHOLDER_L2    = 'Seuraava kerros…';
@@ -110,7 +111,8 @@ final class Romant_Kutsu_CPT {
     }
 
     /**
-     * Portti 2 pohjat (max 2). Kotitreffit lands as the default three; Nea L1s via Käytä esimerkkiä.
+     * Portti 2 pohjat (max 3). Kotitreffit / Kaupungilla keep Nea L1s via Käytä esimerkkiä.
+     * Mari: Muu is three empty sections + placeholders only — no prefills, no free planner.
      *
      * @return array<string, array{label: string, location: string, sections: list<array{title: string, l1: string}>}>
      */
@@ -150,6 +152,25 @@ final class Romant_Kutsu_CPT {
                     [
                         'title' => 'Pieni salaisuus',
                         'l1'    => 'Ota mukaan jotain lämmintä.',
+                    ],
+                ],
+            ],
+            // Mari: Muu — three empty curated slots + placeholders only (no prefills).
+            'muu' => [
+                'label'    => 'Muu',
+                'location' => '',
+                'sections' => [
+                    [
+                        'title' => '',
+                        'l1'    => '',
+                    ],
+                    [
+                        'title' => '',
+                        'l1'    => '',
+                    ],
+                    [
+                        'title' => '',
+                        'l1'    => '',
                     ],
                 ],
             ],

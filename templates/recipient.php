@@ -67,7 +67,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 </style>
 <div class="romant-wrap romant-recipient" id="romant-recipient-page" data-romant-state="teaser">
     <header class="romant-recipient-chrome" id="romant-recipient-chrome" hidden>
-        <p class="romant-wordmark">romanttinen.fi</p>
+        <?php echo Romant_Kutsu_Templates::wordmark_markup(); ?>
     </header>
 
     <article class="romant-invite-card"
@@ -77,7 +77,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
              data-romant-sections="<?php echo esc_attr(wp_json_encode($sections_payload, JSON_UNESCAPED_UNICODE)); ?>">
 
         <div class="romant-gift-moment" id="romant-gift-moment">
-            <p class="romant-wordmark">romanttinen.fi</p>
+            <?php echo Romant_Kutsu_Templates::wordmark_markup(); ?>
 
             <?php if (!empty($data['inviter_name'])) : ?>
                 <p class="romant-inviter"><?php echo esc_html($data['inviter_name']); ?> kutsui sinut.</p>

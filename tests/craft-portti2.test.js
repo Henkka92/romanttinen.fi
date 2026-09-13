@@ -1,5 +1,5 @@
 /**
- * 1.3.9 Portti 2 craft contract (Pauliina cream lock + Mari FAIL D empty L1).
+ * 1.4.0 Portti 2 craft contract (Pauliina fabric/bokeh + Mari Muu + wordmark home).
  * Run: node tests/craft-portti2.test.js
  */
 'use strict';
@@ -32,11 +32,28 @@ var forms = read('includes/class-forms.php');
 var managePhp = read('templates/manage.php');
 var home = read('templates/home.php');
 var preview = read('tests/craft-preview.html');
+var templatesPhp = read('includes/class-templates.php');
+var recipientPhp = read('templates/recipient.php');
+var storyPhp = read('templates/story.php');
+var homeClass = read('includes/class-home.php');
 
-assert('version is 1.3.9', /Version:\s+1\.3\.9/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.3\.9'/.test(plugin));
+assert('version is 1.4.0', /Version:\s+1\.4\.0/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.0'/.test(plugin));
 
 assert('header wordmark + Luonnos pill',
-  /romanttinen\.fi/.test(create) && /romant-luonnos-pill/.test(create) && /Luonnos/.test(create)
+  /wordmark_markup\(/.test(create) && /romant-luonnos-pill/.test(create) && /Luonnos/.test(create)
+);
+assert('wordmark helper links home /',
+  /function wordmark_markup/.test(templatesPhp) &&
+  /home_url\('\/'\)/.test(templatesPhp)
+);
+assert('wordmark → home on every surface',
+  /wordmark_markup\(/.test(create) &&
+  /wordmark_markup\('romant-home-wordmark'\)/.test(home) &&
+  /wordmark_markup\('romant-home-wordmark'\)/.test(homeClass) &&
+  /wordmark_markup\(/.test(managePhp) &&
+  /wordmark_markup\(/.test(recipientPhp) &&
+  /wordmark_markup\('romant-story-wordmark'\)/.test(storyPhp) &&
+  /<a class="romant-wordmark" href="\/">romanttinen\.fi<\/a>/.test(preview)
 );
 assert('eyebrow Lahjakutsu · Portti 2', /Lahjakutsu · Portti 2/.test(create));
 assert('H1 is Rakenna kutsu', /Rakenna kutsu/.test(create) && !/<h1[^>]*>Luo kutsu/.test(create));
@@ -44,11 +61,13 @@ assert('locked lead',
   /Valitse tunnelma, muokkaa pehmeitä oletuksia — kuin pakkaisit lahjaa, et täyttäisi lomaketta\./.test(create)
 );
 
-assert('pohja max 2 Kotitreffit + Kaupungilla',
+assert('pohja max 3 Kotitreffit + Kaupungilla + Muu',
   /data-pohja=/.test(create) &&
   /'kotitreffit'/.test(cpt) &&
   /'kaupungilla'/.test(cpt) &&
-  (cpt.match(/'kotitreffit'|'kaupungilla'/g) || []).length >= 2 &&
+  /'muu'/.test(cpt) &&
+  /'label'\s*=>\s*'Muu'/.test(cpt) &&
+  /data-pohja="muu"/.test(preview) &&
   !/'kolmas'|'custom'|'oma'/.test(cpt)
 );
 assert('Kotitreffit selected on open',
@@ -119,6 +138,13 @@ assert('cream cards + wine tokens',
   /#4A1F2C/.test(css) &&
   /romant-craft-title/.test(css)
 );
+assert('craft page uses hero-fabric + bokeh not flat cream',
+  /romant-kutsu-body\.romant-craft-page/.test(css) &&
+  /hero-fabric\.jpg/.test(css) &&
+  /radial-gradient\(circle at 14% 7%/.test(css) &&
+  !/\.romant-kutsu-body\.romant-craft-page\s*\{\s*background:\s*#F3E6D8/.test(css) &&
+  !/\.romant-craft-page\s*\{\s*background:\s*linear-gradient\(180deg,\s*#F3E6D8/.test(css)
+);
 
 assert('create does not require inviter (finalize later)',
   !/handle_create[\s\S]{0,800}Kirjoita kutsujan nimi/.test(forms)
@@ -147,10 +173,34 @@ assert('Mari: Kaupungilla renames its 3 curated sections',
   !/'kaupungilla' => \[[\s\S]*?'title' => 'Elokuvahetki'/.test(cpt) &&
   !/'kaupungilla' => \[[\s\S]*?'title' => 'Kotona'/.test(cpt)
 );
-assert('Mari package still max 2 pohjat, no free planner',
+assert('Mari package max 3 pohjat, no free planner',
   /craft_templates\(/.test(cpt) &&
+  /'muu'/.test(cpt) &&
   !/data-add-section/.test(editor) &&
   /Käytä esimerkkiä/.test(editor)
+);
+assert('Mari: Muu is three empty sections + placeholders, no prefills',
+  /Mari: Muu/.test(cpt) &&
+  /'muu' => \[[\s\S]*?'title' => ''[\s\S]*?'l1'\s*=>\s*''[\s\S]*?'title' => ''[\s\S]*?'l1'\s*=>\s*''[\s\S]*?'title' => ''[\s\S]*?'l1'\s*=>\s*''/.test(cpt)
+);
+var muuBlock = (cpt.split("'muu' =>")[1] || '').split('function kotitreffit_soft_l1')[0] || '';
+assert('Mari: Muu block has no Nea/Kaupungilla prefills',
+  muuBlock !== '' &&
+  !/Valitaan leffa/.test(muuBlock) &&
+  !/Kävelylle/.test(muuBlock) &&
+  !/Elokuvahetki/.test(muuBlock) &&
+  !/Pieni salaisuus/.test(muuBlock)
+);
+assert('preview Muu template is empty titles + empty l1',
+  /muu:\s*\{[\s\S]*?sections:\s*\[[\s\S]*?title:\s*''[\s\S]*?l1:\s*''[\s\S]*?title:\s*''[\s\S]*?l1:\s*''[\s\S]*?title:\s*''[\s\S]*?l1:\s*''/.test(preview)
+);
+assert('Käytä esimerkkiä + napauta muokataksesi stay interactive',
+  /data-use-example/.test(editor) &&
+  /data-napauta/.test(editor) &&
+  /function applyExample/.test(manageJs) &&
+  /classList\.remove\('is-collapsed'\)/.test(manageJs) &&
+  /data-use-example/.test(preview) &&
+  /napauta muokataksesi/.test(preview)
 );
 
 var defCraft = cpt.split('function default_craft_sections')[1] || '';

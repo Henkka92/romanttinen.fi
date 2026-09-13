@@ -1,6 +1,6 @@
 <?php
 /**
- * Portti 2 craft (shortcode + /kutsu/uusi/). Pauliina cream-craft lock.
+ * Portti 2 craft (shortcode + /kutsu/uusi/). Pauliina fabric/bokeh + Mari Muu.
  *
  * @package Romanttinen_Kutsu
  */
@@ -21,7 +21,7 @@ $pohjat       = Romant_Kutsu_CPT::craft_templates();
 ?>
 <div class="romant-wrap romant-create romant-craft" data-romant-craft>
     <header class="romant-craft-top">
-        <p class="romant-wordmark">romanttinen.fi</p>
+        <?php echo Romant_Kutsu_Templates::wordmark_markup(); ?>
         <span class="romant-luonnos-pill">Luonnos</span>
     </header>
 

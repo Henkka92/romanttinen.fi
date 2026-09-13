@@ -108,7 +108,7 @@ final class Romant_Kutsu_Templates {
                     'softCapWarn'    => 'Pehmeä raja (10) ylitetty — pidä tasot maltillisina.',
                     'hardCap'        => 'Enintään 20 tasoa osiossa.',
                     'maxSections'    => 'Enintään 3 osiota.',
-                    'sectionPh'      => 'Elokuvahetki',
+                    'sectionPh'      => Romant_Kutsu_CPT::PLACEHOLDER_TITLE,
                     'levelPh'        => Romant_Kutsu_CPT::PLACEHOLDER_EMPTY,
                     'napauta'        => 'napauta muokataksesi',
                     'oletusta'       => 'oletusta',
@@ -202,6 +202,14 @@ final class Romant_Kutsu_Templates {
             'Tarkista esikatselu',
             'Jaa linkki',
         ];
+    }
+
+    /**
+     * Site wordmark — always links to `/` (home) on every surface.
+     */
+    public static function wordmark_markup(string $extra_class = ''): string {
+        $cls = trim('romant-wordmark ' . $extra_class);
+        return '<a class="' . esc_attr($cls) . '" href="' . esc_url(home_url('/')) . '">romanttinen.fi</a>';
     }
 
     /**

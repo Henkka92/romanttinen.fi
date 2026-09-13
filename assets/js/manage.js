@@ -94,6 +94,8 @@
       first.value = example;
       first.placeholder = placeholderFor(0, example);
     }
+    card.classList.remove('is-collapsed');
+    if (first) first.focus();
     syncPreview(card);
     syncExampleButton(card, editor);
   }
@@ -305,7 +307,7 @@
     titleInput.type = 'text';
     titleInput.name = 'romant_sections[' + si + '][title]';
     titleInput.maxLength = 80;
-    titleInput.placeholder = i18n.sectionPh || 'Elokuvahetki';
+    titleInput.placeholder = i18n.sectionPh || 'Osion otsikko';
     titleInput.required = true;
     titleInput.value = title;
     titleInput.setAttribute('data-section-title', '');
@@ -496,7 +498,10 @@
       if (!title && !level) return;
       if (!editor.contains(e.target)) return;
       var card = e.target.closest('[data-section-card]');
-      if (card) syncPreview(card);
+      if (card) {
+        syncPreview(card);
+        syncExampleButton(card, editor);
+      }
       if (title) updateChips(editor);
       if (level) {
         var li = Array.prototype.indexOf.call(

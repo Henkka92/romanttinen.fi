@@ -75,7 +75,7 @@ if (!$craft_editor) {
                                value="<?php echo esc_attr($sid); ?>" data-section-id />
                         <input type="text" name="romant_sections[<?php echo esc_attr((string) $si); ?>][title]"
                                value="<?php echo esc_attr($stitle); ?>" maxlength="80"
-                               placeholder="Elokuvahetki" required data-section-title />
+                               placeholder="<?php echo esc_attr(Romant_Kutsu_CPT::PLACEHOLDER_TITLE); ?>" required data-section-title />
                     </label>
                     <span class="romant-oletus" data-oletus-badge<?php echo $is_default ? '' : ' hidden'; ?>>Oletus</span>
                     <button type="button" class="romant-btn romant-btn-ghost romant-btn-sm" data-remove-section

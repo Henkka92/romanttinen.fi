@@ -13,7 +13,7 @@
 <body class="romant-kutsu-body romant-craft-page">
 <div class="romant-wrap romant-create romant-craft" data-romant-craft>
     <header class="romant-craft-top">
-        <p class="romant-wordmark">romanttinen.fi</p>
+        <a class="romant-wordmark" href="/">romanttinen.fi</a>
         <span class="romant-luonnos-pill">Luonnos</span>
     </header>
 
@@ -29,6 +29,7 @@
             <div class="romant-pohja-toggles" role="group" aria-label="Pohja">
                 <button type="button" class="romant-pohja-btn is-selected" data-pohja="kotitreffit" aria-pressed="true">Kotitreffit</button>
                 <button type="button" class="romant-pohja-btn" data-pohja="kaupungilla" aria-pressed="false">Kaupungilla</button>
+                <button type="button" class="romant-pohja-btn" data-pohja="muu" aria-pressed="false">Muu</button>
             </div>
         </div>
 
@@ -197,6 +198,15 @@ window.romantManage = {
         { title: 'Yhteinen ateria', l1: 'Pöytä odottaa, mutta missä…' },
         { title: 'Pieni salaisuus', l1: 'Ota mukaan jotain lämmintä.' }
       ]
+    },
+    muu: {
+      label: 'Muu',
+      location: '',
+      sections: [
+        { title: '', l1: '' },
+        { title: '', l1: '' },
+        { title: '', l1: '' }
+      ]
     }
   },
   softKotitreffit: {
@@ -209,7 +219,7 @@ window.romantManage = {
     l1: 'Pieni vihje — älä paljasta kaikkea',
     l2: 'Seuraava kerros…'
   },
-    i18n: { napauta: 'napauta muokataksesi', oletusta: 'oletusta', hint: 'Vihje', useExample: 'Käytä esimerkkiä' }
+    i18n: { napauta: 'napauta muokataksesi', oletusta: 'oletusta', hint: 'Vihje', useExample: 'Käytä esimerkkiä', sectionPh: 'Osion otsikko' }
 };
 </script>
 <script src="../assets/js/manage.js"></script>
