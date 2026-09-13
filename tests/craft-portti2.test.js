@@ -131,6 +131,9 @@ assert('JS refuses non-curated chip titles',
   /DEFAULT_TITLES\.concat\(EXTRA_TITLES\)/.test(manageJs) &&
   /allowed\.indexOf\(title\) === -1/.test(manageJs)
 );
+assert('craft extra chips stay the locked three (no default-title chips)',
+  /isCraft\(editor\) \? EXTRA_TITLES\.slice\(\)/.test(manageJs)
+);
 
 assert('cream cards + wine tokens',
   /#FFFDF9/.test(css) &&

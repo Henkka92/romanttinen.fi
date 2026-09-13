@@ -162,7 +162,7 @@
     editor.querySelectorAll('[data-section-title]').forEach(function (input) {
       used.push((input.value || '').trim());
     });
-    var catalog = isCraft(editor) ? EXTRA_TITLES.concat(DEFAULT_TITLES) : DEFAULT_TITLES.concat(EXTRA_TITLES);
+    var catalog = isCraft(editor) ? EXTRA_TITLES.slice() : DEFAULT_TITLES.concat(EXTRA_TITLES);
     var seen = {};
     var available = [];
     catalog.forEach(function (title) {
