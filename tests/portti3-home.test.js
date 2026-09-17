@@ -32,8 +32,8 @@ var recipient = read('templates/recipient.php');
 var templates = read('includes/class-templates.php');
 var readme = read('README.md');
 
-assert('version is 1.4.1',
-  /Version:\s+1\.4\.1/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.1'/.test(plugin)
+assert('version is 1.4.2',
+  /Version:\s+1\.4\.2/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.2'/.test(plugin)
 );
 
 assert('standalone home renders Portti 3 partial',
@@ -150,8 +150,8 @@ assert('mini-peel preview not on homepage',
   !/partials-home-peel-preview/.test(homeClass)
 );
 
-assert('README version 1.4.1',
-  /1\.4\.1/.test(readme)
+assert('README version 1.4.2',
+  /1\.4\.2/.test(readme)
 );
 
 if (fails) {

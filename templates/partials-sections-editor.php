@@ -49,6 +49,9 @@ if (!$craft_editor) {
         <p class="romant-kicker">Kutsun hetket</p>
         <p class="romant-hetket-count" data-oletus-count><?php echo esc_html((string) count($sections)); ?> oletusta</p>
     </div>
+    <?php if ($craft_editor) : ?>
+    <p class="romant-craft-selite">Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).</p>
+    <?php endif; ?>
 
     <div class="romant-sections-list" data-sections-list>
         <?php foreach ($sections as $si => $sec) :

@@ -2819,6 +2819,13 @@ a.romant-wordmark:focus {
   color: rgba(74, 31, 44, 0.42);
 }
 
+.romant-craft-selite {
+  margin: -0.25rem 0 0.85rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(74, 31, 44, 0.58);
+}
+
 .romant-craft .romant-section-card,
 .romant-craft-form .romant-section-card {
   background: #FFFDF9;

@@ -38,7 +38,7 @@ var recipientPhp = read('templates/recipient.php');
 var storyPhp = read('templates/story.php');
 var homeClass = read('includes/class-home.php');
 
-assert('version is 1.4.1', /Version:\s+1\.4\.1/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.1'/.test(plugin));
+assert('version is 1.4.2', /Version:\s+1\.4\.2/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.2'/.test(plugin));
 
 assert('header wordmark + Luonnos pill',
   /wordmark_markup\(/.test(create) && /romant-luonnos-pill/.test(create) && /Luonnos/.test(create)
@@ -93,6 +93,14 @@ assert('OLETUS + napauta muokataksesi',
 );
 assert('help Voit muokata sisältöä vapaasti',
   /Voit muokata sisältöä vapaasti\./.test(editor)
+);
+assert('craft-selite one line near osiot, not hero',
+  /romant-craft-selite/.test(editor) &&
+  /Saaja avaa vihjeet yksi kerrallaan \(max 3 \/ osio\)\./.test(editor) &&
+  /craft_editor/.test(editor) &&
+  /romant-craft-selite/.test(preview) &&
+  !/romant-craft-title[\s\S]{0,400}Saaja avaa vihjeet/.test(create) &&
+  !/romant-craft-lead[\s\S]{0,200}Saaja avaa vihjeet/.test(create)
 );
 assert('dashed later note',
   /Hanki &amp; lähetys myöhemmin/.test(create) || /Hanki & lähetys myöhemmin/.test(create)

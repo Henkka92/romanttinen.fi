@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.1 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.2 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.2 — Craft-selite on craft
+Craft (`/kutsu/uusi/`): yksi rivi osioiden luona — *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Ei hero-muutoksia. Etusivu / demot / maksu ennallaan.
 
 ### 1.4.1 — Portti 3 etusivu
 Etusivu (`/`): Pauliina cold-5s — sama **hero-fabric** silkki + bokeh kuin craft, LTR-hero (kopio vasemmalla, teaser-kortti oikealla), mobiilissa pinottu. Nea-hero, hinta-pilleri **4,90 € kun lähetät**, CTA **Luo oma kutsu** → `/kutsu/uusi/`. Kolme demokutsua (Aino / Elias / Mari) Nea v3 -kopioilla; **Avaa demo** → `/kutsu/demo/{aino|elias|mari}/` (pehmeät peelit, ei CPT-tokenia). Craft-selite: *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Wordmark → `/` ennallaan. FAQ / maksu / stub OFF ennallaan.
