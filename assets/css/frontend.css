@@ -1397,6 +1397,21 @@ img.romant-logo,
   border: 1px solid rgba(74, 31, 44, 0.10);
   border-radius: 18px;
   box-shadow: 0 12px 24px rgba(74, 31, 44, 0.08);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.romant-home-demo-card:hover,
+a.romant-home-demo-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(74, 31, 44, 0.14);
+  outline: none;
+}
+
+a.romant-home-demo-card:focus-visible {
+  box-shadow: 0 0 0 2px #FFFDF9, 0 0 0 4px #4A1F2C, 0 16px 32px rgba(74, 31, 44, 0.14);
 }
 
 .romant-home-demo-strip {
@@ -1421,10 +1436,14 @@ img.romant-logo,
 
 .romant-home-demo-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 0.8rem 1rem 0.75rem;
 }
 
 .romant-home-demo-meta {
+  display: block;
   margin: 0 0 0.25rem;
   color: var(--romant-wine);
   font-size: 0.625rem;
@@ -1435,6 +1454,7 @@ img.romant-logo,
 }
 
 .romant-home-demo-name {
+  display: block;
   margin: 0 0 0.3rem;
   font-family: var(--romant-serif);
   font-size: 1.25rem;
@@ -1444,6 +1464,7 @@ img.romant-logo,
 }
 
 .romant-home-demo-hints {
+  display: block;
   margin: 0 0 0.55rem;
   font-size: 0.8125rem;
   font-style: italic;
@@ -1459,10 +1480,11 @@ img.romant-logo,
   font-weight: 600;
   text-decoration: none;
   opacity: 0.72;
+  pointer-events: none;
 }
 
-.romant-home-demo-link:hover,
-.romant-home-demo-link:focus-visible {
+a.romant-home-demo-card:hover .romant-home-demo-link,
+a.romant-home-demo-card:focus-visible .romant-home-demo-link {
   opacity: 1;
   text-decoration: underline;
   text-underline-offset: 3px;

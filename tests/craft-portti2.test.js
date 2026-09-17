@@ -38,7 +38,7 @@ var recipientPhp = read('templates/recipient.php');
 var storyPhp = read('templates/story.php');
 var homeClass = read('includes/class-home.php');
 
-assert('version is 1.4.2', /Version:\s+1\.4\.2/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.2'/.test(plugin));
+assert('version is 1.4.3', /Version:\s+1\.4\.3/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.3'/.test(plugin));
 
 assert('header wordmark + Luonnos pill',
   /wordmark_markup\(/.test(create) && /romant-luonnos-pill/.test(create) && /Luonnos/.test(create)

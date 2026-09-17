@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.2 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.3 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.3 — Demofix
+Etusivun demokortti on kokonaan linkki (`/kutsu/demo/{aino|elias|mari}/`). Kortilla vain nimi + otsikko + 1 rivi. Avattu demo: 3 osiota Nean peeleillä. Hero / craft / maksu ennallaan.
 
 ### 1.4.2 — Craft-selite on craft
 Craft (`/kutsu/uusi/`): yksi rivi osioiden luona — *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Ei hero-muutoksia. Etusivu / demot / maksu ennallaan.

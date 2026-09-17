@@ -92,16 +92,19 @@ $demos      = Romant_Kutsu_Home::demos();
                 $slug  = (string) ($demo['slug'] ?? '');
                 $href  = $slug !== '' ? Romant_Kutsu_Home::demo_url($slug) : '#';
                 $strip = (string) ($demo['strip'] ?? 'fabric');
+                $label = trim((string) ($demo['kicker'] ?? '') . ': ' . (string) ($demo['name'] ?? ''));
                 ?>
-            <article class="romant-home-demo-card romant-home-demo-card--<?php echo esc_attr($strip); ?>">
-                <div class="romant-home-demo-strip" aria-hidden="true"></div>
-                <div class="romant-home-demo-content">
-                    <p class="romant-home-demo-meta"><?php echo esc_html((string) $demo['kicker']); ?></p>
-                    <h3 class="romant-home-demo-name"><?php echo esc_html((string) $demo['name']); ?></h3>
-                    <p class="romant-home-demo-hints">«<?php echo esc_html((string) $demo['card_line']); ?>»</p>
-                    <a class="romant-home-demo-link" href="<?php echo esc_url($href); ?>">Avaa demo</a>
-                </div>
-            </article>
+            <a class="romant-home-demo-card romant-home-demo-card--<?php echo esc_attr($strip); ?>"
+               href="<?php echo esc_url($href); ?>"
+               aria-label="<?php echo esc_attr($label); ?>">
+                <span class="romant-home-demo-strip" aria-hidden="true"></span>
+                <span class="romant-home-demo-content">
+                    <span class="romant-home-demo-meta"><?php echo esc_html((string) $demo['kicker']); ?></span>
+                    <span class="romant-home-demo-name"><?php echo esc_html((string) $demo['name']); ?></span>
+                    <span class="romant-home-demo-hints">«<?php echo esc_html((string) $demo['card_line']); ?>»</span>
+                    <span class="romant-home-demo-link">Avaa demo</span>
+                </span>
+            </a>
             <?php endforeach; ?>
         </div>
         <p class="romant-home-craft-note">Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).</p>

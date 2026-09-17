@@ -1,5 +1,5 @@
 /**
- * 1.4.1 Portti 3 homepage contract (Pauliina mock + Nea demos v3).
+ * 1.4.3 Portti 3 homepage + demofix contract (Pauliina mock + Nea peels).
  * Run: node tests/portti3-home.test.js
  */
 'use strict';
@@ -32,8 +32,8 @@ var recipient = read('templates/recipient.php');
 var templates = read('includes/class-templates.php');
 var readme = read('README.md');
 
-assert('version is 1.4.2',
-  /Version:\s+1\.4\.2/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.2'/.test(plugin)
+assert('version is 1.4.3',
+  /Version:\s+1\.4\.3/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.3'/.test(plugin)
 );
 
 assert('standalone home renders Portti 3 partial',
@@ -86,16 +86,37 @@ assert('Nea v3 demo names + card lines verbatim',
   /Mari kutsuu/.test(homeClass)
 );
 
-assert('soft peels locked (opened demo)',
-  /Kävely — Aloitetaan ilman kiirettä\. Suunta selviää matkalla\./.test(homeClass) &&
-  /Pöytä — Varasin meille paikan\. Pukeudu niin että uskallat\./.test(homeClass) &&
-  /Lopuksi — Jos ilta venyy, se on tarkoitus\./.test(homeClass) &&
-  /Keittiö — Sinun ei tarvitse tuoda mitään — paitsi itsesi\./.test(homeClass) &&
-  /Hieronta — Hartiat ensin\. Kiire jää oven taakse\./.test(homeClass) &&
-  /Ilta — Kynttilät\. Hidas musiikki\. Ei kelloa\./.test(homeClass) &&
-  /Tänään — 20 vuotta sinua\. Tänä iltana en kerro kaikkea etukäteen\./.test(homeClass) &&
-  /Minne — Auto odottaa\. Loppu on yllätys\./.test(homeClass) &&
-  /Miksi — Koska valitsisin sinut uudestaan\./.test(homeClass)
+assert('soft peels locked as 3 sections (opened demo)',
+  /'title'\s*=>\s*'Kävely'/.test(homeClass) &&
+  /Aloitetaan ilman kiirettä\. Suunta selviää matkalla\./.test(homeClass) &&
+  /'title'\s*=>\s*'Pöytä'/.test(homeClass) &&
+  /Varasin meille paikan\. Pukeudu niin että uskallat\./.test(homeClass) &&
+  /'title'\s*=>\s*'Lopuksi'/.test(homeClass) &&
+  /Jos ilta venyy, se on tarkoitus\./.test(homeClass) &&
+  /'title'\s*=>\s*'Keittiö'/.test(homeClass) &&
+  /Sinun ei tarvitse tuoda mitään — paitsi itsesi\./.test(homeClass) &&
+  /'title'\s*=>\s*'Hieronta'/.test(homeClass) &&
+  /Hartiat ensin\. Kiire jää oven taakse\./.test(homeClass) &&
+  /'title'\s*=>\s*'Ilta'/.test(homeClass) &&
+  /Kynttilät\. Hidas musiikki\. Ei kelloa\./.test(homeClass) &&
+  /'title'\s*=>\s*'Tänään'/.test(homeClass) &&
+  /20 vuotta sinua\. Tänä iltana en kerro kaikkea etukäteen\./.test(homeClass) &&
+  /'title'\s*=>\s*'Minne'/.test(homeClass) &&
+  /Auto odottaa\. Loppu on yllätys\./.test(homeClass) &&
+  /'title'\s*=>\s*'Miksi'/.test(homeClass) &&
+  /Koska valitsisin sinut uudestaan\./.test(homeClass)
+);
+
+assert('each demo has 3 sections not 1 stacked osio',
+  (homeClass.match(/'title'\s*=>\s*'Kävely'/) || []).length === 1 &&
+  /'sections'\s*=>/.test(homeClass) &&
+  !/'osio_title'/.test(homeClass)
+);
+
+assert('homepage card is one link (not nested Avaa demo href)',
+  /<a class="romant-home-demo-card/.test(partial) &&
+  /<span class="romant-home-demo-link">Avaa demo<\/span>/.test(partial) &&
+  !/<a class="romant-home-demo-link"/.test(partial)
 );
 
 assert('no old placeholder demo copy',
@@ -105,10 +126,13 @@ assert('no old placeholder demo copy',
   !/Esimerkiksi/.test(partial)
 );
 
-assert('demo cards render name + hint + Avaa demo',
+assert('demo cards render name + title + 1 line on whole-card link',
   /romant-home-demo-name/.test(partial) &&
   /Avaa demo/.test(partial) &&
-  /demo_url\(/.test(partial)
+  /demo_url\(/.test(partial) &&
+  !/Aloitetaan ilman kiirettä/.test(partial) &&
+  !/Hartiat ensin/.test(partial) &&
+  !/Koska valitsisin sinut/.test(partial)
 );
 
 assert('demo routes /kutsu/demo/{aino|elias|mari}/',
@@ -150,8 +174,8 @@ assert('mini-peel preview not on homepage',
   !/partials-home-peel-preview/.test(homeClass)
 );
 
-assert('README version 1.4.2',
-  /1\.4\.2/.test(readme)
+assert('README version 1.4.3',
+  /1\.4\.3/.test(readme)
 );
 
 if (fails) {

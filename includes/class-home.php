@@ -68,61 +68,80 @@ final class Romant_Kutsu_Home {
     }
 
     /**
-     * Locked Nea v3 demos (Satu PASS). Card = inviter kicker + kutsun nimi + korttirivi.
+     * Locked Nea demos (Satu PASS + 1.4.3 demofix).
+     * Card = name + title + 1 korttirivi. Opened demo = 3 osiot with Nea peels.
      *
      * @return array<string, array<string, mixed>>
      */
     public static function demos(): array {
         return [
             'aino'  => [
-                'slug'       => 'aino',
-                'strip'      => 'fabric',
-                'inviter'    => 'Aino',
-                'kicker'     => 'Aino kutsuu',
-                'scenario'   => 'Ensitreffit',
-                'place'      => 'Kaupungilla',
-                'name'       => 'Torstai vain meille',
-                'card_line'  => 'Kävelylle — ja sitten pöytä, jota et vielä arvaa.',
-                'location'   => 'Kaupungilla',
-                'osio_title' => 'Kaupungilla',
-                'levels'     => [
-                    'Kävely — Aloitetaan ilman kiirettä. Suunta selviää matkalla.',
-                    'Pöytä — Varasin meille paikan. Pukeudu niin että uskallat.',
-                    'Lopuksi — Jos ilta venyy, se on tarkoitus.',
+                'slug'      => 'aino',
+                'strip'     => 'fabric',
+                'inviter'   => 'Aino',
+                'kicker'    => 'Aino kutsuu',
+                'name'      => 'Torstai vain meille',
+                'card_line' => 'Kävelylle — ja sitten pöytä, jota et vielä arvaa.',
+                'location'  => 'Kaupungilla',
+                'sections'  => [
+                    [
+                        'title'  => 'Kävely',
+                        'levels' => ['Aloitetaan ilman kiirettä. Suunta selviää matkalla.'],
+                    ],
+                    [
+                        'title'  => 'Pöytä',
+                        'levels' => ['Varasin meille paikan. Pukeudu niin että uskallat.'],
+                    ],
+                    [
+                        'title'  => 'Lopuksi',
+                        'levels' => ['Jos ilta venyy, se on tarkoitus.'],
+                    ],
                 ],
             ],
             'elias' => [
-                'slug'       => 'elias',
-                'strip'      => 'wine',
-                'inviter'    => 'Elias',
-                'kicker'     => 'Elias kutsuu',
-                'scenario'   => 'Toiset treffit',
-                'place'      => 'Kotona',
-                'name'       => 'Tule kotiin — illalla',
-                'card_line'  => 'Kokkaan. Sitten hartiat. Loppu on meidän.',
-                'location'   => 'Kotona',
-                'osio_title' => 'Kotona',
-                'levels'     => [
-                    'Keittiö — Sinun ei tarvitse tuoda mitään — paitsi itsesi.',
-                    'Hieronta — Hartiat ensin. Kiire jää oven taakse.',
-                    'Ilta — Kynttilät. Hidas musiikki. Ei kelloa.',
+                'slug'      => 'elias',
+                'strip'     => 'wine',
+                'inviter'   => 'Elias',
+                'kicker'    => 'Elias kutsuu',
+                'name'      => 'Tule kotiin — illalla',
+                'card_line' => 'Kokkaan. Sitten hartiat. Loppu on meidän.',
+                'location'  => 'Kotona',
+                'sections'  => [
+                    [
+                        'title'  => 'Keittiö',
+                        'levels' => ['Sinun ei tarvitse tuoda mitään — paitsi itsesi.'],
+                    ],
+                    [
+                        'title'  => 'Hieronta',
+                        'levels' => ['Hartiat ensin. Kiire jää oven taakse.'],
+                    ],
+                    [
+                        'title'  => 'Ilta',
+                        'levels' => ['Kynttilät. Hidas musiikki. Ei kelloa.'],
+                    ],
                 ],
             ],
             'mari'  => [
-                'slug'       => 'mari',
-                'strip'      => 'bokeh',
-                'inviter'    => 'Mari',
-                'kicker'     => 'Mari kutsuu',
-                'scenario'   => '20 v avioliitto',
-                'place'      => 'Yllätys',
-                'name'       => 'Kaksikymmentä — ja vielä yksi juttu',
-                'card_line'  => 'Älä kysy minne. Laita se mekko, josta pidän.',
-                'location'   => '',
-                'osio_title' => 'Yllätys',
-                'levels'     => [
-                    'Tänään — 20 vuotta sinua. Tänä iltana en kerro kaikkea etukäteen.',
-                    'Minne — Auto odottaa. Loppu on yllätys.',
-                    'Miksi — Koska valitsisin sinut uudestaan.',
+                'slug'      => 'mari',
+                'strip'     => 'bokeh',
+                'inviter'   => 'Mari',
+                'kicker'    => 'Mari kutsuu',
+                'name'      => 'Kaksikymmentä — ja vielä yksi juttu',
+                'card_line' => 'Älä kysy minne. Laita se mekko, josta pidän.',
+                'location'  => '',
+                'sections'  => [
+                    [
+                        'title'  => 'Tänään',
+                        'levels' => ['20 vuotta sinua. Tänä iltana en kerro kaikkea etukäteen.'],
+                    ],
+                    [
+                        'title'  => 'Minne',
+                        'levels' => ['Auto odottaa. Loppu on yllätys.'],
+                    ],
+                    [
+                        'title'  => 'Miksi',
+                        'levels' => ['Koska valitsisin sinut uudestaan.'],
+                    ],
                 ],
             ],
         ];
@@ -146,6 +165,24 @@ final class Romant_Kutsu_Home {
         $tz = new DateTimeZone('Europe/Helsinki');
         $dt = (new DateTimeImmutable('+2 days 19:00', $tz))->format('c');
 
+        $slug     = (string) ($demo['slug'] ?? '');
+        $sections = [];
+        foreach ($demo['sections'] ?? [] as $i => $sec) {
+            if (!is_array($sec) || count($sections) >= 3) {
+                continue;
+            }
+            $title  = (string) ($sec['title'] ?? '');
+            $levels = array_values($sec['levels'] ?? []);
+            if ($title === '' && $levels === []) {
+                continue;
+            }
+            $sections[] = [
+                'id'     => substr(hash('sha256', 'romant-demo-' . $slug . '-' . (string) $i), 0, 16),
+                'title'  => $title,
+                'levels' => $levels,
+            ];
+        }
+
         return [
             'id'              => 0,
             'datetime'        => $dt,
@@ -158,14 +195,8 @@ final class Romant_Kutsu_Home {
             'inviter_name'    => (string) ($demo['inviter'] ?? ''),
             'receipt_name'    => (string) ($demo['inviter'] ?? ''),
             'saate'           => '',
-            'sections'        => [
-                [
-                    'id'     => substr(hash('sha256', 'romant-demo-' . (string) ($demo['slug'] ?? '')), 0, 16),
-                    'title'  => (string) ($demo['osio_title'] ?? ''),
-                    'levels' => array_values($demo['levels'] ?? []),
-                ],
-            ],
-            'token'           => 'demo' . (string) ($demo['slug'] ?? ''),
+            'sections'        => $sections,
+            'token'           => 'demo' . $slug,
             'manage_key'      => '',
             'paid'            => true,
             'paid_at'         => '',
