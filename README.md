@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.0 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.1 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.1 — Portti 3 etusivu
+Etusivu (`/`): Pauliina cold-5s — sama **hero-fabric** silkki + bokeh kuin craft, LTR-hero (kopio vasemmalla, teaser-kortti oikealla), mobiilissa pinottu. Nea-hero, hinta-pilleri **4,90 € kun lähetät**, CTA **Luo oma kutsu** → `/kutsu/uusi/`. Kolme demokutsua (Aino / Elias / Mari) Nea v3 -kopioilla; **Avaa demo** → `/kutsu/demo/{aino|elias|mari}/` (pehmeät peelit, ei CPT-tokenia). Craft-selite: *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Wordmark → `/` ennallaan. FAQ / maksu / stub OFF ennallaan.
 
 ### 1.4.0 — Craft fabric + Muu + wordmark home
 Craft (`/kutsu/uusi/`): Pauliina-kangas — sama **hero-fabric** silkki + pehmeä bokeh kuin teaserissa, kermakortit (#FFFDF9) päällä (ei litteä cream-sivu). Wordmark **romanttinen.fi** vie etusivulle (`/`) kaikkialla (craft, teaser, peel, story, etusivu, hallinta). Pohjat max 3: **Kotitreffit · Kaupungilla · Muu**. Kotitreffit/Kaupungilla ennallaan (tyhjä L1, Nea vain **Käytä esimerkkiä**). **Muu** = kolme tyhjää osiota + placeholdereita, ei esitäyttöjä, ei vapaata planneria. Extra-chipit ennallaan: **Kaupungilla · Pieni salaisuus · Hellää huomiota**. Portti 3 etusivu / soft-launch / ALV ennallaan.
@@ -132,6 +135,7 @@ Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 €`
 | URL | Käyttö |
 |-----|--------|
 | `/kutsu/uusi/` | Luo kutsu |
+| `/kutsu/demo/aino/` `/elias/` `/mari/` | Portti 3 demokutsut (Nea v3) |
 | `/kutsu/hallitse/{manage_key}/` | Muokkaa, esikatsele, maksa |
 | `/kutsu/{token}/` | Vastaanottaja (peli) |
 | `/kutsu/{token}/story/` | Tarina PNG (vain teaser) |

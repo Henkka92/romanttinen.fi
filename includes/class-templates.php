@@ -16,6 +16,10 @@ final class Romant_Kutsu_Templates {
     public function maybe_enqueue_assets(): void {
         $route = (string) get_query_var('romant_route');
         if ($route !== '') {
+            if ($route === 'demo') {
+                self::enqueue_assets('recipient');
+                return;
+            }
             self::enqueue_assets($route === 'hallitse' ? 'hallitse' : $route);
             return;
         }

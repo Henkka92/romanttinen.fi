@@ -31,13 +31,14 @@ var css = read('assets/css/frontend.css');
 var forms = read('includes/class-forms.php');
 var managePhp = read('templates/manage.php');
 var home = read('templates/home.php');
+var homePartial = read('templates/partials-home.php');
 var preview = read('tests/craft-preview.html');
 var templatesPhp = read('includes/class-templates.php');
 var recipientPhp = read('templates/recipient.php');
 var storyPhp = read('templates/story.php');
 var homeClass = read('includes/class-home.php');
 
-assert('version is 1.4.0', /Version:\s+1\.4\.0/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.0'/.test(plugin));
+assert('version is 1.4.1', /Version:\s+1\.4\.1/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.1'/.test(plugin));
 
 assert('header wordmark + Luonnos pill',
   /wordmark_markup\(/.test(create) && /romant-luonnos-pill/.test(create) && /Luonnos/.test(create)
@@ -48,8 +49,9 @@ assert('wordmark helper links home /',
 );
 assert('wordmark → home on every surface',
   /wordmark_markup\(/.test(create) &&
-  /wordmark_markup\('romant-home-wordmark'\)/.test(home) &&
-  /wordmark_markup\('romant-home-wordmark'\)/.test(homeClass) &&
+  /wordmark_markup\('romant-home-wordmark'\)/.test(homePartial) &&
+  /partials-home\.php/.test(home) &&
+  /partials-home\.php/.test(homeClass) &&
   /wordmark_markup\(/.test(managePhp) &&
   /wordmark_markup\(/.test(recipientPhp) &&
   /wordmark_markup\('romant-story-wordmark'\)/.test(storyPhp) &&
@@ -158,9 +160,10 @@ assert('pay / manage surfaces still present',
   /romant_inviter_name/.test(managePhp)
 );
 
-assert('Portti 3 home not rebuilt',
-  /Kutsu mielitiettysi treffeille tavalla, joka jää mieleen\./.test(home) &&
-  !/Rakenna kutsu/.test(home)
+assert('Portti 3 home uses locked hero + demos',
+  /Kutsu mielitiettysi treffeille tavalla, joka jää mieleen\./.test(homePartial) &&
+  /Demokutsut/.test(homePartial) &&
+  !/Rakenna kutsu/.test(homePartial)
 );
 
 assert('Mari: Käytä esimerkkiä control',
