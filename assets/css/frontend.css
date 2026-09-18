@@ -860,7 +860,7 @@ a.romant-story-brand {
 }
 
 .romant-home-price-pill {
-  flex-shrink: 0;
+  flex-shrink: 1;
   font-size: 0.6875rem;
   font-weight: 500;
   color: var(--romant-wine);
@@ -868,7 +868,8 @@ a.romant-story-brand {
   border: 1px solid rgba(74, 31, 44, 0.12);
   border-radius: 999px;
   padding: 0.32rem 0.65rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 img.romant-logo,
@@ -3033,8 +3034,20 @@ a.romant-wordmark:focus {
   padding: 1.25rem 1.25rem 2.5rem;
   text-align: center;
   font-size: 0.82rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--romant-wine);
+}
+
+.romant-legal-seller {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--romant-wine);
+}
+
+.romant-legal-footer-links {
+  margin: 0;
 }
 
 .romant-home .romant-legal-footer {

@@ -10,17 +10,18 @@ if (!defined('ABSPATH')) {
 }
 $create_url = $create_url ?? Romant_Kutsu_Rewrite::create_url();
 $demos      = Romant_Kutsu_Home::demos();
+$vat_line   = Romant_Kutsu_Settings::get_price_vat_line();
 ?>
 <div class="romant-home">
     <header class="romant-home-header">
         <?php echo Romant_Kutsu_Templates::wordmark_markup('romant-home-wordmark'); ?>
-        <span class="romant-home-price-pill">4,90 € kun lähetät</span>
+        <span class="romant-home-price-pill"><?php echo esc_html($vat_line); ?></span>
     </header>
 
     <section class="romant-home-hero" aria-labelledby="romant-home-headline">
         <div class="romant-home-copy">
             <h1 id="romant-home-headline">Kutsu mielitiettysi treffeille tavalla, joka jää mieleen.</h1>
-            <p class="romant-home-sub">Luo treffikutsu, joka paljastuu vaiheittain. Ilmaiseksi — maksat 4,90&nbsp;€ vasta kun lähetät.</p>
+            <p class="romant-home-sub">Luo treffikutsu, joka paljastuu vaiheittain. Ilmaiseksi — maksat <?php echo esc_html($vat_line); ?> vasta kun lähetät.</p>
             <div class="romant-home-ctas">
                 <a class="romant-btn romant-btn-primary romant-home-cta" href="<?php echo esc_url($create_url); ?>">
                     Luo oma kutsu

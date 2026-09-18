@@ -26,7 +26,7 @@ $og_url          = isset($og_url) ? (string) $og_url : '';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php if ($allow_index) : ?>
-    <meta name="description" content="Kutsu mielitiettysi treffeille — unohtumattomalla tavalla. Luonnos ilmaiseksi. 4,90 € vasta kun jaat linkin." />
+    <meta name="description" content="Kutsu mielitiettysi treffeille — unohtumattomalla tavalla. Luonnos ilmaiseksi. 4,90 € sis. ALV 25,5 % vasta kun jaat linkin." />
     <?php else : ?>
     <meta name="robots" content="noindex,nofollow" />
     <?php endif; ?>

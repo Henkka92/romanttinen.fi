@@ -1,5 +1,5 @@
 /**
- * 1.4.4 Portti 3 homepage + hivelee 3×3 peels contract.
+ * 1.4.5 Portti 3 homepage + hivelee 3×3 peels contract.
  * Run: node tests/portti3-home.test.js
  */
 'use strict';
@@ -33,20 +33,22 @@ var recipientJs = read('assets/js/recipient.js');
 var templates = read('includes/class-templates.php');
 var readme = read('README.md');
 
-assert('version is 1.4.4',
-  /Version:\s+1\.4\.4/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.4'/.test(plugin)
+assert('version is 1.4.5',
+  /Version:\s+1\.4\.5/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.5'/.test(plugin)
 );
 
 assert('standalone home renders Portti 3 partial',
   /partials-home\.php/.test(home) && /romant-home-body/.test(home)
 );
 
-assert('hero copy locked (Nea)',
+assert('hero copy locked (Nea) + VAT price line',
   /Kutsu mielitiettysi treffeille tavalla, joka jää mieleen\./.test(partial) &&
-  /Luo treffikutsu, joka paljastuu vaiheittain\. Ilmaiseksi — maksat 4,90&nbsp;€ vasta kun lähetät\./.test(partial) &&
+  /Luo treffikutsu, joka paljastuu vaiheittain\. Ilmaiseksi — maksat <\?php echo esc_html\(\$vat_line\); \?> vasta kun lähetät\./.test(partial) &&
   /Luo oma kutsu/.test(partial) &&
   /Ei tiliä\. Valmis jaettavaksi minuuteissa\./.test(partial) &&
-  /4,90 € kun lähetät/.test(partial)
+  /get_price_vat_line\(\)/.test(partial) &&
+  /romant-home-price-pill/.test(partial) &&
+  /echo esc_html\(\$vat_line\)/.test(partial)
 );
 
 assert('primary CTA and step 1 go to /kutsu/uusi/',
@@ -199,8 +201,8 @@ assert('mini-peel preview not on homepage',
   !/partials-home-peel-preview/.test(homeClass)
 );
 
-assert('README version 1.4.4',
-  /1\.4\.4/.test(readme)
+assert('README version 1.4.5',
+  /1\.4\.5/.test(readme)
 );
 
 if (fails) {

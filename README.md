@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.4 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.5 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.5 — Portti 4 hotfix (Mari QA)
+Etusivun hinta-pilleri ja hero: **4,90 € sis. ALV 25,5 %** (`get_price_vat_line()`). Trust-footer: myyjärivi *Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi* + Käyttöehdot/Tietosuoja. Demopeelit ja kortti=linkki ennallaan.
 
 ### 1.4.4 — Hivelee demo peels + Portti 4 Luottamus
 Avattu demokutsu: jokaisessa osiossa **3 tasoa** (Vihje 1→2→3). Aino / Pöytä / L3: *Pöytä ikkunan vieressä — nimesi on listalla.* (ei Ravintola X). Etusivun kortti ennallaan (koko kortti = linkki, vain nimi + 1 rivi).
@@ -18,7 +21,7 @@ Etusivun demokortti on kokonaan linkki (`/kutsu/demo/{aino|elias|mari}/`). Korti
 Craft (`/kutsu/uusi/`): yksi rivi osioiden luona — *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Ei hero-muutoksia. Etusivu / demot / maksu ennallaan.
 
 ### 1.4.1 — Portti 3 etusivu
-Etusivu (`/`): Pauliina cold-5s — sama **hero-fabric** silkki + bokeh kuin craft, LTR-hero (kopio vasemmalla, teaser-kortti oikealla), mobiilissa pinottu. Nea-hero, hinta-pilleri **4,90 € kun lähetät**, CTA **Luo oma kutsu** → `/kutsu/uusi/`. Kolme demokutsua (Aino / Elias / Mari) Nea v3 -kopioilla; **Avaa demo** → `/kutsu/demo/{aino|elias|mari}/` (pehmeät peelit, ei CPT-tokenia). Craft-selite: *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Wordmark → `/` ennallaan. FAQ / maksu / stub OFF ennallaan.
+Etusivu (`/`): Pauliina cold-5s — sama **hero-fabric** silkki + bokeh kuin craft, LTR-hero (kopio vasemmalla, teaser-kortti oikealla), mobiilissa pinottu. Nea-hero, hinta-pilleri **4,90 € sis. ALV 25,5 %**, CTA **Luo oma kutsu** → `/kutsu/uusi/`. Kolme demokutsua (Aino / Elias / Mari) Nea v3 -kopioilla; **Avaa demo** → `/kutsu/demo/{aino|elias|mari}/` (pehmeät peelit, ei CPT-tokenia). Craft-selite: *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Wordmark → `/` ennallaan. FAQ / maksu / stub OFF ennallaan.
 
 ### 1.4.0 — Craft fabric + Muu + wordmark home
 Craft (`/kutsu/uusi/`): Pauliina-kangas — sama **hero-fabric** silkki + pehmeä bokeh kuin teaserissa, kermakortit (#FFFDF9) päällä (ei litteä cream-sivu). Wordmark **romanttinen.fi** vie etusivulle (`/`) kaikkialla (craft, teaser, peel, story, etusivu, hallinta). Pohjat max 3: **Kotitreffit · Kaupungilla · Muu**. Kotitreffit/Kaupungilla ennallaan (tyhjä L1, Nea vain **Käytä esimerkkiä**). **Muu** = kolme tyhjää osiota + placeholdereita, ei esitäyttöjä, ei vapaata planneria. Extra-chipit ennallaan: **Kaupungilla · Pieni salaisuus · Hellää huomiota**. Portti 3 etusivu / soft-launch / ALV ennallaan.

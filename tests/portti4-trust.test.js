@@ -1,5 +1,5 @@
 /**
- * 1.4.4 Portti 4 Luottamus contract (seed / ALV / stub OFF / digi / legal / kuitti).
+ * 1.4.5 Portti 4 Luottamus contract (seed / ALV / stub OFF / digi / legal / kuitti).
  * Run: node tests/portti4-trust.test.js
  */
 'use strict';
@@ -40,8 +40,8 @@ var homeClass = read('includes/class-home.php');
 var readme = read('README.md');
 var css = read('assets/css/frontend.css');
 
-assert('version stays 1.4.4 (peels + Portti 4 in one zip)',
-  /Version:\s+1\.4\.4/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.4'/.test(plugin)
+assert('version is 1.4.5 (Portti 4 Mari QA hotfix)',
+  /Version:\s+1\.4\.5/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.5'/.test(plugin)
 );
 
 assert('stub constant defaults false',
@@ -124,8 +124,10 @@ assert('receipt locked: VAT + seller + digi + legal URLs',
   /Treffikutsu valmis — /.test(forms)
 );
 
-assert('legal footer helper; hidden on story; on home partial',
+assert('legal footer seller line + Käyttöehdot/Tietosuoja; hidden on story; on home',
   /function legal_footer_markup/.test(templates) &&
+  /get_company_line\(\)/.test(templates) &&
+  /romant-legal-seller/.test(templates) &&
   />Käyttöehdot</.test(templates) &&
   />Tietosuoja</.test(templates) &&
   /legal_footer_markup/.test(layoutEnd) &&
@@ -134,8 +136,12 @@ assert('legal footer helper; hidden on story; on home partial',
   /legal_footer_markup/.test(partial)
 );
 
-assert('homepage Nea hero copy unchanged (price pill still 4,90 € kun lähetät)',
-  /4,90 € kun lähetät/.test(partial) &&
+assert('homepage hero/price pill uses VAT helper (not 4,90 € without ALV)',
+  /get_price_vat_line\(\)/.test(partial) &&
+  /romant-home-price-pill/.test(partial) &&
+  /echo esc_html\(\$vat_line\)/.test(partial) &&
+  !/4,90 € kun lähetät/.test(partial) &&
+  !/maksat 4,90&nbsp;€/.test(partial) &&
   /Kutsu mielitiettysi treffeille tavalla, joka jää mieleen\./.test(partial)
 );
 
@@ -146,15 +152,16 @@ assert('1.4.4 peels not dropped (Pöytä L3 + 3×3)',
   /'Lopuksi'/.test(homeClass)
 );
 
-assert('CSS: vat line + legal check + footer wine',
+assert('CSS: vat line + legal check + seller footer',
   /\.romant-price-vat/.test(css) &&
   /\.romant-legal-check/.test(css) &&
   /\.romant-legal-footer/.test(css) &&
+  /\.romant-legal-seller/.test(css) &&
   /#4A1F2C/.test(css)
 );
 
-assert('README 1.4.4 includes Portti 4 + stub OFF + legal routes',
-  /1\.4\.4/.test(readme) &&
+assert('README 1.4.5 includes seller footer + VAT pill',
+  /1\.4\.5/.test(readme) &&
   /Portti 4/.test(readme) &&
   /Kelaus Finland Oy/.test(readme) &&
   /4,90 € sis\. ALV 25,5 %/.test(readme) &&

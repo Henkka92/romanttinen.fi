@@ -219,13 +219,17 @@ final class Romant_Kutsu_Templates {
     }
 
     /**
-     * LOCKED Portti 4 footer: Käyttöehdot · Tietosuoja
+     * LOCKED Portti 4 footer: seller line + Käyttöehdot · Tietosuoja
+     * Seller: Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi
      */
     public static function legal_footer_markup(): string {
         return '<footer class="romant-legal-footer">'
+            . '<p class="romant-legal-seller">' . esc_html(Romant_Kutsu_Settings::get_company_line()) . '</p>'
+            . '<p class="romant-legal-footer-links">'
             . '<a href="' . esc_url(Romant_Kutsu_Rewrite::terms_url()) . '">Käyttöehdot</a>'
             . '<span aria-hidden="true"> · </span>'
             . '<a href="' . esc_url(Romant_Kutsu_Rewrite::privacy_url()) . '">Tietosuoja</a>'
+            . '</p>'
             . '</footer>';
     }
 
