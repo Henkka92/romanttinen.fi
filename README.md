@@ -7,7 +7,7 @@ WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** 
 ## Changelog
 
 ### 1.4.5 — Portti 4 hotfix (Mari QA)
-Etusivun hinta-pilleri ja hero: **4,90 € sis. ALV 25,5 %** (`get_price_vat_line()`). Trust-footer: myyjärivi *Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi* + Käyttöehdot/Tietosuoja. Demopeelit ja kortti=linkki ennallaan.
+Etusivun hinta-pilleri ja hero: **4,90 € sis. ALV 25,5 %** (`get_price_vat_line()`). Trust-footer: myyjärivi *Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi* + Käyttöehdot/Tietosuoja. Craft: `SOFT_MAX_LEVELS` = `HARD_MAX_LEVELS` = **3** (sama bar kuin selite). Demopeelit ja kortti=linkki ennallaan.
 
 ### 1.4.4 — Hivelee demo peels + Portti 4 Luottamus
 Avattu demokutsu: jokaisessa osiossa **3 tasoa** (Vihje 1→2→3). Aino / Pöytä / L3: *Pöytä ikkunan vieressä — nimesi on listalla.* (ei Ravintola X). Etusivun kortti ennallaan (koko kortti = linkki, vain nimi + 1 rivi).
