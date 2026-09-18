@@ -8,8 +8,8 @@
   var cfg = window.romantManage || {};
   var MAX_SECTIONS = cfg.maxSections || 3;
   var DEFAULT_LEVELS = cfg.defaultLevels || 3;
-  var SOFT_MAX = cfg.softMaxLevels || 10;
-  var HARD_MAX = cfg.hardMaxLevels || 20;
+  var SOFT_MAX = cfg.softMaxLevels || 3;
+  var HARD_MAX = cfg.hardMaxLevels || 3;
   var i18n = cfg.i18n || {};
   var DEFAULT_TITLES = cfg.defaultTitles || ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
   var EXTRA_TITLES = cfg.extraTitles || ['Kaupungilla', 'Pieni salaisuus', 'Hellää huomiota'];
