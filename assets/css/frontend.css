@@ -1792,7 +1792,7 @@ a.romant-home-demo-card:focus-visible .romant-home-demo-link {
   margin-top: 0.35rem;
 }
 
-/* Confirm modal — full-viewport flex shell (1.4.7 Henry FAIL) */
+/* Confirm modal — full-viewport flex shell; hidden until open (1.4.8) */
 .romant-modal {
   position: fixed !important;
   inset: 0 !important;
@@ -1806,10 +1806,15 @@ a.romant-home-demo-card:focus-visible .romant-home-demo-link {
   background: transparent !important;
   box-shadow: none !important;
   color: var(--romant-ink);
-  display: flex !important;
+  display: none !important; /* 1.4.8: hidden until user opens */
   align-items: center !important;
   justify-content: center !important;
   transform: none !important;
+}
+
+.romant-modal[open],
+.romant-modal.is-present {
+  display: flex !important;
 }
 
 .romant-modal::backdrop {
@@ -2543,7 +2548,7 @@ a.romant-wordmark:focus {
   text-align: center;
 }
 
-/* Modal — viewport flex shell + cream card on inner (1.4.7) */
+/* Modal — viewport flex shell + cream card; hidden until open (1.4.8) */
 .romant-modal {
   position: fixed !important;
   inset: 0 !important;
@@ -2557,10 +2562,15 @@ a.romant-wordmark:focus {
   background: transparent !important;
   box-shadow: none !important;
   color: #4A1F2C;
-  display: flex !important;
+  display: none !important; /* 1.4.8: hidden until user opens */
   align-items: center !important;
   justify-content: center !important;
   transform: none !important;
+}
+
+.romant-modal[open],
+.romant-modal.is-present {
+  display: flex !important;
 }
 
 .romant-modal::backdrop {

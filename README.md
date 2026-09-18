@@ -2,9 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.7 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.8 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.8 — Peel-modaali piilossa kunnes avataan
+`.romant-modal` default `display:none`; flex-center vain `[open]` / `.is-present` (Henry FAIL: modaali auki ilman klikkiä).
 
 ### 1.4.7 — Peel-modaali oikeasti viewport-keskelle
 Dialog = läpinäkyvä full-viewport flex-shell (`align/justify center`); kortti `.romant-modal-inner`-issä. giftIn vain innerissä. Henry FAIL (modaali ylhäällä scrollatessa).
