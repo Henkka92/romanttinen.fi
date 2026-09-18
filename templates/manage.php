@@ -14,7 +14,8 @@ $page_title = 'Hallitse kutsua · romanttinen';
 $body_class = 'romant-craft-page';
 $manage_key = $data['manage_key'];
 $paid       = !empty($data['paid']) && $data['token'] !== '';
-$price_disp = Romant_Kutsu_Settings::get_price_display();
+$price_disp = Romant_Kutsu_Settings::get_price_vat_line();
+$price_short = Romant_Kutsu_Settings::get_price_display();
 $dt_local   = Romant_Kutsu_Forms::datetime_local_value($data['datetime']);
 $checklist  = Romant_Kutsu_Templates::checklist_items();
 $share_url  = $paid ? Romant_Kutsu_Rewrite::recipient_url($data['token']) : '';
@@ -42,7 +43,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <p class="romant-lead">
             Tallenna tämä linkki — se on ainoa tapa muokata kutsua.
             <?php if (!$paid) : ?>
-                Esikatselu on ilmainen. Jakolinkki avautuu maksulla (<?php echo esc_html($price_disp); ?>).
+                Esikatselu on ilmainen. Jakolinkki avautuu maksulla (<?php echo esc_html($price_short); ?>).
             <?php endif; ?>
         </p>
     </header>
@@ -76,6 +77,10 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
     <?php elseif ($pay_error === 'status_check_failed') : ?>
         <div class="romant-alert romant-alert-err" role="alert">
             Maksun tilaa ei voitu tarkistaa juuri nyt. Odota hetki — ilmoitus voi vielä saapua.
+        </div>
+    <?php elseif ($pay_error === 'digi') : ?>
+        <div class="romant-alert romant-alert-err" role="alert">
+            Vahvista digitaalisen sisällön toimitus ja peruuttamisoikeuden raukeaminen ennen maksua.
         </div>
     <?php elseif ($pay_error !== '') : ?>
         <div class="romant-alert romant-alert-err" role="alert">
@@ -149,7 +154,7 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 
             <section class="romant-email-box">
                 <h2 class="romant-serif">Hallintalinkki sähköpostiin</h2>
-                <p class="romant-hint">Lähetä salainen hallintalinkki itsellesi, jotta et menetä <?php echo esc_html($price_disp); ?>:n työtä.</p>
+                <p class="romant-hint">Lähetä salainen hallintalinkki itsellesi, jotta et menetä <?php echo esc_html($price_short); ?>:n työtä.</p>
                 <form class="romant-form romant-email-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                     <input type="hidden" name="action" value="romant_send_manage_email" />
                     <input type="hidden" name="manage_key" value="<?php echo esc_attr($manage_key); ?>" />
@@ -164,7 +169,8 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
         <?php else : ?>
             <section class="romant-pay-box">
                 <h2 class="romant-serif">Hanki jaettava linkki</h2>
-                <p class="romant-hint">Esikatselu on ilmainen. Jakolinkki avautuu maksulla (<?php echo esc_html($price_disp); ?>).</p>
+                <p class="romant-price-vat"><?php echo esc_html($price_disp); ?></p>
+                <p class="romant-hint">Esikatselu on ilmainen. Jakolinkki avautuu maksulla.</p>
                 <form class="romant-pay-form romant-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                     <input type="hidden" name="action" value="romant_pay_kutsu" />
                     <input type="hidden" name="manage_key" value="<?php echo esc_attr($manage_key); ?>" />
@@ -192,8 +198,17 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                            value="<?php echo esc_attr($stored_email); ?>"
                            placeholder="oma@example.com" autocomplete="email" />
                     <p class="romant-hint">Pakollinen — lähetämme kuitin ja hallintalinkin maksun jälkeen.</p>
+                    <label class="romant-legal-check">
+                        <input type="checkbox" name="romant_digi_cancel" value="1" required />
+                        <span>Ymmärrän, että kutsu on digitaalinen sisältö, joka toimitetaan heti. Peruuttamisoikeutta ei ole (KSL 6:16).</span>
+                    </label>
+                    <p class="romant-hint romant-legal-links">
+                        <a href="<?php echo esc_url(Romant_Kutsu_Rewrite::terms_url()); ?>">Käyttöehdot</a>
+                        ·
+                        <a href="<?php echo esc_url(Romant_Kutsu_Rewrite::privacy_url()); ?>">Tietosuoja</a>
+                    </p>
                     <button type="submit" class="romant-btn romant-btn-primary romant-btn-lg">
-                        Hanki jaettava linkki (<?php echo esc_html($price_disp); ?>)
+                        Hanki jaettava linkki
                     </button>
                     <?php if (Romant_Kutsu_Settings::stub_payments_enabled()) : ?>
                         <p class="romant-hint">Stub-tila: maksu merkitään automaattisesti maksetuksi (ei Vismaa).</p>

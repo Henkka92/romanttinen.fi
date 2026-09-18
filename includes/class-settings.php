@@ -21,6 +21,14 @@ final class Romant_Kutsu_Settings {
     public const OPTION_COMPANY_NAME       = 'romant_kutsu_company_name';
     public const OPTION_BUSINESS_ID        = 'romant_kutsu_business_id';
     public const OPTION_COMPANY_ADDRESS    = 'romant_kutsu_company_address';
+    public const OPTION_COMPANY_EMAIL      = 'romant_kutsu_company_email';
+    public const OPTION_VAT_RATE           = 'romant_kutsu_vat_rate';
+
+    public const DEFAULT_COMPANY_NAME    = 'Kelaus Finland Oy';
+    public const DEFAULT_BUSINESS_ID     = '2806633-5';
+    public const DEFAULT_COMPANY_ADDRESS = 'Heiniläntie 37, 08500 Lohja';
+    public const DEFAULT_COMPANY_EMAIL   = 'henry@kelaus.fi';
+    public const DEFAULT_VAT_RATE        = '25.5';
 
     /** @deprecated Kept so old installs do not fatally reference; unused in UI. */
     public const OPTION_VISMA_MERCHANT = 'romant_kutsu_visma_merchant_id';
@@ -46,7 +54,7 @@ final class Romant_Kutsu_Settings {
             'sanitize_callback' => static function ($v): string {
                 return $v ? '1' : '0';
             },
-            'default'           => '1',
+            'default'           => '0',
         ]);
         register_setting('romant_kutsu_settings', self::OPTION_USE_HOME, [
             'type'              => 'string',
@@ -68,17 +76,33 @@ final class Romant_Kutsu_Settings {
         register_setting('romant_kutsu_settings', self::OPTION_COMPANY_NAME, [
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
+            'default'           => self::DEFAULT_COMPANY_NAME,
         ]);
         register_setting('romant_kutsu_settings', self::OPTION_BUSINESS_ID, [
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
+            'default'           => self::DEFAULT_BUSINESS_ID,
         ]);
         register_setting('romant_kutsu_settings', self::OPTION_COMPANY_ADDRESS, [
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
+            'default'           => self::DEFAULT_COMPANY_ADDRESS,
+        ]);
+        register_setting('romant_kutsu_settings', self::OPTION_COMPANY_EMAIL, [
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_email',
+            'default'           => self::DEFAULT_COMPANY_EMAIL,
+        ]);
+        register_setting('romant_kutsu_settings', self::OPTION_VAT_RATE, [
+            'type'              => 'string',
+            'sanitize_callback' => static function ($v): string {
+                $n = is_string($v) ? str_replace(',', '.', trim($v)) : self::DEFAULT_VAT_RATE;
+                if (!is_numeric($n) || (float) $n < 0) {
+                    return self::DEFAULT_VAT_RATE;
+                }
+                return number_format((float) $n, 1, '.', '');
+            },
+            'default'           => self::DEFAULT_VAT_RATE,
         ]);
     }
 
@@ -100,6 +124,14 @@ final class Romant_Kutsu_Settings {
     }
 
     /**
+     * LOCKED pay/receipt price line (Portti 4). One line, VAT included.
+     * Default: 4,90 € sis. ALV 25,5 %
+     */
+    public static function get_price_vat_line(): string {
+        return self::get_price_display() . ' sis. ALV ' . self::vat_rate_display() . ' %';
+    }
+
+    /**
      * Amount in fractional monetary units (1 € = 100).
      */
     public static function get_price_cents(): int {
@@ -107,13 +139,14 @@ final class Romant_Kutsu_Settings {
     }
 
     /**
-     * Stub when constant true OR settings toggle on (default ON for staging).
+     * Stub only when constant true OR settings toggle on.
+     * Production default: OFF.
      */
     public static function stub_payments_enabled(): bool {
         if (defined('ROMANTTINEN_STUB_PAYMENTS') && ROMANTTINEN_STUB_PAYMENTS) {
             return true;
         }
-        return get_option(self::OPTION_STUB, '1') === '1';
+        return get_option(self::OPTION_STUB, '0') === '1';
     }
 
     public static function visma_api_key(): string {
@@ -129,19 +162,40 @@ final class Romant_Kutsu_Settings {
     }
 
     public static function company_name(): string {
-        return trim((string) get_option(self::OPTION_COMPANY_NAME, ''));
+        $v = trim((string) get_option(self::OPTION_COMPANY_NAME, self::DEFAULT_COMPANY_NAME));
+        return $v !== '' ? $v : self::DEFAULT_COMPANY_NAME;
     }
 
     public static function business_id(): string {
-        return trim((string) get_option(self::OPTION_BUSINESS_ID, ''));
+        $v = trim((string) get_option(self::OPTION_BUSINESS_ID, self::DEFAULT_BUSINESS_ID));
+        return $v !== '' ? $v : self::DEFAULT_BUSINESS_ID;
     }
 
     public static function company_address(): string {
-        return trim((string) get_option(self::OPTION_COMPANY_ADDRESS, ''));
+        $v = trim((string) get_option(self::OPTION_COMPANY_ADDRESS, self::DEFAULT_COMPANY_ADDRESS));
+        return $v !== '' ? $v : self::DEFAULT_COMPANY_ADDRESS;
+    }
+
+    public static function company_email(): string {
+        $v = trim((string) get_option(self::OPTION_COMPANY_EMAIL, self::DEFAULT_COMPANY_EMAIL));
+        return $v !== '' ? $v : self::DEFAULT_COMPANY_EMAIL;
+    }
+
+    public static function vat_rate(): string {
+        $v = get_option(self::OPTION_VAT_RATE, self::DEFAULT_VAT_RATE);
+        $n = is_string($v) ? str_replace(',', '.', trim($v)) : self::DEFAULT_VAT_RATE;
+        if (!is_numeric($n) || (float) $n < 0) {
+            return self::DEFAULT_VAT_RATE;
+        }
+        return number_format((float) $n, 1, '.', '');
+    }
+
+    public static function vat_rate_display(): string {
+        return str_replace('.', ',', self::vat_rate());
     }
 
     /**
-     * Company line for receipt footer. Defaults to public contact when unset.
+     * Company line for receipt footer (Kelaus seed).
      */
     public static function get_company_line(): string {
         $parts = [];
@@ -157,10 +211,54 @@ final class Romant_Kutsu_Settings {
         if ($addr !== '') {
             $parts[] = $addr;
         }
+        $email = self::company_email();
+        if ($email !== '') {
+            $parts[] = $email;
+        }
         if ($parts === []) {
-            return 'romanttinen.fi · kutsu@romanttinen.fi';
+            return self::DEFAULT_COMPANY_NAME . ' · Y-tunnus ' . self::DEFAULT_BUSINESS_ID;
         }
         return implode(' · ', $parts);
+    }
+
+    /**
+     * Multiline seller block for kuitti (LOCKED Portti 4).
+     */
+    public static function get_company_block(): string {
+        return self::company_name() . "\n"
+            . 'Y-tunnus ' . self::business_id() . "\n"
+            . self::company_address() . "\n"
+            . self::company_email();
+    }
+
+    /**
+     * Seed Kelaus seller + ALV + stub OFF (production). Safe to call on every init.
+     * Empty company fields fill with defaults; stub is forced OFF once per install.
+     */
+    public static function maybe_seed(): void {
+        $map = [
+            self::OPTION_COMPANY_NAME    => self::DEFAULT_COMPANY_NAME,
+            self::OPTION_BUSINESS_ID     => self::DEFAULT_BUSINESS_ID,
+            self::OPTION_COMPANY_ADDRESS => self::DEFAULT_COMPANY_ADDRESS,
+            self::OPTION_COMPANY_EMAIL   => self::DEFAULT_COMPANY_EMAIL,
+            self::OPTION_VAT_RATE        => self::DEFAULT_VAT_RATE,
+        ];
+        foreach ($map as $opt => $default) {
+            $cur = get_option($opt, false);
+            if ($cur === false || (is_string($cur) && trim($cur) === '')) {
+                update_option($opt, $default);
+            }
+        }
+        if (get_option(self::OPTION_PRICE, false) === false) {
+            add_option(self::OPTION_PRICE, '4.90');
+        }
+        if (get_option(self::OPTION_STUB, false) === false) {
+            add_option(self::OPTION_STUB, '0');
+        }
+        if (get_option('romant_kutsu_trust_seeded', '') !== '1') {
+            update_option(self::OPTION_STUB, '0');
+            update_option('romant_kutsu_trust_seeded', '1');
+        }
     }
 
 
@@ -209,7 +307,7 @@ final class Romant_Kutsu_Settings {
                         <td>
                             <input type="text" id="romant_kutsu_price" name="<?php echo esc_attr(self::OPTION_PRICE); ?>"
                                    value="<?php echo esc_attr(self::get_price()); ?>" class="regular-text" />
-                            <p class="description">Oletus 4.90. Näytetään muodossa 4,90 €.</p>
+                            <p class="description">Oletus 4.90. Maksussa ja kuitissa: <code>4,90 € sis. ALV 25,5 %</code>.</p>
                         </td>
                     </tr>
                     <tr>
@@ -218,11 +316,12 @@ final class Romant_Kutsu_Settings {
                             <input type="hidden" name="<?php echo esc_attr(self::OPTION_STUB); ?>" value="0" />
                             <label>
                                 <input type="checkbox" name="<?php echo esc_attr(self::OPTION_STUB); ?>" value="1"
-                                    <?php checked(get_option(self::OPTION_STUB, '1'), '1'); ?> />
+                                    <?php checked(get_option(self::OPTION_STUB, '0'), '1'); ?> />
                                 Merkitse kutsu maksetuksi ilman Vismaa (demo / staging)
                             </label>
                             <p class="description">
-                                Oletus: päällä. Myös vakio <code>ROMANTTINEN_STUB_PAYMENTS</code> = true wp-configissa pakottaa stub-tilan.
+                                Oletus: <strong>pois päältä</strong> (tuotanto). Staging: vakio
+                                <code>ROMANTTINEN_STUB_PAYMENTS</code> = true wp-configissa pakottaa stub-tilan.
                                 Kun stub on pois päältä, tarvitaan Visma Pay API-avain ja private key.
                             </p>
                         </td>
@@ -262,7 +361,7 @@ final class Romant_Kutsu_Settings {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row" colspan="2"><h2 style="margin:1em 0 0;">Yritystiedot (kuitti)</h2></th>
+                        <th scope="row" colspan="2"><h2 style="margin:1em 0 0;">Yritystiedot (kuitti / Portti 4)</h2></th>
                     </tr>
                     <tr>
                         <th scope="row"><label for="romant_kutsu_company_name">Yrityksen nimi</label></th>
@@ -286,7 +385,25 @@ final class Romant_Kutsu_Settings {
                             <input type="text" id="romant_kutsu_company_address"
                                    name="<?php echo esc_attr(self::OPTION_COMPANY_ADDRESS); ?>"
                                    value="<?php echo esc_attr(self::company_address()); ?>" class="regular-text" />
-                            <p class="description">Tyhjät kentät → kuittiin oletus: <code>romanttinen.fi · kutsu@romanttinen.fi</code></p>
+                            <p class="description">Oletus: Kelaus Finland Oy / 2806633-5 / Heiniläntie 37, 08500 Lohja.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="romant_kutsu_company_email">Sähköposti</label></th>
+                        <td>
+                            <input type="email" id="romant_kutsu_company_email"
+                                   name="<?php echo esc_attr(self::OPTION_COMPANY_EMAIL); ?>"
+                                   value="<?php echo esc_attr(self::company_email()); ?>" class="regular-text" />
+                            <p class="description">Oletus: henry@kelaus.fi</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="romant_kutsu_vat_rate">ALV %</label></th>
+                        <td>
+                            <input type="text" id="romant_kutsu_vat_rate"
+                                   name="<?php echo esc_attr(self::OPTION_VAT_RATE); ?>"
+                                   value="<?php echo esc_attr(self::vat_rate()); ?>" class="small-text" />
+                            <p class="description">Oletus 25.5 → näytetään <code>25,5 %</code>.</p>
                         </td>
                     </tr>
                 </table>

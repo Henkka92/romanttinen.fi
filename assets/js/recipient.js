@@ -256,6 +256,14 @@
     var reveal = document.getElementById('romant-reveal');
     var container = document.getElementById('romant-peli-sections');
     var modal = document.getElementById('romant-reveal-modal');
+    // 1.4.8: never show confirm modal until user taps «Kerro lisää»
+    if (modal) {
+      modal.classList.remove('is-present');
+      if (typeof modal.close === 'function' && modal.open) {
+        try { modal.close(); } catch (e) {}
+      }
+      modal.removeAttribute('open');
+    }
     var modalYes = document.getElementById('romant-modal-yes');
     var modalNo = document.getElementById('romant-modal-no');
     var pendingIndex = -1;

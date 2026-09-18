@@ -8,8 +8,8 @@
   var cfg = window.romantManage || {};
   var MAX_SECTIONS = cfg.maxSections || 3;
   var DEFAULT_LEVELS = cfg.defaultLevels || 3;
-  var SOFT_MAX = cfg.softMaxLevels || 10;
-  var HARD_MAX = cfg.hardMaxLevels || 20;
+  var SOFT_MAX = cfg.softMaxLevels || 3;
+  var HARD_MAX = cfg.hardMaxLevels || 3;
   var i18n = cfg.i18n || {};
   var DEFAULT_TITLES = cfg.defaultTitles || ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];
   var EXTRA_TITLES = cfg.extraTitles || ['Kaupungilla', 'Pieni salaisuus', 'Hellää huomiota'];
@@ -355,7 +355,7 @@
     warn.className = 'romant-soft-cap-warn';
     warn.setAttribute('data-soft-cap-warn', '');
     warn.hidden = true;
-    warn.textContent = i18n.softCapWarn || 'Pehmeä raja (10) ylitetty — pidä tasot maltillisina.';
+    warn.textContent = i18n.softCapWarn || ('Pehmeä raja (' + SOFT_MAX + ') ylitetty — pidä vihjeet maltillisina.');
 
     var addLevel = document.createElement('button');
     addLevel.type = 'button';
@@ -461,7 +461,7 @@
         var levels = card.querySelector('[data-section-levels]');
         var count = levels.querySelectorAll('[data-level-row]').length;
         if (count >= HARD_MAX) {
-          alert(i18n.hardCap || 'Enintään 20 tasoa osiossa.');
+          alert(i18n.hardCap || ('Enintään ' + HARD_MAX + ' vihjettä osiossa.'));
           return;
         }
         var si = parseInt(card.getAttribute('data-index') || '0', 10);

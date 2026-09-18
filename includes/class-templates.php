@@ -16,6 +16,10 @@ final class Romant_Kutsu_Templates {
     public function maybe_enqueue_assets(): void {
         $route = (string) get_query_var('romant_route');
         if ($route !== '') {
+            if ($route === 'demo') {
+                self::enqueue_assets('recipient');
+                return;
+            }
             self::enqueue_assets($route === 'hallitse' ? 'hallitse' : $route);
             return;
         }
@@ -105,8 +109,16 @@ final class Romant_Kutsu_Templates {
                     'addLevel'       => 'Lisää taso',
                     'addSection'     => 'Lisää osio',
                     'removeSection'  => 'Poista',
-                    'softCapWarn'    => 'Pehmeä raja (10) ylitetty — pidä tasot maltillisina.',
-                    'hardCap'        => 'Enintään 20 tasoa osiossa.',
+                    'softCapWarn'    => sprintf(
+                        /* translators: %d = soft max levels per section */
+                        'Pehmeä raja (%d) ylitetty — pidä vihjeet maltillisina.',
+                        Romant_Kutsu_CPT::SOFT_MAX_LEVELS
+                    ),
+                    'hardCap'        => sprintf(
+                        /* translators: %d = hard max levels per section */
+                        'Enintään %d vihjettä osiossa.',
+                        Romant_Kutsu_CPT::HARD_MAX_LEVELS
+                    ),
                     'maxSections'    => 'Enintään 3 osiota.',
                     'sectionPh'      => Romant_Kutsu_CPT::PLACEHOLDER_TITLE,
                     'levelPh'        => Romant_Kutsu_CPT::PLACEHOLDER_EMPTY,
@@ -158,11 +170,13 @@ final class Romant_Kutsu_Templates {
         }
 
         $context_map = [
-            'create'    => 'uusi',
-            'manage'    => 'hallitse',
-            'recipient' => 'recipient',
-            'story'     => 'story',
-            'home'      => 'home',
+            'create'      => 'uusi',
+            'manage'      => 'hallitse',
+            'recipient'   => 'recipient',
+            'story'       => 'story',
+            'home'        => 'home',
+            'kayttoehdot' => 'kayttoehdot',
+            'tietosuoja'  => 'tietosuoja',
         ];
         self::enqueue_assets($context_map[$name] ?? $name);
 
@@ -210,6 +224,21 @@ final class Romant_Kutsu_Templates {
     public static function wordmark_markup(string $extra_class = ''): string {
         $cls = trim('romant-wordmark ' . $extra_class);
         return '<a class="' . esc_attr($cls) . '" href="' . esc_url(home_url('/')) . '">romanttinen.fi</a>';
+    }
+
+    /**
+     * LOCKED Portti 4 footer: seller line + Käyttöehdot · Tietosuoja
+     * Seller: Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi
+     */
+    public static function legal_footer_markup(): string {
+        return '<footer class="romant-legal-footer">'
+            . '<p class="romant-legal-seller">' . esc_html(Romant_Kutsu_Settings::get_company_line()) . '</p>'
+            . '<p class="romant-legal-footer-links">'
+            . '<a href="' . esc_url(Romant_Kutsu_Rewrite::terms_url()) . '">Käyttöehdot</a>'
+            . '<span aria-hidden="true"> · </span>'
+            . '<a href="' . esc_url(Romant_Kutsu_Rewrite::privacy_url()) . '">Tietosuoja</a>'
+            . '</p>'
+            . '</footer>';
     }
 
     /**

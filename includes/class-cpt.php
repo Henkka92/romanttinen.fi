@@ -39,8 +39,8 @@ final class Romant_Kutsu_CPT {
 
     public const MAX_SECTIONS      = 3;
     public const DEFAULT_LEVELS    = 3;
-    public const SOFT_MAX_LEVELS   = 10;
-    public const HARD_MAX_LEVELS   = 20;
+    public const SOFT_MAX_LEVELS   = 3;
+    public const HARD_MAX_LEVELS   = 3;
 
     /** Nea-locked default section titles (craft OLETUS badge). */
     public const DEFAULT_SECTION_TITLES = ['Elokuvahetki', 'Yhteinen ateria', 'Kotona'];

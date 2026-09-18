@@ -49,6 +49,9 @@ if (!$craft_editor) {
         <p class="romant-kicker">Kutsun hetket</p>
         <p class="romant-hetket-count" data-oletus-count><?php echo esc_html((string) count($sections)); ?> oletusta</p>
     </div>
+    <?php if ($craft_editor) : ?>
+    <p class="romant-craft-selite">Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).</p>
+    <?php endif; ?>
 
     <div class="romant-sections-list" data-sections-list>
         <?php foreach ($sections as $si => $sec) :
@@ -104,7 +107,7 @@ if (!$craft_editor) {
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <p class="romant-soft-cap-warn" data-soft-cap-warn hidden>Pehmeä raja (10) ylitetty — pidä tasot maltillisina.</p>
+                <p class="romant-soft-cap-warn" data-soft-cap-warn hidden><?php echo esc_html( sprintf( 'Pehmeä raja (%d) ylitetty — pidä vihjeet maltillisina.', (int) $soft ) ); ?></p>
                 <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>
                     Lisää taso
                 </button>

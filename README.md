@@ -2,9 +2,36 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.0 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.8 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.8 — Peel-modaali piilossa kunnes avataan
+`.romant-modal` default `display:none`; flex-center vain `[open]` / `.is-present` (Henry FAIL: modaali auki ilman klikkiä).
+
+### 1.4.7 — Peel-modaali oikeasti viewport-keskelle
+Dialog = läpinäkyvä full-viewport flex-shell (`align/justify center`); kortti `.romant-modal-inner`-issä. giftIn vain innerissä. Henry FAIL (modaali ylhäällä scrollatessa).
+
+### 1.4.6 — Peel-modaali viewport-keskelle + craft i18n max 3
+· «Haluatko kuulla lisää?» -modaali: `position: fixed` + `inset:0; margin:auto` — aina viewportin keskellä (Henry FAIL). giftIn siirtyi `.romant-modal-inner`-iin.
+· Craft-varoitukset: `Pehmeä raja (3)` / `Enintään 3 vihjettä` (ei enää 10/20). Numerot sprintf-konsteista.
+
+### 1.4.5 — Portti 4 hotfix (Mari QA)
+Etusivun hinta-pilleri ja hero: **4,90 € sis. ALV 25,5 %** (`get_price_vat_line()`). Trust-footer: myyjärivi *Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi* + Käyttöehdot/Tietosuoja. Craft: `SOFT_MAX_LEVELS` = `HARD_MAX_LEVELS` = **3** (sama bar kuin selite). Demopeelit ja kortti=linkki ennallaan.
+
+### 1.4.4 — Hivelee demo peels + Portti 4 Luottamus
+Avattu demokutsu: jokaisessa osiossa **3 tasoa** (Vihje 1→2→3). Aino / Pöytä / L3: *Pöytä ikkunan vieressä — nimesi on listalla.* (ei Ravintola X). Etusivun kortti ennallaan (koko kortti = linkki, vain nimi + 1 rivi).
+
+Portti 4: myyjä **Kelaus Finland Oy** (Y-tunnus 2806633-5, Heiniläntie 37, 08500 Lohja, henry@kelaus.fi), ALV **25,5 %**. Maksun hinta yhdellä rivillä: **4,90 € sis. ALV 25,5 %**. Stub payments **pois päältä** tuotannossa (`ROMANTTINEN_STUB_PAYMENTS` stagingiin). Ennen maksua digi-vahvistus (KSL 6:16). Käyttöehdot `/kayttoehdot/` ja tietosuoja `/tietosuoja/`. Kuitti: ALV-rivi + myyjä + digi + legal-URLit.
+
+### 1.4.3 — Demofix
+Etusivun demokortti on kokonaan linkki (`/kutsu/demo/{aino|elias|mari}/`). Kortilla vain nimi + otsikko + 1 rivi. Avattu demo: 3 osiota Nean peeleillä. Hero / craft / maksu ennallaan.
+
+### 1.4.2 — Craft-selite on craft
+Craft (`/kutsu/uusi/`): yksi rivi osioiden luona — *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Ei hero-muutoksia. Etusivu / demot / maksu ennallaan.
+
+### 1.4.1 — Portti 3 etusivu
+Etusivu (`/`): Pauliina cold-5s — sama **hero-fabric** silkki + bokeh kuin craft, LTR-hero (kopio vasemmalla, teaser-kortti oikealla), mobiilissa pinottu. Nea-hero, hinta-pilleri **4,90 € sis. ALV 25,5 %**, CTA **Luo oma kutsu** → `/kutsu/uusi/`. Kolme demokutsua (Aino / Elias / Mari) Nea v3 -kopioilla; **Avaa demo** → `/kutsu/demo/{aino|elias|mari}/` (pehmeät peelit, ei CPT-tokenia). Craft-selite: *Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).* Wordmark → `/` ennallaan. FAQ / maksu / stub OFF ennallaan.
 
 ### 1.4.0 — Craft fabric + Muu + wordmark home
 Craft (`/kutsu/uusi/`): Pauliina-kangas — sama **hero-fabric** silkki + pehmeä bokeh kuin teaserissa, kermakortit (#FFFDF9) päällä (ei litteä cream-sivu). Wordmark **romanttinen.fi** vie etusivulle (`/`) kaikkialla (craft, teaser, peel, story, etusivu, hallinta). Pohjat max 3: **Kotitreffit · Kaupungilla · Muu**. Kotitreffit/Kaupungilla ennallaan (tyhjä L1, Nea vain **Käytä esimerkkiä**). **Muu** = kolme tyhjää osiota + placeholdereita, ei esitäyttöjä, ei vapaata planneria. Extra-chipit ennallaan: **Kaupungilla · Pieni salaisuus · Hellää huomiota**. Portti 3 etusivu / soft-launch / ALV ennallaan.
@@ -46,11 +73,11 @@ Teaser: silk-tausta + kelluva kermakortti, **Avaa kutsu**. Avaus: `giftIn` (.38s
 3. Vaihtoehto SSH/SFTP: pura/korvaa tiedostot suoraan `wp-content/plugins/romanttinen-kutsu/` **lisäosa aktiivisena**.
 4. Version bump flushaa rewrite-säännöt automaattisesti (`romant_kutsu_version`). Jos reitit eivät toimi: **Asetukset → Permainkkit → Tallenna**.
 5. Asetukset: **Asetukset → Romanttinen**
-   - **Hinta** (oletus 4,90 €)
-   - **Stub payments** (oletus päällä)
+   - **Hinta** (oletus 4,90 € → maksussa **4,90 € sis. ALV 25,5 %**)
+   - **Stub payments** (oletus **pois päältä**; staging: `ROMANTTINEN_STUB_PAYMENTS`)
    - **Käytä Romanttinen-etusivua**
    - **Visma Pay API Key** + **Private Key**
-   - **Yritystiedot** (valinnainen; kuittiin — tyhjänä `romanttinen.fi · kutsu@romanttinen.fi`)
+   - **Yritystiedot** (seed: Kelaus Finland Oy / 2806633-5 / Heiniläntie 37, 08500 Lohja / henry@kelaus.fi / ALV 25.5)
 
 ```php
 define('ROMANTTINEN_STUB_PAYMENTS', true);
@@ -61,7 +88,7 @@ define('ROMANTTINEN_STUB_PAYMENTS', true);
 1. Organisoija: **kutsujan nimi** (pakollinen), valinnainen **Saate**, treffiaika, valinnainen pukeutumisvihje, **1–3 osiota** (kussakin N tekstitasoa).
 2. Luonnos + hallintalinkki (`romant_manage_key`).
 3. Esikatselu: teaser + kunkin osion **ensimmäinen taso**.
-4. **Hanki jaettava linkki (4,90 €)** → kutsujan nimi + Nimi kuittiin + pakollinen sähköposti → stub / Visma Pay → Nea-kuitti + hallintalinkki sähköpostiin.
+4. **Hanki jaettava linkki** — hinta **4,90 € sis. ALV 25,5 %** + digi-vahvistus (KSL 6:16) + Käyttöehdot/Tietosuoja → kutsujan nimi + Nimi kuittiin + pakollinen sähköposti → Visma Pay (stub vain staging) → kuitti + hallintalinkki sähköpostiin.
 5. Vastaanottaja (`/kutsu/{token}/`):
    - Teaser: Logo A (`logo-a.png`), `{nimi} kutsui sinut`, **Sinut on kutsuttu treffeille**, countdown, valinnainen Saate, CTA **Avaa kutsu**. Paikka ei näy teaserissa.
    - **Jaa tarina** / **Kopioi linkki** teaserissa (ei spoilereita PNG:ssä).
@@ -125,18 +152,21 @@ AJAX `romant_track_event` (nonce):
 
 SMTP-konfiguraatio ei ole pakollinen — sama kuin kuitti-/hallintalinkki-mail.
 
-Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 €`) hallintalinkillä; **Kutsuja:** = Nimi kuittiin (`romant_receipt_name`, oletus kutsujan nimi). Teaser käyttää edelleen kutsujan nimeä.
+Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 € sis. ALV 25,5 %`) hallintalinkillä; **Kutsuja:** = Nimi kuittiin (`romant_receipt_name`, oletus kutsujan nimi). Kuitti: myyjä Kelaus, KSL 6:16, Käyttöehdot/Tietosuoja. Teaser käyttää edelleen kutsujan nimeä.
 
 ## Reitit
 
 | URL | Käyttö |
 |-----|--------|
 | `/kutsu/uusi/` | Luo kutsu |
+| `/kutsu/demo/aino/` `/elias/` `/mari/` | Portti 3 demokutsut (Nea v3) |
 | `/kutsu/hallitse/{manage_key}/` | Muokkaa, esikatsele, maksa |
 | `/kutsu/{token}/` | Vastaanottaja (peli) |
 | `/kutsu/{token}/story/` | Tarina PNG (vain teaser) |
 | `/kutsu/maksu/paluu/` | Visma return |
 | `/kutsu/maksu/ilmoitus/` | Visma notify |
+| `/kayttoehdot/` | Käyttöehdot (Portti 4) |
+| `/tietosuoja/` | Tietosuoja (Portti 4) |
 
 ## Shortcodet
 
@@ -145,7 +175,7 @@ Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 €`
 
 ## Maksut
 
-Stub ON (oletus) / Visma Pay kun stub OFF + avaimet. Hinta 4,90 €. Gateway: `includes/payment/`.
+Stub **OFF** (tuotanto) / Visma Pay kun avaimet asetettu. Staging: `define('ROMANTTINEN_STUB_PAYMENTS', true);`. Hinta **4,90 € sis. ALV 25,5 %**. Gateway: `includes/payment/`.
 
 ## Vaatimukset
 
