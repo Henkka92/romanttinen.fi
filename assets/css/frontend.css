@@ -1792,22 +1792,24 @@ a.romant-home-demo-card:focus-visible .romant-home-demo-link {
   margin-top: 0.35rem;
 }
 
-/* Confirm modal — always viewport-centered (1.4.6 Henry FAIL) */
+/* Confirm modal — full-viewport flex shell (1.4.7 Henry FAIL) */
 .romant-modal {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  height: fit-content;
-  width: min(92vw, 400px);
-  max-width: min(92vw, 400px);
-  border: none;
-  border-radius: calc(var(--romant-radius) + 4px);
-  padding: 0;
-  background: linear-gradient(165deg, #fff 0%, var(--romant-blush) 100%);
-  box-shadow: var(--romant-shadow);
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: 100vh !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
   color: var(--romant-ink);
-  /* transform reserved for giftIn on .romant-modal-inner — not on dialog */
-  transform: none;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
 }
 
 .romant-modal::backdrop {
@@ -1815,8 +1817,13 @@ a.romant-home-demo-card:focus-visible .romant-home-demo-link {
 }
 
 .romant-modal-inner {
+  width: min(92vw, 400px);
+  margin: 0;
   padding: 1.5rem 1.35rem 1.35rem;
   text-align: center;
+  border-radius: calc(var(--romant-radius) + 4px);
+  background: linear-gradient(165deg, #fff 0%, var(--romant-blush) 100%);
+  box-shadow: var(--romant-shadow);
 }
 
 .romant-modal-body {
@@ -2536,21 +2543,24 @@ a.romant-wordmark:focus {
   text-align: center;
 }
 
-/* Modal — cream card, wine border; dialog fixed+centered; giftIn on inner (1.4.6) */
+/* Modal — viewport flex shell + cream card on inner (1.4.7) */
 .romant-modal {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  height: fit-content;
-  width: min(92vw, 360px);
-  max-width: min(92vw, 360px);
-  padding: 0;
-  border: 1px solid #4A1F2C;
-  border-radius: 24px;
-  background: #F3E6D8;
-  box-shadow: 0 20px 50px rgba(74, 31, 44, 0.18);
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: 100vh !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
   color: #4A1F2C;
-  transform: none; /* do not fight viewport centering */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
 }
 
 .romant-modal::backdrop {
@@ -2565,8 +2575,14 @@ a.romant-wordmark:focus {
 }
 
 .romant-modal-inner {
+  width: min(92vw, 360px);
+  margin: 0;
   padding: 2.15rem 1.6rem 1.55rem;
   text-align: center;
+  border: 1px solid #4A1F2C;
+  border-radius: 24px;
+  background: #F3E6D8;
+  box-shadow: 0 20px 50px rgba(74, 31, 44, 0.18);
 }
 
 .romant-modal-inner .romant-serif {
