@@ -2995,6 +2995,69 @@ a.romant-wordmark:focus {
   text-align: center;
 }
 
+.romant-price-vat {
+  font-family: var(--romant-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--romant-wine);
+  margin: 0.15rem 0 0.55rem;
+  letter-spacing: 0.01em;
+}
+
+.romant-legal-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 1rem 0 0.45rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--romant-ink);
+  cursor: pointer;
+}
+
+.romant-legal-check input {
+  margin-top: 0.2rem;
+  flex: 0 0 auto;
+}
+
+.romant-legal-links a,
+.romant-legal-footer a,
+.romant-legal-card a {
+  color: var(--romant-wine);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.romant-legal-footer {
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--romant-wine);
+}
+
+.romant-home .romant-legal-footer {
+  margin-top: auto;
+  padding: 2rem 0 0.25rem;
+}
+
+.romant-legal-page .romant-wrap.romant-legal {
+  max-width: 640px;
+}
+
+.romant-legal-card p {
+  margin: 0 0 1rem;
+}
+
+.romant-legal-card .romant-card-title {
+  margin-top: 1.15rem;
+}
+
+.romant-legal-card .romant-card-title:first-child {
+  margin-top: 0;
+}
+
 .romant-level-row.is-quiet textarea:placeholder-shown {
   min-height: 2.6rem;
 }

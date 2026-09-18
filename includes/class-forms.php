@@ -269,18 +269,26 @@ final class Romant_Kutsu_Forms {
         if ($receipt_name === '') {
             $receipt_name = '—';
         }
-        $price_disp   = Romant_Kutsu_Settings::get_price_display(); // "4,90 €"
+        $price_disp   = Romant_Kutsu_Settings::get_price_vat_line(); // LOCKED: 4,90 € sis. ALV 25,5 %
         $manage_url   = Romant_Kutsu_Rewrite::manage_url($manage_key);
         $company_line = Romant_Kutsu_Settings::get_company_line();
+        $company_block = Romant_Kutsu_Settings::get_company_block();
+        $terms_url    = Romant_Kutsu_Rewrite::terms_url();
+        $privacy_url  = Romant_Kutsu_Rewrite::privacy_url();
 
-        // LOCKED COPY (Nea) — exact wording; placeholders filled.
+        // LOCKED COPY (Portti 4 Luottamus) — exact wording; placeholders filled.
         $subject = 'Treffikutsu valmis — ' . $price_disp;
         $body    = "Hei,\n\n"
             . "Treffikutsusi on maksettu ja valmis jaettavaksi.\n\n"
             . "Summa: {$price_disp}\n"
             . "Kutsuja: {$receipt_name}\n\n"
+            . "Myyjä:\n"
+            . $company_block . "\n\n"
             . "Hallitse kutsua tästä:\n"
             . $manage_url . "\n\n"
+            . "Kutsu on digitaalinen sisältö. Peruuttamisoikeutta ei ole, koska sisältö toimitetaan heti maksun jälkeen (KSL 6:16).\n\n"
+            . "Käyttöehdot: {$terms_url}\n"
+            . "Tietosuoja: {$privacy_url}\n\n"
             . "—\n"
             . "Romanttinen\n"
             . $company_line . "\n\n"

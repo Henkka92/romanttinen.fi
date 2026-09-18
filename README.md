@@ -6,8 +6,10 @@ WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** 
 
 ## Changelog
 
-### 1.4.4 — Hivelee demo peels
+### 1.4.4 — Hivelee demo peels + Portti 4 Luottamus
 Avattu demokutsu: jokaisessa osiossa **3 tasoa** (Vihje 1→2→3). Aino / Pöytä / L3: *Pöytä ikkunan vieressä — nimesi on listalla.* (ei Ravintola X). Etusivun kortti ennallaan (koko kortti = linkki, vain nimi + 1 rivi).
+
+Portti 4: myyjä **Kelaus Finland Oy** (Y-tunnus 2806633-5, Heiniläntie 37, 08500 Lohja, henry@kelaus.fi), ALV **25,5 %**. Maksun hinta yhdellä rivillä: **4,90 € sis. ALV 25,5 %**. Stub payments **pois päältä** tuotannossa (`ROMANTTINEN_STUB_PAYMENTS` stagingiin). Ennen maksua digi-vahvistus (KSL 6:16). Käyttöehdot `/kayttoehdot/` ja tietosuoja `/tietosuoja/`. Kuitti: ALV-rivi + myyjä + digi + legal-URLit.
 
 ### 1.4.3 — Demofix
 Etusivun demokortti on kokonaan linkki (`/kutsu/demo/{aino|elias|mari}/`). Kortilla vain nimi + otsikko + 1 rivi. Avattu demo: 3 osiota Nean peeleillä. Hero / craft / maksu ennallaan.
@@ -58,11 +60,11 @@ Teaser: silk-tausta + kelluva kermakortti, **Avaa kutsu**. Avaus: `giftIn` (.38s
 3. Vaihtoehto SSH/SFTP: pura/korvaa tiedostot suoraan `wp-content/plugins/romanttinen-kutsu/` **lisäosa aktiivisena**.
 4. Version bump flushaa rewrite-säännöt automaattisesti (`romant_kutsu_version`). Jos reitit eivät toimi: **Asetukset → Permainkkit → Tallenna**.
 5. Asetukset: **Asetukset → Romanttinen**
-   - **Hinta** (oletus 4,90 €)
-   - **Stub payments** (oletus päällä)
+   - **Hinta** (oletus 4,90 € → maksussa **4,90 € sis. ALV 25,5 %**)
+   - **Stub payments** (oletus **pois päältä**; staging: `ROMANTTINEN_STUB_PAYMENTS`)
    - **Käytä Romanttinen-etusivua**
    - **Visma Pay API Key** + **Private Key**
-   - **Yritystiedot** (valinnainen; kuittiin — tyhjänä `romanttinen.fi · kutsu@romanttinen.fi`)
+   - **Yritystiedot** (seed: Kelaus Finland Oy / 2806633-5 / Heiniläntie 37, 08500 Lohja / henry@kelaus.fi / ALV 25.5)
 
 ```php
 define('ROMANTTINEN_STUB_PAYMENTS', true);
@@ -73,7 +75,7 @@ define('ROMANTTINEN_STUB_PAYMENTS', true);
 1. Organisoija: **kutsujan nimi** (pakollinen), valinnainen **Saate**, treffiaika, valinnainen pukeutumisvihje, **1–3 osiota** (kussakin N tekstitasoa).
 2. Luonnos + hallintalinkki (`romant_manage_key`).
 3. Esikatselu: teaser + kunkin osion **ensimmäinen taso**.
-4. **Hanki jaettava linkki (4,90 €)** → kutsujan nimi + Nimi kuittiin + pakollinen sähköposti → stub / Visma Pay → Nea-kuitti + hallintalinkki sähköpostiin.
+4. **Hanki jaettava linkki** — hinta **4,90 € sis. ALV 25,5 %** + digi-vahvistus (KSL 6:16) + Käyttöehdot/Tietosuoja → kutsujan nimi + Nimi kuittiin + pakollinen sähköposti → Visma Pay (stub vain staging) → kuitti + hallintalinkki sähköpostiin.
 5. Vastaanottaja (`/kutsu/{token}/`):
    - Teaser: Logo A (`logo-a.png`), `{nimi} kutsui sinut`, **Sinut on kutsuttu treffeille**, countdown, valinnainen Saate, CTA **Avaa kutsu**. Paikka ei näy teaserissa.
    - **Jaa tarina** / **Kopioi linkki** teaserissa (ei spoilereita PNG:ssä).
@@ -137,7 +139,7 @@ AJAX `romant_track_event` (nonce):
 
 SMTP-konfiguraatio ei ole pakollinen — sama kuin kuitti-/hallintalinkki-mail.
 
-Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 €`) hallintalinkillä; **Kutsuja:** = Nimi kuittiin (`romant_receipt_name`, oletus kutsujan nimi). Teaser käyttää edelleen kutsujan nimeä.
+Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 € sis. ALV 25,5 %`) hallintalinkillä; **Kutsuja:** = Nimi kuittiin (`romant_receipt_name`, oletus kutsujan nimi). Kuitti: myyjä Kelaus, KSL 6:16, Käyttöehdot/Tietosuoja. Teaser käyttää edelleen kutsujan nimeä.
 
 ## Reitit
 
@@ -150,6 +152,8 @@ Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 €`
 | `/kutsu/{token}/story/` | Tarina PNG (vain teaser) |
 | `/kutsu/maksu/paluu/` | Visma return |
 | `/kutsu/maksu/ilmoitus/` | Visma notify |
+| `/kayttoehdot/` | Käyttöehdot (Portti 4) |
+| `/tietosuoja/` | Tietosuoja (Portti 4) |
 
 ## Shortcodet
 
@@ -158,7 +162,7 @@ Maksun jälkeen lähetetään kuitti (subject: `Treffikutsu valmis — 4,90 €`
 
 ## Maksut
 
-Stub ON (oletus) / Visma Pay kun stub OFF + avaimet. Hinta 4,90 €. Gateway: `includes/payment/`.
+Stub **OFF** (tuotanto) / Visma Pay kun avaimet asetettu. Staging: `define('ROMANTTINEN_STUB_PAYMENTS', true);`. Hinta **4,90 € sis. ALV 25,5 %**. Gateway: `includes/payment/`.
 
 ## Vaatimukset
 

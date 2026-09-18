@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
 $page_title  = 'romanttinen — treffikutsu hetkeksi';
 $allow_index = true;
 $body_class  = 'romant-home-body';
+$hide_legal_footer = true;
 $create_url  = Romant_Kutsu_Rewrite::create_url();
 
 include ROMANT_KUTSU_PATH . 'templates/layout-start.php';

@@ -2,6 +2,7 @@
 /**
  * Public routes: /kutsu/uusi/, /kutsu/demo/{aino|elias|mari}/, /kutsu/hallitse/{key}/, /kutsu/{token}/, /kutsu/{token}/story/
  * Payment: /kutsu/maksu/paluu/, /kutsu/maksu/ilmoitus/
+ * Legal: /kayttoehdot/, /tietosuoja/
  *
  * @package Romanttinen_Kutsu
  */
@@ -15,6 +16,8 @@ if (!defined('ABSPATH')) {
 final class Romant_Kutsu_Rewrite {
 
     public function register_rewrites(): void {
+        add_rewrite_rule('^kayttoehdot/?$', 'index.php?romant_route=kayttoehdot', 'top');
+        add_rewrite_rule('^tietosuoja/?$', 'index.php?romant_route=tietosuoja', 'top');
         add_rewrite_rule('^kutsu/uusi/?$', 'index.php?romant_route=uusi', 'top');
         add_rewrite_rule(
             '^kutsu/demo/(aino|elias|mari)/?$',
@@ -89,6 +92,14 @@ final class Romant_Kutsu_Rewrite {
         return home_url('/kutsu/maksu/ilmoitus/');
     }
 
+    public static function terms_url(): string {
+        return home_url('/kayttoehdot/');
+    }
+
+    public static function privacy_url(): string {
+        return home_url('/tietosuoja/');
+    }
+
     public function handle_request(): void {
         $route = get_query_var('romant_route');
         if (!$route) {
@@ -109,6 +120,14 @@ final class Romant_Kutsu_Rewrite {
         nocache_headers();
 
         switch ($route) {
+            case 'kayttoehdot':
+                Romant_Kutsu_Templates::render('kayttoehdot');
+                exit;
+
+            case 'tietosuoja':
+                Romant_Kutsu_Templates::render('tietosuoja');
+                exit;
+
             case 'uusi':
                 Romant_Kutsu_Templates::render('create');
                 exit;

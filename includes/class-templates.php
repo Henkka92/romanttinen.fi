@@ -162,11 +162,13 @@ final class Romant_Kutsu_Templates {
         }
 
         $context_map = [
-            'create'    => 'uusi',
-            'manage'    => 'hallitse',
-            'recipient' => 'recipient',
-            'story'     => 'story',
-            'home'      => 'home',
+            'create'      => 'uusi',
+            'manage'      => 'hallitse',
+            'recipient'   => 'recipient',
+            'story'       => 'story',
+            'home'        => 'home',
+            'kayttoehdot' => 'kayttoehdot',
+            'tietosuoja'  => 'tietosuoja',
         ];
         self::enqueue_assets($context_map[$name] ?? $name);
 
@@ -214,6 +216,17 @@ final class Romant_Kutsu_Templates {
     public static function wordmark_markup(string $extra_class = ''): string {
         $cls = trim('romant-wordmark ' . $extra_class);
         return '<a class="' . esc_attr($cls) . '" href="' . esc_url(home_url('/')) . '">romanttinen.fi</a>';
+    }
+
+    /**
+     * LOCKED Portti 4 footer: Käyttöehdot · Tietosuoja
+     */
+    public static function legal_footer_markup(): string {
+        return '<footer class="romant-legal-footer">'
+            . '<a href="' . esc_url(Romant_Kutsu_Rewrite::terms_url()) . '">Käyttöehdot</a>'
+            . '<span aria-hidden="true"> · </span>'
+            . '<a href="' . esc_url(Romant_Kutsu_Rewrite::privacy_url()) . '">Tietosuoja</a>'
+            . '</footer>';
     }
 
     /**

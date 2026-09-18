@@ -64,11 +64,14 @@ final class Romant_Kutsu_Plugin {
     }
 
     /**
-     * Flush rewrite rules once after version bump (new pay return/notify routes).
+     * Flush rewrite rules after version bump or Portti 4 trust seed
+     * (new /kayttoehdot/ + /tietosuoja/ routes).
      */
     public function maybe_flush_rewrites(): void {
         $stored = (string) get_option('romant_kutsu_version', '');
-        if ($stored === ROMANT_KUTSU_VERSION) {
+        $seeded = (string) get_option('romant_kutsu_trust_seeded', '');
+        Romant_Kutsu_Settings::maybe_seed();
+        if ($stored === ROMANT_KUTSU_VERSION && $seeded === '1') {
             return;
         }
         $this->rewrite->register_rewrites();
@@ -83,11 +86,12 @@ final class Romant_Kutsu_Plugin {
         $rewrite->register_rewrites();
         flush_rewrite_rules();
 
+        Romant_Kutsu_Settings::maybe_seed();
         if (get_option('romant_kutsu_price') === false) {
             add_option('romant_kutsu_price', '4.90');
         }
         if (get_option('romant_kutsu_stub_payments') === false) {
-            add_option('romant_kutsu_stub_payments', '1');
+            add_option('romant_kutsu_stub_payments', '0');
         }
         if (get_option('romant_kutsu_use_homepage') === false) {
             add_option('romant_kutsu_use_homepage', '1');

@@ -77,13 +77,21 @@ final class Romant_Kutsu_Payment {
         update_post_meta($post_id, Romant_Kutsu_CPT::META_EMAIL, $posted_email);
         $email_for_send = $posted_email;
 
+        // Portti 4: digital-content withdrawal waiver required before charge.
+        $digi_ok = isset($_POST['romant_digi_cancel'])
+            && sanitize_text_field(wp_unslash((string) $_POST['romant_digi_cancel'])) === '1';
+        if (!$digi_ok) {
+            wp_safe_redirect(Romant_Kutsu_Rewrite::manage_url($manage_key) . '?pay_error=digi');
+            exit;
+        }
+
         if ($data['paid'] && $data['token'] !== '') {
             $suffix = $this->maybe_auto_send_email($post_id, $email_for_send, $manage_key);
             wp_safe_redirect(Romant_Kutsu_Rewrite::manage_url($manage_key) . '?paid=1' . $suffix);
             exit;
         }
 
-        // --- STUB MODE (default for staging) ---
+        // --- STUB MODE (opt-in / staging constant; production default OFF) ---
         if (Romant_Kutsu_Settings::stub_payments_enabled()) {
             $this->mark_paid($post_id);
             $suffix = $this->maybe_auto_send_email($post_id, $email_for_send, $manage_key);

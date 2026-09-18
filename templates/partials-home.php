@@ -109,4 +109,5 @@ $demos      = Romant_Kutsu_Home::demos();
         </div>
         <p class="romant-home-craft-note">Saaja avaa vihjeet yksi kerrallaan (max 3 / osio).</p>
     </section>
+    <?php echo Romant_Kutsu_Templates::legal_footer_markup(); ?>
 </div>
