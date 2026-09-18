@@ -1,5 +1,5 @@
 /**
- * 1.4.3 Portti 3 homepage + demofix contract (Pauliina mock + Nea peels).
+ * 1.4.4 Portti 3 homepage + hivelee 3×3 peels contract.
  * Run: node tests/portti3-home.test.js
  */
 'use strict';
@@ -29,11 +29,12 @@ var homeClass = read('includes/class-home.php');
 var rewrite = read('includes/class-rewrite.php');
 var css = read('assets/css/frontend.css');
 var recipient = read('templates/recipient.php');
+var recipientJs = read('assets/js/recipient.js');
 var templates = read('includes/class-templates.php');
 var readme = read('README.md');
 
-assert('version is 1.4.3',
-  /Version:\s+1\.4\.3/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.3'/.test(plugin)
+assert('version is 1.4.4',
+  /Version:\s+1\.4\.4/.test(plugin) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.4'/.test(plugin)
 );
 
 assert('standalone home renders Portti 3 partial',
@@ -113,6 +114,29 @@ assert('each demo has 3 sections not 1 stacked osio',
   !/'osio_title'/.test(homeClass)
 );
 
+assert('each demo section has 3 escalating peel levels',
+  /'title'\s*=>\s*'Kävely'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Pöytä'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Lopuksi'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Keittiö'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Hieronta'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Ilta'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Tänään'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Minne'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass) &&
+  /'title'\s*=>\s*'Miksi'[\s\S]*?'levels'\s*=>\s*\[[\s\S]*?'[^']+',\s*'[^']+',\s*'[^']+'/.test(homeClass)
+);
+
+assert('Aino Pöytä L3 locked (no Ravintola X)',
+  /Pöytä ikkunan vieressä — nimesi on listalla\./.test(homeClass) &&
+  !/Ravintola/.test(homeClass + partial)
+);
+
+assert('recipient peel reveals +1 while deeper levels remain',
+  /depth < maxDepth/.test(recipientJs) &&
+  /Haluatko kuulla lisää\?/.test(recipientJs) &&
+  /progress\.depth\[String\(idx\)\] = cur \+ 1/.test(recipientJs)
+);
+
 assert('homepage card is one link (not nested Avaa demo href)',
   /<a class="romant-home-demo-card/.test(partial) &&
   /<span class="romant-home-demo-link">Avaa demo<\/span>/.test(partial) &&
@@ -132,7 +156,8 @@ assert('demo cards render name + title + 1 line on whole-card link',
   /demo_url\(/.test(partial) &&
   !/Aloitetaan ilman kiirettä/.test(partial) &&
   !/Hartiat ensin/.test(partial) &&
-  !/Koska valitsisin sinut/.test(partial)
+  !/Koska valitsisin sinut/.test(partial) &&
+  !/Pöytä ikkunan vieressä/.test(partial)
 );
 
 assert('demo routes /kutsu/demo/{aino|elias|mari}/',
@@ -174,8 +199,8 @@ assert('mini-peel preview not on homepage',
   !/partials-home-peel-preview/.test(homeClass)
 );
 
-assert('README version 1.4.3',
-  /1\.4\.3/.test(readme)
+assert('README version 1.4.4',
+  /1\.4\.4/.test(readme)
 );
 
 if (fails) {

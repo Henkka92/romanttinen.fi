@@ -68,8 +68,8 @@ final class Romant_Kutsu_Home {
     }
 
     /**
-     * Locked Nea demos (Satu PASS + 1.4.3 demofix).
-     * Card = name + title + 1 korttirivi. Opened demo = 3 osiot with Nea peels.
+     * Locked Nea demos (1.4.4 hivelee): card = name + title + 1 line;
+     * opened demo = 3 osiot × 3 escalating peels (Vihje 1→2→3).
      *
      * @return array<string, array<string, mixed>>
      */
@@ -86,15 +86,27 @@ final class Romant_Kutsu_Home {
                 'sections'  => [
                     [
                         'title'  => 'Kävely',
-                        'levels' => ['Aloitetaan ilman kiirettä. Suunta selviää matkalla.'],
+                        'levels' => [
+                            'Aloitetaan ilman kiirettä. Suunta selviää matkalla.',
+                            'Ei karttaa. Tunnistat kadun kun se tulee.',
+                            'Pysähdytään siihen, missä valo on lämmin.',
+                        ],
                     ],
                     [
                         'title'  => 'Pöytä',
-                        'levels' => ['Varasin meille paikan. Pukeudu niin että uskallat.'],
+                        'levels' => [
+                            'Varasin meille paikan. Pukeudu niin että uskallat.',
+                            'Ei se ensimmäinen arvaus. Odota ovea.',
+                            'Pöytä ikkunan vieressä — nimesi on listalla.',
+                        ],
                     ],
                     [
                         'title'  => 'Lopuksi',
-                        'levels' => ['Jos ilta venyy, se on tarkoitus.'],
+                        'levels' => [
+                            'Jos ilta venyy, se on tarkoitus.',
+                            'Jälkeenpäin ei ole kiirettä mihinkään.',
+                            'Kävely kotiin saa kestää niin kauan kuin haluat.',
+                        ],
                     ],
                 ],
             ],
@@ -109,15 +121,27 @@ final class Romant_Kutsu_Home {
                 'sections'  => [
                     [
                         'title'  => 'Keittiö',
-                        'levels' => ['Sinun ei tarvitse tuoda mitään — paitsi itsesi.'],
+                        'levels' => [
+                            'Sinun ei tarvitse tuoda mitään — paitsi itsesi.',
+                            'Ruoka valmistuu hitaasti. Saat vain tulla.',
+                            'Pöytä on katettu kahdelle. Minä hoidan loput.',
+                        ],
                     ],
                     [
                         'title'  => 'Hieronta',
-                        'levels' => ['Hartiat ensin. Kiire jää oven taakse.'],
+                        'levels' => [
+                            'Hartiat ensin. Kiire jää oven taakse.',
+                            'Lämpö ensin. Sitten hiljaisuus.',
+                            'Saat sulkea silmät. Minä tiedän missä jännittää.',
+                        ],
                     ],
                     [
                         'title'  => 'Ilta',
-                        'levels' => ['Kynttilät. Hidas musiikki. Ei kelloa.'],
+                        'levels' => [
+                            'Kynttilät. Hidas musiikki. Ei kelloa.',
+                            'Sohva on valmiina. Ei aikataulua.',
+                            'Loppu on meidän. Aamu voi odottaa.',
+                        ],
                     ],
                 ],
             ],
@@ -132,15 +156,27 @@ final class Romant_Kutsu_Home {
                 'sections'  => [
                     [
                         'title'  => 'Tänään',
-                        'levels' => ['20 vuotta sinua. Tänä iltana en kerro kaikkea etukäteen.'],
+                        'levels' => [
+                            '20 vuotta sinua. Tänä iltana en kerro kaikkea etukäteen.',
+                            'Sama mekko. Tiedät minkä.',
+                            'Juhlimme — mutta ei niin kuin arvaat.',
+                        ],
                     ],
                     [
                         'title'  => 'Minne',
-                        'levels' => ['Auto odottaa. Loppu on yllätys.'],
+                        'levels' => [
+                            'Auto odottaa. Loppu on yllätys.',
+                            'Älä kysy osoitetta. Katso vain ulos.',
+                            'Perillä odottaa pöytä — ja yksi asia lisää.',
+                        ],
                     ],
                     [
                         'title'  => 'Miksi',
-                        'levels' => ['Koska valitsisin sinut uudestaan.'],
+                        'levels' => [
+                            'Koska valitsisin sinut uudestaan.',
+                            'Yhä. Joka kerta.',
+                            'Siksi tämä yksi juttu on vain sinulle.',
+                        ],
                     ],
                 ],
             ],
