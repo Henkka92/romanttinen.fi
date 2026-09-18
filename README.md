@@ -2,9 +2,13 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.5 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.6 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
+
+### 1.4.6 — Peel-modaali viewport-keskelle + craft i18n max 3
+· «Haluatko kuulla lisää?» -modaali: `position: fixed` + `inset:0; margin:auto` — aina viewportin keskellä (Henry FAIL). giftIn siirtyi `.romant-modal-inner`-iin.
+· Craft-varoitukset: `Pehmeä raja (3)` / `Enintään 3 tasoa` (ei enää 10/20). Numerot sprintf-konsteista.
 
 ### 1.4.5 — Portti 4 hotfix (Mari QA)
 Etusivun hinta-pilleri ja hero: **4,90 € sis. ALV 25,5 %** (`get_price_vat_line()`). Trust-footer: myyjärivi *Kelaus Finland Oy · Y-tunnus 2806633-5 · Heiniläntie 37, 08500 Lohja · henry@kelaus.fi* + Käyttöehdot/Tietosuoja. Craft: `SOFT_MAX_LEVELS` = `HARD_MAX_LEVELS` = **3** (sama bar kuin selite). Demopeelit ja kortti=linkki ennallaan.

@@ -109,8 +109,16 @@ final class Romant_Kutsu_Templates {
                     'addLevel'       => 'Lisää taso',
                     'addSection'     => 'Lisää osio',
                     'removeSection'  => 'Poista',
-                    'softCapWarn'    => 'Pehmeä raja (10) ylitetty — pidä tasot maltillisina.',
-                    'hardCap'        => 'Enintään 20 tasoa osiossa.',
+                    'softCapWarn'    => sprintf(
+                        /* translators: %d = soft max levels per section */
+                        'Pehmeä raja (%d) ylitetty — pidä tasot maltillisina.',
+                        Romant_Kutsu_CPT::SOFT_MAX_LEVELS
+                    ),
+                    'hardCap'        => sprintf(
+                        /* translators: %d = hard max levels per section */
+                        'Enintään %d tasoa osiossa.',
+                        Romant_Kutsu_CPT::HARD_MAX_LEVELS
+                    ),
                     'maxSections'    => 'Enintään 3 osiota.',
                     'sectionPh'      => Romant_Kutsu_CPT::PLACEHOLDER_TITLE,
                     'levelPh'        => Romant_Kutsu_CPT::PLACEHOLDER_EMPTY,
