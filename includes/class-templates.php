@@ -111,12 +111,12 @@ final class Romant_Kutsu_Templates {
                     'removeSection'  => 'Poista',
                     'softCapWarn'    => sprintf(
                         /* translators: %d = soft max levels per section */
-                        'Pehmeä raja (%d) ylitetty — pidä tasot maltillisina.',
+                        'Pehmeä raja (%d) ylitetty — pidä vihjeet maltillisina.',
                         Romant_Kutsu_CPT::SOFT_MAX_LEVELS
                     ),
                     'hardCap'        => sprintf(
                         /* translators: %d = hard max levels per section */
-                        'Enintään %d tasoa osiossa.',
+                        'Enintään %d vihjettä osiossa.',
                         Romant_Kutsu_CPT::HARD_MAX_LEVELS
                     ),
                     'maxSections'    => 'Enintään 3 osiota.',

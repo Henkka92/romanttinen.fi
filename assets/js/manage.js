@@ -355,7 +355,7 @@
     warn.className = 'romant-soft-cap-warn';
     warn.setAttribute('data-soft-cap-warn', '');
     warn.hidden = true;
-    warn.textContent = i18n.softCapWarn || ('Pehmeä raja (' + SOFT_MAX + ') ylitetty — pidä tasot maltillisina.');
+    warn.textContent = i18n.softCapWarn || ('Pehmeä raja (' + SOFT_MAX + ') ylitetty — pidä vihjeet maltillisina.');
 
     var addLevel = document.createElement('button');
     addLevel.type = 'button';
@@ -461,7 +461,7 @@
         var levels = card.querySelector('[data-section-levels]');
         var count = levels.querySelectorAll('[data-level-row]').length;
         if (count >= HARD_MAX) {
-          alert(i18n.hardCap || ('Enintään ' + HARD_MAX + ' tasoa osiossa.'));
+          alert(i18n.hardCap || ('Enintään ' + HARD_MAX + ' vihjettä osiossa.'));
           return;
         }
         var si = parseInt(card.getAttribute('data-index') || '0', 10);

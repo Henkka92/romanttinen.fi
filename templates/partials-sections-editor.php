@@ -107,7 +107,7 @@ if (!$craft_editor) {
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <p class="romant-soft-cap-warn" data-soft-cap-warn hidden><?php echo esc_html( sprintf( 'Pehmeä raja (%d) ylitetty — pidä tasot maltillisina.', (int) $soft ) ); ?></p>
+                <p class="romant-soft-cap-warn" data-soft-cap-warn hidden><?php echo esc_html( sprintf( 'Pehmeä raja (%d) ylitetty — pidä vihjeet maltillisina.', (int) $soft ) ); ?></p>
                 <button type="button" class="romant-btn romant-btn-secondary romant-btn-sm" data-add-level>
                     Lisää taso
                 </button>
