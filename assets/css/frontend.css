@@ -3121,3 +3121,22 @@ a.romant-wordmark:focus {
 .romant-section-card:not(.is-collapsed) .romant-level-row.is-quiet + .romant-level-row.is-quiet {
   opacity: 0.85;
 }
+
+
+/* 1.4.9 craft validation error — visible, high contrast, no toast-only */
+.romant-craft-form .romant-field-error {
+  margin: 0.45rem 0 0.15rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #4A1F2C;
+  background: #F3E6D8;
+  color: #4A1F2C;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+.romant-craft-form .is-invalid {
+  outline: 2px solid #4A1F2C;
+  outline-offset: 2px;
+  border-color: #4A1F2C !important;
+}

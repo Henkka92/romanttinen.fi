@@ -604,10 +604,136 @@
     });
   }
 
+
+  /** 1.4.9 — visible craft validation (no silent HTML5 block on collapsed fields). */
+  function fieldLabel(el) {
+    if (!el) return 'Kenttä';
+    if (el.id === 'romant_invite_title' || el.name === 'romant_invite_title') return 'Kutsun nimi';
+    if (el.getAttribute('data-craft-date') !== null) return 'Päivä';
+    if (el.getAttribute('data-craft-time') !== null) return 'Aika';
+    if (el.getAttribute('data-section-title') !== null) return 'Osion otsikko';
+    if (el.getAttribute('data-level-text') !== null) return 'Vihje 1';
+    return 'Kenttä';
+  }
+
+  function errorMessage(el) {
+    var custom = (cfg.i18n && cfg.i18n.missingField) || '{Kenttä} puuttuu — täytä se, niin pääset eteenpäin.';
+    return custom.replace('{Kenttä}', fieldLabel(el));
+  }
+
+  function clearCraftErrors(form) {
+    form.querySelectorAll('.romant-field-error').forEach(function (n) { n.remove(); });
+    form.querySelectorAll('.is-invalid').forEach(function (n) { n.classList.remove('is-invalid'); });
+    form.querySelectorAll('[aria-invalid="true"]').forEach(function (n) { n.removeAttribute('aria-invalid'); });
+  }
+
+  function showCraftError(form, el, msg) {
+    clearCraftErrors(form);
+    if (!el) return;
+    el.classList.add('is-invalid');
+    el.setAttribute('aria-invalid', 'true');
+    var box = document.createElement('p');
+    box.className = 'romant-field-error';
+    box.setAttribute('role', 'alert');
+    box.setAttribute('aria-live', 'assertive');
+    box.textContent = msg || errorMessage(el);
+    var host = el.closest('.romant-level-row')
+      || el.closest('.romant-section-title-label')
+      || el.closest('.romant-summary-field')
+      || el.closest('.romant-summary-title-label')
+      || el.parentNode;
+    if (host && host.parentNode) {
+      host.insertAdjacentElement('afterend', box);
+    } else {
+      el.insertAdjacentElement('afterend', box);
+    }
+  }
+
+  function expandAround(el) {
+    if (!el) return;
+    var summary = el.closest('[data-craft-summary]');
+    if (summary) summary.classList.remove('is-collapsed');
+    var card = el.closest('[data-section-card]');
+    if (card) card.classList.remove('is-collapsed');
+  }
+
+  function firstMissingCraftField(form) {
+    var title = form.querySelector('#romant_invite_title, [name="romant_invite_title"]');
+    if (title && !(title.value || '').trim()) return title;
+
+    var dateEl = form.querySelector('[data-craft-date]');
+    if (dateEl && !(dateEl.value || '').trim()) return dateEl;
+
+    var timeEl = form.querySelector('[data-craft-time]');
+    if (timeEl && !(timeEl.value || '').trim()) return timeEl;
+
+    var cards = form.querySelectorAll('[data-section-card]');
+    var i;
+    var firstGap = null;
+    var hasComplete = false;
+    for (i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      var st = card.querySelector('[data-section-title]');
+      var levelRows = card.querySelectorAll('[data-level-row]');
+      var l1 = levelRows.length ? levelRows[0].querySelector('[data-level-text]') : null;
+      var stOk = !!(st && (st.value || '').trim());
+      var l1Ok = !!(l1 && (l1.value || '').trim());
+      if (stOk && l1Ok) {
+        hasComplete = true;
+        break;
+      }
+      if (!firstGap) {
+        if (st && !stOk) firstGap = st;
+        else if (l1 && !l1Ok) firstGap = l1;
+      }
+    }
+    if (hasComplete) return null;
+    return firstGap;
+  }
+
+  function focusCraftField(el) {
+    expandAround(el);
+    // allow layout to settle after expand
+    window.requestAnimationFrame(function () {
+      try {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (err) {
+        el.scrollIntoView(true);
+      }
+      try { el.focus({ preventScroll: true }); } catch (err2) { el.focus(); }
+    });
+  }
+
+  function initCraftValidation() {
+    document.querySelectorAll('[data-romant-craft-form]').forEach(function (form) {
+      form.setAttribute('novalidate', 'novalidate');
+      form.addEventListener('submit', function (e) {
+        syncCraftDatetime(form);
+        var missing = firstMissingCraftField(form);
+        if (!missing) {
+          clearCraftErrors(form);
+          return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        showCraftError(form, missing);
+        focusCraftField(missing);
+      }, true);
+
+      form.addEventListener('input', function (e) {
+        if (!e.target || !e.target.classList.contains('is-invalid')) return;
+        if ((e.target.value || '').trim()) {
+          clearCraftErrors(form);
+        }
+      });
+    });
+  }
+
   function init() {
     document.querySelectorAll('[data-romant-sections-editor]').forEach(initSectionsEditor);
     initPohja();
     initCraftSummary();
+    initCraftValidation();
     initReceiptNameSync();
   }
 

@@ -29,7 +29,7 @@ $pohjat       = Romant_Kutsu_CPT::craft_templates();
     <h1 class="romant-serif romant-craft-title">Rakenna kutsu</h1>
     <p class="romant-lead romant-craft-lead">Valitse tunnelma, muokkaa pehmeitä oletuksia — kuin pakkaisit lahjaa, et täyttäisi lomaketta.</p>
 
-    <form class="romant-form romant-craft-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-romant-sections-form data-romant-craft-form>
+    <form class="romant-form romant-craft-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" data-romant-sections-form data-romant-craft-form novalidate>
         <input type="hidden" name="action" value="romant_create_kutsu" />
         <?php wp_nonce_field('romant_create_kutsu', 'romant_create_nonce'); ?>
         <input type="hidden" name="romant_inviter_name" id="romant_inviter_name" value="" />
@@ -56,7 +56,7 @@ $pohjat       = Romant_Kutsu_CPT::craft_templates();
             <label class="romant-summary-title-label" for="romant_invite_title">
                 <span class="screen-reader-text">Kutsun nimi</span>
                 <input type="text" id="romant_invite_title" name="romant_invite_title"
-                       class="romant-summary-title" maxlength="80"
+                       class="romant-summary-title" maxlength="80" required
                        value="<?php echo esc_attr($invite_title); ?>"
                        placeholder="Ilta kahdelle" />
             </label>
@@ -66,12 +66,12 @@ $pohjat       = Romant_Kutsu_CPT::craft_templates();
             <div class="romant-summary-meta">
                 <label class="romant-summary-field">
                     <span class="screen-reader-text">Päivä</span>
-                    <input type="date" data-craft-date value="<?php echo esc_attr($dt_date); ?>" />
+                    <input type="date" data-craft-date required value="<?php echo esc_attr($dt_date); ?>" />
                 </label>
                 <span class="romant-summary-dot" aria-hidden="true">·</span>
                 <label class="romant-summary-field">
                     <span class="screen-reader-text">Aika</span>
-                    <input type="time" data-craft-time value="<?php echo esc_attr($dt_time); ?>" />
+                    <input type="time" data-craft-time required value="<?php echo esc_attr($dt_time); ?>" />
                 </label>
                 <span class="romant-summary-dot" aria-hidden="true">·</span>
                 <label class="romant-summary-field romant-summary-place">
