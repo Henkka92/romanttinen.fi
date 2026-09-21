@@ -607,21 +607,21 @@
 
   /** 1.4.9 — visible craft validation (no silent HTML5 block on collapsed fields). */
   function errorMessage(el) {
-    // Nea 1.4.9 locked validation copy
-    if (!el) return 'Täydennä korostetut kohdat.';
+    // Nea 1.4.9 locked validation copy (Romanttinen)
+    if (!el) return 'Täydennä korostettu kohta — sitten pääset eteenpäin.';
     if (el.id === 'romant_invite_title' || el.name === 'romant_invite_title') {
-      return 'Anna kutsulle nimi.';
+      return 'Kutsun nimi puuttuu — täytä se, niin pääset eteenpäin.';
     }
     if (el.getAttribute('data-craft-date') !== null || el.getAttribute('data-craft-time') !== null) {
-      return 'Valitse päivä ja aika.';
+      return 'Päivä tai aika puuttuu — täytä se, niin pääset eteenpäin.';
     }
     if (el.getAttribute('data-level-text') !== null) {
-      return 'Kirjoita ainakin ensimmäinen vihje.';
+      return 'Ensimmäinen vihje puuttuu — kirjoita se, niin pääset eteenpäin.';
     }
     if (el.getAttribute('data-section-title') !== null) {
-      return 'Täydennä korostetut kohdat.';
+      return 'Täydennä korostettu kohta — sitten pääset eteenpäin.';
     }
-    return 'Täydennä korostetut kohdat.';
+    return 'Täydennä korostettu kohta — sitten pääset eteenpäin.';
   }
 
   function clearCraftErrors(form) {
