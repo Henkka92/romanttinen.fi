@@ -80,32 +80,32 @@ final class Romant_Kutsu_Home {
                 'strip'     => 'fabric',
                 'inviter'   => 'Aino',
                 'kicker'    => 'Aino kutsuu',
-                'name'      => 'Torstai vain meille',
-                'card_line' => 'Kävelylle — ja sitten pöytä, jota et vielä arvaa.',
-                'location'  => 'Kaupungilla',
+                'name'      => 'Se torstai, josta puhuttiin',
+                'card_line' => 'Tiedät sen kadunkulman. Minä olen siellä.',
+                'location'  => '',
                 'sections'  => [
                     [
                         'title'  => 'Kävely',
                         'levels' => [
-                            'Aloitetaan ilman kiirettä. Suunta selviää matkalla.',
-                            'Ei karttaa. Tunnistat kadun kun se tulee.',
-                            'Pysähdytään siihen, missä valo on lämmin.',
+                            'Älä tule autolla. Haluan kävellä kanssasi ensin.',
+                            'Se sama reitti kuin silloin kun jäit kahville «vain hetkeksi».',
+                            'Odotan bussipysäkin jälkeen, harmaa takki — suukko ennen kuin mennään eteenpäin.',
                         ],
                     ],
                     [
                         'title'  => 'Pöytä',
                         'levels' => [
-                            'Varasin meille paikan. Pukeudu niin että uskallat.',
-                            'Ei se ensimmäinen arvaus. Odota ovea.',
-                            'Pöytä ikkunan vieressä — nimesi on listalla.',
+                            'Varasin kahdelle. Pukeudu niin että uskallat istua lähelle.',
+                            'Tilaan sen viinin, jota kehuit — et saa maksaa.',
+                            'Pöytä ikkunan vieressä. Polveni koskettaa sinun, jos annat.',
                         ],
                     ],
                     [
                         'title'  => 'Lopuksi',
                         'levels' => [
-                            'Jos ilta venyy, se on tarkoitus.',
-                            'Jälkeenpäin ei ole kiirettä mihinkään.',
-                            'Kävely kotiin saa kestää niin kauan kuin haluat.',
+                            'Jos ilta venyy, en ole sattumalta myöhässä töihin perjantaina.',
+                            'Tiedän paikan jälkiruoalle jossa ei ole kiirettä ulos.',
+                            'Ja jos viet minut kotiovelle — voit jäädä oven pieleen pidemmäksi aikaa.',
                         ],
                     ],
                 ],
@@ -115,32 +115,32 @@ final class Romant_Kutsu_Home {
                 'strip'     => 'wine',
                 'inviter'   => 'Elias',
                 'kicker'    => 'Elias kutsuu',
-                'name'      => 'Tule kotiin — illalla',
-                'card_line' => 'Kokkaan. Sitten hartiat. Loppu on meidän.',
+                'name'      => 'Tule meille — älä soita ovikelloa',
+                'card_line' => 'Ovi auki. Valot himmeät. Sinulle.',
                 'location'  => 'Kotona',
                 'sections'  => [
                     [
                         'title'  => 'Keittiö',
                         'levels' => [
-                            'Sinun ei tarvitse tuoda mitään — paitsi itsesi.',
-                            'Ruoka valmistuu hitaasti. Saat vain tulla.',
-                            'Pöytä on katettu kahdelle. Minä hoidan loput.',
+                            'Älä tuo mitään. Paitsi se kauluspaita, jossa näytät siltä.',
+                            'Teen risottoa — sen jota et saanut viimeksi loppuun, koska…',
+                            'Maistat lusikasta. Seison takanasi. Kädet vyötärölläsi.',
                         ],
                     ],
                     [
                         'title'  => 'Hieronta',
                         'levels' => [
-                            'Hartiat ensin. Kiire jää oven taakse.',
-                            'Lämpö ensin. Sitten hiljaisuus.',
-                            'Saat sulkea silmät. Minä tiedän missä jännittää.',
+                            'Hartiat ensin. Tiedän missä ne jumittaa sun viikosta.',
+                            'Öljy on jo lämpimänä. Paita pois — autan napeissa jos hidastelet.',
+                            'Sofalla. Painan peukaloilla kunnes hengität syvään minua vasten.',
                         ],
                     ],
                     [
                         'title'  => 'Ilta',
                         'levels' => [
-                            'Kynttilät. Hidas musiikki. Ei kelloa.',
-                            'Sohva on valmiina. Ei aikataulua.',
-                            'Loppu on meidän. Aamu voi odottaa.',
+                            'Puhelin jää eteiseen. Tämä ilta ei ole feedissä.',
+                            'Makuuhuoneessa on se peitto jonka varastat aina — tänään jaan sen.',
+                            'Loppuillasta en kysy «jäätkö». Tiedän vastauksen jo.',
                         ],
                     ],
                 ],
@@ -150,32 +150,32 @@ final class Romant_Kutsu_Home {
                 'strip'     => 'bokeh',
                 'inviter'   => 'Mari',
                 'kicker'    => 'Mari kutsuu',
-                'name'      => 'Kaksikymmentä — ja vielä yksi juttu',
-                'card_line' => 'Älä kysy minne. Laita se mekko, josta pidän.',
+                'name'      => '20 vuotta — ja yksi asia jonka piilotin',
+                'card_line' => 'Laita se musta mekko. Tiedät minkä.',
                 'location'  => '',
                 'sections'  => [
                     [
                         'title'  => 'Tänään',
                         'levels' => [
-                            '20 vuotta sinua. Tänä iltana en kerro kaikkea etukäteen.',
-                            'Sama mekko. Tiedät minkä.',
-                            'Juhlimme — mutta ei niin kuin arvaat.',
+                            'En järjestänyt tätä «koska pitää». Järjestin koska kaipaan sinua edelleen.',
+                            'Lapset on hoidossa. Kalenteri tyhjä. Vain meidän nimi illassa.',
+                            'Sormus sormessa 20 vuotta — silti sydän hakkaa kuin eka treffeillä.',
                         ],
                     ],
                     [
                         'title'  => 'Minne',
                         'levels' => [
-                            'Auto odottaa. Loppu on yllätys.',
-                            'Älä kysy osoitetta. Katso vain ulos.',
-                            'Perillä odottaa pöytä — ja yksi asia lisää.',
+                            'En kerro osoitetta. Istu viereen — ajan minä.',
+                            'Se hotelli jossa yövyimme ennen kuin meistä tuli «me».',
+                            'Huone 412. Avain on jo taskussani. Sänky on petattu kahdelle.',
                         ],
                     ],
                     [
                         'title'  => 'Miksi',
                         'levels' => [
-                            'Koska valitsisin sinut uudestaan.',
-                            'Yhä. Joka kerta.',
-                            'Siksi tämä yksi juttu on vain sinulle.',
+                            'Koska valitsisin sinut uudestaan — joka aamu.',
+                            'Koska naurunsa ja hiljaisuutesi on yhä kotini.',
+                            'Koska rakastan sinua kuumemmin kuin uskalsin sanoa 20 vuotta sitten.',
                         ],
                     ],
                 ],
@@ -198,6 +198,7 @@ final class Romant_Kutsu_Home {
      * @return array<string, mixed>
      */
     public static function demo_invite_data(array $demo): array {
+        // Silent roll-forward: always ~+2 days from now (no CPT / no JSON seed).
         $tz = new DateTimeZone('Europe/Helsinki');
         $dt = (new DateTimeImmutable('+2 days 19:00', $tz))->format('c');
 

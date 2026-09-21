@@ -2,11 +2,11 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.11 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.12 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
 
-### 1.4.11 — SEO P0 (Nea)
+### 1.4.12 — SEO P0 (Nea)
 Etusivu + craft: lukitut title/meta/H1; OG teaser-kangas; canonical; robots Disallow demo/hallitse; `/romant-sitemap.xml`.
 
 ### 1.4.8 — Peel-modaali piilossa kunnes avataan
