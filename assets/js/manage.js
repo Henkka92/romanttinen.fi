@@ -606,19 +606,22 @@
 
 
   /** 1.4.9 — visible craft validation (no silent HTML5 block on collapsed fields). */
-  function fieldLabel(el) {
-    if (!el) return 'Kenttä';
-    if (el.id === 'romant_invite_title' || el.name === 'romant_invite_title') return 'Kutsun nimi';
-    if (el.getAttribute('data-craft-date') !== null) return 'Päivä';
-    if (el.getAttribute('data-craft-time') !== null) return 'Aika';
-    if (el.getAttribute('data-section-title') !== null) return 'Osion otsikko';
-    if (el.getAttribute('data-level-text') !== null) return 'Vihje 1';
-    return 'Kenttä';
-  }
-
   function errorMessage(el) {
-    var custom = (cfg.i18n && cfg.i18n.missingField) || '{Kenttä} puuttuu — täytä se, niin pääset eteenpäin.';
-    return custom.replace('{Kenttä}', fieldLabel(el));
+    // Nea 1.4.9 locked validation copy
+    if (!el) return 'Täydennä korostetut kohdat.';
+    if (el.id === 'romant_invite_title' || el.name === 'romant_invite_title') {
+      return 'Anna kutsulle nimi.';
+    }
+    if (el.getAttribute('data-craft-date') !== null || el.getAttribute('data-craft-time') !== null) {
+      return 'Valitse päivä ja aika.';
+    }
+    if (el.getAttribute('data-level-text') !== null) {
+      return 'Kirjoita ainakin ensimmäinen vihje.';
+    }
+    if (el.getAttribute('data-section-title') !== null) {
+      return 'Täydennä korostetut kohdat.';
+    }
+    return 'Täydennä korostetut kohdat.';
   }
 
   function clearCraftErrors(form) {
