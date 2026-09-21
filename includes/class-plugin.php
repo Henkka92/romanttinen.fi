@@ -23,6 +23,7 @@ final class Romant_Kutsu_Plugin {
     public Romant_Kutsu_Events $events;
     public Romant_Kutsu_Templates $templates;
     public Romant_Kutsu_Home $home;
+    public Romant_Kutsu_SEO $seo;
 
     public static function instance(): self {
         if (self::$instance === null) {
@@ -40,6 +41,7 @@ final class Romant_Kutsu_Plugin {
         $this->events    = new Romant_Kutsu_Events();
         $this->templates = new Romant_Kutsu_Templates();
         $this->home      = new Romant_Kutsu_Home();
+        $this->seo       = new Romant_Kutsu_SEO();
 
         add_action('init', [$this->cpt, 'register']);
         add_action('init', [$this->rewrite, 'register_rewrites']);
@@ -47,6 +49,7 @@ final class Romant_Kutsu_Plugin {
         add_filter('query_vars', [$this->rewrite, 'register_query_vars']);
         add_action('init', [$this->forms, 'register_shortcodes']);
         add_action('init', [$this->home, 'register']);
+        $this->seo->register();
         add_action('init', [$this->events, 'register']);
         add_action('admin_menu', [$this->settings, 'register_menu']);
         add_action('admin_init', [$this->settings, 'register_settings']);
@@ -64,11 +67,14 @@ final class Romant_Kutsu_Plugin {
     }
 
     /**
-     * Flush rewrite rules once after version bump (new pay return/notify routes).
+     * Flush rewrite rules after version bump or Portti 4 trust seed
+     * (new /kayttoehdot/ + /tietosuoja/ routes).
      */
     public function maybe_flush_rewrites(): void {
         $stored = (string) get_option('romant_kutsu_version', '');
-        if ($stored === ROMANT_KUTSU_VERSION) {
+        $seeded = (string) get_option('romant_kutsu_trust_seeded', '');
+        Romant_Kutsu_Settings::maybe_seed();
+        if ($stored === ROMANT_KUTSU_VERSION && $seeded === '1') {
             return;
         }
         $this->rewrite->register_rewrites();
@@ -83,11 +89,12 @@ final class Romant_Kutsu_Plugin {
         $rewrite->register_rewrites();
         flush_rewrite_rules();
 
+        Romant_Kutsu_Settings::maybe_seed();
         if (get_option('romant_kutsu_price') === false) {
             add_option('romant_kutsu_price', '4.90');
         }
         if (get_option('romant_kutsu_stub_payments') === false) {
-            add_option('romant_kutsu_stub_payments', '1');
+            add_option('romant_kutsu_stub_payments', '0');
         }
         if (get_option('romant_kutsu_use_homepage') === false) {
             add_option('romant_kutsu_use_homepage', '1');

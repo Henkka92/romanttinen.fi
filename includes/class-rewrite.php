@@ -1,7 +1,8 @@
 <?php
 /**
- * Public routes: /kutsu/uusi/, /kutsu/hallitse/{key}/, /kutsu/{token}/, /kutsu/{token}/story/
+ * Public routes: /kutsu/uusi/, /kutsu/demo/{aino|elias|mari}/, /kutsu/hallitse/{key}/, /kutsu/{token}/, /kutsu/{token}/story/
  * Payment: /kutsu/maksu/paluu/, /kutsu/maksu/ilmoitus/
+ * Legal: /kayttoehdot/, /tietosuoja/
  *
  * @package Romanttinen_Kutsu
  */
@@ -15,7 +16,14 @@ if (!defined('ABSPATH')) {
 final class Romant_Kutsu_Rewrite {
 
     public function register_rewrites(): void {
+        add_rewrite_rule('^kayttoehdot/?$', 'index.php?romant_route=kayttoehdot', 'top');
+        add_rewrite_rule('^tietosuoja/?$', 'index.php?romant_route=tietosuoja', 'top');
         add_rewrite_rule('^kutsu/uusi/?$', 'index.php?romant_route=uusi', 'top');
+        add_rewrite_rule(
+            '^kutsu/demo/(aino|elias|mari)/?$',
+            'index.php?romant_route=demo&romant_demo=$matches[1]',
+            'top'
+        );
         add_rewrite_rule(
             '^kutsu/hallitse/([a-f0-9]+)/?$',
             'index.php?romant_route=hallitse&romant_manage_key=$matches[1]',
@@ -45,6 +53,7 @@ final class Romant_Kutsu_Rewrite {
         add_rewrite_tag('%romant_route%', '([^&]+)');
         add_rewrite_tag('%romant_manage_key%', '([a-f0-9]+)');
         add_rewrite_tag('%romant_token%', '([a-f0-9]+)');
+        add_rewrite_tag('%romant_demo%', '(aino|elias|mari)');
     }
 
     /**
@@ -55,6 +64,7 @@ final class Romant_Kutsu_Rewrite {
         $vars[] = 'romant_route';
         $vars[] = 'romant_manage_key';
         $vars[] = 'romant_token';
+        $vars[] = 'romant_demo';
         return $vars;
     }
 
@@ -82,6 +92,14 @@ final class Romant_Kutsu_Rewrite {
         return home_url('/kutsu/maksu/ilmoitus/');
     }
 
+    public static function terms_url(): string {
+        return home_url('/kayttoehdot/');
+    }
+
+    public static function privacy_url(): string {
+        return home_url('/tietosuoja/');
+    }
+
     public function handle_request(): void {
         $route = get_query_var('romant_route');
         if (!$route) {
@@ -102,8 +120,30 @@ final class Romant_Kutsu_Rewrite {
         nocache_headers();
 
         switch ($route) {
+            case 'kayttoehdot':
+                Romant_Kutsu_Templates::render('kayttoehdot');
+                exit;
+
+            case 'tietosuoja':
+                Romant_Kutsu_Templates::render('tietosuoja');
+                exit;
+
             case 'uusi':
                 Romant_Kutsu_Templates::render('create');
+                exit;
+
+            case 'demo':
+                $slug = (string) get_query_var('romant_demo');
+                $demo = Romant_Kutsu_Home::demo($slug);
+                if (!$demo) {
+                    status_header(404);
+                    wp_die(esc_html__('Kutsua ei löytynyt.', 'romanttinen-kutsu'), 404);
+                }
+                Romant_Kutsu_Templates::render('recipient', [
+                    'post'    => null,
+                    'data'    => Romant_Kutsu_Home::demo_invite_data($demo),
+                    'is_demo' => true,
+                ]);
                 exit;
 
             case 'hallitse':

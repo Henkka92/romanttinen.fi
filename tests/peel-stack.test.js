@@ -227,7 +227,7 @@ assert('canvas PNG has no inviter or spoilers',
 );
 
 var pluginPhp = fs.readFileSync(path.join(__dirname, '../romanttinen-kutsu.php'), 'utf8');
-assert('plugin version is 1.4.0', /Version:\s+1\.4\.0/.test(pluginPhp) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.0'/.test(pluginPhp));
+assert('plugin version is 1.4.5', /Version:\s+1\.4\.5/.test(pluginPhp) && /ROMANT_KUTSU_VERSION',\s*'1\.4\.5'/.test(pluginPhp));
 
 if (fails) {
   process.exit(1);

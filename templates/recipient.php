@@ -11,18 +11,20 @@
  * the teaser. Dress tip is a cream .dress-card labelled "Pukeudu näin".
  * No debug footer or version badge.
  *
- * @var WP_Post $post
+ * @var WP_Post|null $post
  * @var array   $data
+ * @var bool    $is_demo  Portti 3 demo invite (no CPT token / share links).
  * @package Romanttinen_Kutsu
  */
 if (!defined('ABSPATH')) {
     exit;
 }
 
+$is_demo    = !empty($is_demo);
 $page_title = 'Sinut on kutsuttu treffeille · romanttinen';
 $body_class = 'romant-recipient-page is-teaser';
-$share_url  = Romant_Kutsu_Rewrite::recipient_url($data['token']);
-$story_url  = Romant_Kutsu_Rewrite::story_url($data['token']);
+$share_url  = $is_demo ? '' : Romant_Kutsu_Rewrite::recipient_url($data['token']);
+$story_url  = $is_demo ? '' : Romant_Kutsu_Rewrite::story_url($data['token']);
 $fabric_url = ROMANT_KUTSU_URL . 'assets/img/hero-fabric.jpg';
 $og_title       = 'Sinut on kutsuttu treffeille.';
 $og_description = 'Sinulle on lähetetty treffikutsu. Avaa, kun olet valmis.';
@@ -132,12 +134,14 @@ include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
                 </section>
             <?php endif; ?>
 
+            <?php if (!$is_demo) : ?>
             <div class="romant-actions romant-reveal-aside">
                 <a class="romant-btn romant-btn-ghost" href="<?php echo esc_url($story_url); ?>">Jaa tarina</a>
                 <button type="button" class="romant-btn romant-btn-ghost" data-romant-copy-text="<?php echo esc_attr($share_url); ?>">
                     Kopioi linkki
                 </button>
             </div>
+            <?php endif; ?>
         </div>
     </article>
 </div>

@@ -21,6 +21,7 @@ $og_image       = ROMANT_KUTSU_URL . 'assets/img/hero-teaser.jpg';
 $og_url         = $share_url;
 $fabric_url     = ROMANT_KUTSU_URL . 'assets/img/hero-fabric.jpg';
 $body_class     = 'romant-story-share';
+$hide_legal_footer = true;
 
 include ROMANT_KUTSU_PATH . 'templates/layout-start.php';
 ?>
