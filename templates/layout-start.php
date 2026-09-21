@@ -3,6 +3,7 @@
  * Shared HTML head for standalone pages.
  *
  * @var string $page_title
+ * @var string $page_description
  * @var bool   $allow_index  When true, omit noindex (marketing homepage).
  * @var string $body_class   Extra body classes.
  * @var string $og_title
@@ -13,24 +14,39 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-$page_title      = $page_title ?? 'Romanttinen Kutsu';
-$allow_index     = !empty($allow_index);
-$body_class      = trim('romant-kutsu-body ' . ($body_class ?? ''));
-$og_title        = isset($og_title) ? (string) $og_title : '';
-$og_description  = isset($og_description) ? (string) $og_description : '';
-$og_image        = isset($og_image) ? (string) $og_image : '';
-$og_url          = isset($og_url) ? (string) $og_url : '';
+$page_title       = $page_title ?? 'Romanttinen Kutsu';
+$allow_index      = !empty($allow_index);
+$body_class       = trim('romant-kutsu-body ' . ($body_class ?? ''));
+$og_title         = isset($og_title) ? (string) $og_title : '';
+$og_description   = isset($og_description) ? (string) $og_description : '';
+$og_image         = isset($og_image) ? (string) $og_image : '';
+$og_url           = isset($og_url) ? (string) $og_url : '';
+$page_description = isset($page_description) ? (string) $page_description : '';
+if ($page_description === '' && $og_description !== '') {
+    $page_description = $og_description;
+}
+if ($page_description === '' && $allow_index) {
+    $page_description = 'Luo treffikutsu, jossa vihjeet aukeavat yksi kerrallaan. Ilmaiseksi — maksat 4,90 € sis. ALV vasta kun jaat linkin.';
+}
 ?><!DOCTYPE html>
 <html lang="fi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php if ($allow_index) : ?>
-    <meta name="description" content="Kutsu mielitiettysi treffeille — unohtumattomalla tavalla. Luonnos ilmaiseksi. 4,90 € sis. ALV 25,5 % vasta kun jaat linkin." />
+    <?php if ($page_description !== '') : ?>
+    <meta name="description" content="<?php echo esc_attr($page_description); ?>" />
+    <?php endif; ?>
     <?php else : ?>
     <meta name="robots" content="noindex,nofollow" />
+    <?php if ($page_description !== '') : ?>
+    <meta name="description" content="<?php echo esc_attr($page_description); ?>" />
+    <?php endif; ?>
     <?php endif; ?>
     <title><?php echo esc_html($page_title); ?></title>
+    <?php if ($og_url !== '') : ?>
+    <link rel="canonical" href="<?php echo esc_url($og_url); ?>" />
+    <?php endif; ?>
     <?php if ($og_title !== '') : ?>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="romanttinen.fi" />
@@ -38,7 +54,6 @@ $og_url          = isset($og_url) ? (string) $og_url : '';
     <meta property="og:title" content="<?php echo esc_attr($og_title); ?>" />
     <?php if ($og_description !== '') : ?>
     <meta property="og:description" content="<?php echo esc_attr($og_description); ?>" />
-    <meta name="description" content="<?php echo esc_attr($og_description); ?>" />
     <meta name="twitter:description" content="<?php echo esc_attr($og_description); ?>" />
     <?php endif; ?>
     <?php if ($og_url !== '') : ?>

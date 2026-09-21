@@ -23,6 +23,7 @@ final class Romant_Kutsu_Plugin {
     public Romant_Kutsu_Events $events;
     public Romant_Kutsu_Templates $templates;
     public Romant_Kutsu_Home $home;
+    public Romant_Kutsu_SEO $seo;
 
     public static function instance(): self {
         if (self::$instance === null) {
@@ -40,6 +41,7 @@ final class Romant_Kutsu_Plugin {
         $this->events    = new Romant_Kutsu_Events();
         $this->templates = new Romant_Kutsu_Templates();
         $this->home      = new Romant_Kutsu_Home();
+        $this->seo       = new Romant_Kutsu_SEO();
 
         add_action('init', [$this->cpt, 'register']);
         add_action('init', [$this->rewrite, 'register_rewrites']);
@@ -47,6 +49,7 @@ final class Romant_Kutsu_Plugin {
         add_filter('query_vars', [$this->rewrite, 'register_query_vars']);
         add_action('init', [$this->forms, 'register_shortcodes']);
         add_action('init', [$this->home, 'register']);
+        $this->seo->register();
         add_action('init', [$this->events, 'register']);
         add_action('admin_menu', [$this->settings, 'register_menu']);
         add_action('admin_init', [$this->settings, 'register_settings']);

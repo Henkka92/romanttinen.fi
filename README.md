@@ -2,12 +2,12 @@
 
 WordPress-lisäosa romanttinen.fi -kutsutuotteelle — progressiivinen **peli** (osiot + tasot).
 
-**Versio:** 1.4.10 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
+**Versio:** 1.4.11 · **Plugin slug:** `romanttinen-kutsu` (sama kuin V1 — ei deactivate-to-install)
 
 ## Changelog
 
-### 1.4.10 — Craft-validointi näkyväksi
-Pakolliset: kutsun nimi · päivä+aika · ≥1 osio (otsikko + Vihje 1). Submit: ylin vaja aukeaa (`is-collapsed` pois) + `scrollIntoView` + näkyvä `aria-live` -virhe (`{Kenttä} puuttuu — täytä se, niin pääset eteenpäin.`). Ei hiljaista HTML5-blokkia collapsed-kentissä.
+### 1.4.11 — SEO P0 (Nea)
+Etusivu + craft: lukitut title/meta/H1; OG teaser-kangas; canonical; robots Disallow demo/hallitse; `/romant-sitemap.xml`.
 
 ### 1.4.8 — Peel-modaali piilossa kunnes avataan
 `.romant-modal` default `display:none`; flex-center vain `[open]` / `.is-present` (Henry FAIL: modaali auki ilman klikkiä).
