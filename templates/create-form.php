@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 
 $sections     = Romant_Kutsu_CPT::default_craft_sections();
 $craft_editor = true;
-$invite_title = Romant_Kutsu_CPT::CRAFT_INVITE_TITLE;
+$invite_title = ''; // Portti 2: example = placeholder only, not default value
 $location     = 'Kotona';
 $default_dt   = Romant_Kutsu_CPT::default_craft_datetime();
 $dt_local     = $default_dt->format('Y-m-d\TH:i');
